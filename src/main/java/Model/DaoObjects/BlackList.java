@@ -1,18 +1,14 @@
 package Model.DaoObjects;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+
 public class BlackList
 {
-    private int blackListID;
+    private IntegerProperty blackListID;
+    private BooleanProperty BlackListStatus;
 
-
-
-    public void setBlackListStatus(boolean blackListStatus)
-    {
-        BlackListStatus = blackListStatus;
-    }
-
-    private boolean BlackListStatus;
-    public BlackList(int blackListID, boolean blackListStatus)
+    public BlackList(IntegerProperty blackListID, BooleanProperty blackListStatus)
     {
         this.blackListID = blackListID;
         BlackListStatus = blackListStatus;
@@ -20,17 +16,31 @@ public class BlackList
 
     public int getBlackListID()
     {
+        return blackListID.get();
+    }
+
+    public IntegerProperty blackListIDProperty()
+    {
         return blackListID;
     }
 
     public void setBlackListID(int blackListID)
     {
-        this.blackListID = blackListID;
+        this.blackListID.set(blackListID);
     }
 
     public boolean isBlackListStatus()
     {
+        return BlackListStatus.get();
+    }
+
+    public BooleanProperty blackListStatusProperty()
+    {
         return BlackListStatus;
     }
 
+    public void setBlackListStatus(boolean blackListStatus)
+    {
+        this.BlackListStatus.set(blackListStatus);
+    }
 }
