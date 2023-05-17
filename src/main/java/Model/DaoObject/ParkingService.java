@@ -1,6 +1,7 @@
-package Model.DaoObjects;
+package Model.DaoObject;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class ParkingService
 {
@@ -8,11 +9,11 @@ public class ParkingService
     private IntegerProperty plotId;
     private IntegerProperty serviceId;
 
-    public ParkingService(IntegerProperty parkingServiceId, IntegerProperty plotId, IntegerProperty serviceId)
+    public ParkingService(int parkingServiceId, int plotId, int serviceId)
     {
-        this.parkingServiceId = parkingServiceId;
-        this.plotId = plotId;
-        this.serviceId = serviceId;
+        this.parkingServiceId = new SimpleIntegerProperty(parkingServiceId) ;
+        this.plotId =new SimpleIntegerProperty(plotId) ;
+        this.serviceId =new SimpleIntegerProperty(serviceId) ;
     }
 
     public int getParkingServiceId()
