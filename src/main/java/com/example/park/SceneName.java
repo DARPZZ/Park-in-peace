@@ -4,5 +4,5 @@ public enum SceneName
 {
     Login,
     Main,
-    ProfileSettings
+    ProfileSettings,
 }
