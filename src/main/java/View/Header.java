@@ -7,21 +7,22 @@ import javafx.scene.layout.AnchorPane;
 public abstract class Header
 {
     private Scene scene;
-    private AnchorPane anchorPane;
+    private AnchorPane ap;
     private Button profileBtn;
     private Button homeBtn;
     private Button bookingsBtn;
     private Button mySpacesBtn;
 
-    private final int headerLimit = 120;
+    private final double LIMIT = 130.0;
+    private double xMargin = 60;
 
     public Header()
     {
-        anchorPane = new AnchorPane();
-        anchorPane.setOnMouseClicked(event -> anchorPane.requestFocus());
-        scene = new Scene(anchorPane, 1280, 720);
+        ap = new AnchorPane();
+        ap.setOnMouseClicked(event -> ap.requestFocus());
+        scene = new Scene(ap, 1280, 720);
 
-        profileBtn = new Button("\u2699");
+        profileBtn = new Button("⚙");
         homeBtn = new Button("Hjem");
         bookingsBtn = new Button("Reservationer");
         mySpacesBtn = new Button("Mine pladser");
@@ -29,35 +30,67 @@ public abstract class Header
         // Sets default button sizes
         final int WIDTH = 150;
         final int HEIGHT = 30;
-        final int GAP = WIDTH + 20;
-        final int Y_LAYOUT = 100;
+        final int GAP = WIDTH + 15;
+        final int Y_LAYOUT = 80;
 
-        profileBtn.setLayoutX(scene.getWidth() - 50);
+        AnchorPane.setRightAnchor(profileBtn, 60.0);
         profileBtn.setLayoutY(20);
         profileBtn.setPrefSize(35,HEIGHT);
 
         homeBtn.setLayoutY(Y_LAYOUT);
-        homeBtn.setLayoutX(60);
+        AnchorPane.setLeftAnchor(homeBtn, xMargin);
         homeBtn.setPrefSize(WIDTH, HEIGHT);
 
-        bookingsBtn.setLayoutX(homeBtn.getLayoutX() + GAP);
+        AnchorPane.setLeftAnchor(bookingsBtn, AnchorPane.getLeftAnchor(homeBtn) + GAP);
         bookingsBtn.setLayoutY(Y_LAYOUT);
         bookingsBtn.setPrefSize(WIDTH, HEIGHT);
 
-        mySpacesBtn.setLayoutX(bookingsBtn.getLayoutX() + GAP);
+        AnchorPane.setLeftAnchor(mySpacesBtn, AnchorPane.getLeftAnchor(bookingsBtn) + GAP);
         mySpacesBtn.setLayoutY(Y_LAYOUT);
         mySpacesBtn.setPrefSize(WIDTH, HEIGHT);
 
-        anchorPane.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
+        ap.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
     }
 
+    //region getter/setter
     public Scene getScene()
     {
         return scene;
     }
 
-    public AnchorPane getAnchorPane()
+    public AnchorPane getAp()
     {
-        return anchorPane;
+        return ap;
     }
+
+    public Button getProfileBtn()
+    {
+        return profileBtn;
+    }
+
+    public Button getHomeBtn()
+    {
+        return homeBtn;
+    }
+
+    public Button getBookingsBtn()
+    {
+        return bookingsBtn;
+    }
+
+    public Button getMySpacesBtn()
+    {
+        return mySpacesBtn;
+    }
+
+    public double getLIMIT()
+    {
+        return LIMIT;
+    }
+
+    public double getxMargin()
+    {
+        return xMargin;
+    }
+    //endregion
 }
