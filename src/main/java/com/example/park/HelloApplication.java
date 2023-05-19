@@ -1,6 +1,5 @@
 package com.example.park;
 
-import View.MainPage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +20,8 @@ public class HelloApplication extends Application
         primaryStageHolder = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new MainPage().getScene();
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
     }
