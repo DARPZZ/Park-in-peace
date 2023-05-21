@@ -14,7 +14,15 @@ public class Resevations
     private IntegerProperty userID;
     private IntegerProperty plotID;
 
+    public Resevations( LocalDate start, LocalDate end, int uID, int ploID)
+    {
 
+        this.startDate = start;
+        this.endDate = end;
+        this.userID = new SimpleIntegerProperty(uID);
+        this.plotID = new SimpleIntegerProperty(ploID);
+
+    }
     public Resevations(int resID, LocalDate start, LocalDate end, int uID, int ploID)
     {
         this.reservationID = new SimpleIntegerProperty(resID);
