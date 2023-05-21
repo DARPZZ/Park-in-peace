@@ -6,21 +6,19 @@ import javafx.scene.layout.AnchorPane;
 
 public abstract class Header
 {
-    private Scene scene;
-    private AnchorPane ap;
-    private Button profileBtn;
-    private Button homeBtn;
-    private Button bookingsBtn;
-    private Button mySpacesBtn;
-
-    private final double LIMIT = 130.0;
-    private double xMargin = 60;
+    public final Scene SCENE;
+    public final AnchorPane AP;
+    public final Button profileBtn;
+    public final Button homeBtn;
+    public final Button bookingsBtn;
+    public final Button mySpacesBtn;
+    public final double X_MARGIN = 60;
 
     public Header()
     {
-        ap = new AnchorPane();
-        ap.setOnMouseClicked(event -> ap.requestFocus());
-        scene = new Scene(ap, 1280, 720);
+        AP = new AnchorPane();
+        AP.setOnMouseClicked(event -> AP.requestFocus());
+        SCENE = new Scene(AP, 1280, 720);
 
         profileBtn = new Button("⚙");
         homeBtn = new Button("Hjem");
@@ -38,7 +36,7 @@ public abstract class Header
         profileBtn.setPrefSize(35,HEIGHT);
 
         homeBtn.setLayoutY(Y_LAYOUT);
-        AnchorPane.setLeftAnchor(homeBtn, xMargin);
+        AnchorPane.setLeftAnchor(homeBtn, X_MARGIN);
         homeBtn.setPrefSize(WIDTH, HEIGHT);
 
         AnchorPane.setLeftAnchor(bookingsBtn, AnchorPane.getLeftAnchor(homeBtn) + GAP);
@@ -49,48 +47,13 @@ public abstract class Header
         mySpacesBtn.setLayoutY(Y_LAYOUT);
         mySpacesBtn.setPrefSize(WIDTH, HEIGHT);
 
-        ap.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
+        AP.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
     }
 
     //region getter/setter
-    public Scene getScene()
+    public double getYMargin()
     {
-        return scene;
-    }
-
-    public AnchorPane getAp()
-    {
-        return ap;
-    }
-
-    public Button getProfileBtn()
-    {
-        return profileBtn;
-    }
-
-    public Button getHomeBtn()
-    {
-        return homeBtn;
-    }
-
-    public Button getBookingsBtn()
-    {
-        return bookingsBtn;
-    }
-
-    public Button getMySpacesBtn()
-    {
-        return mySpacesBtn;
-    }
-
-    public double getLIMIT()
-    {
-        return LIMIT;
-    }
-
-    public double getxMargin()
-    {
-        return xMargin;
+        return 130.00;
     }
     //endregion
 }
