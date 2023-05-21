@@ -1,5 +1,4 @@
 package com.example.park;
-
 import Model.DaoObject.User;
 import Model.Implements.DaoUser;
 import javafx.event.ActionEvent;
@@ -8,17 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
-import java.security.PrivateKey;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
 public class Login
 {
-
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
     TextField password = new TextField();
@@ -48,30 +40,24 @@ public class Login
         zipCode.setLayoutX(LAYOUT_x);
         zipCode.setLayoutY(350);
 
-
         loginButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-
                 insertInformation();
             }
         });
-
         anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode);
     }
 
     public void insertInformation()
     {
-
         Model.Implements.DaoUser daoUser = new DaoUser();
-
             if (validateUser()) {
                 User user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
             }
-
     }
 
     public boolean validateUser()
@@ -80,12 +66,12 @@ public class Login
         tooltip.setText("Invalid");
         boolean Error = false;
         tooltip.setShowDelay(Duration.ZERO);
-
         if (Objects.equals(name.getText(), "")) {
             name.setTooltip(tooltip);
             Error = true;
         }
-        if (Objects.equals(PhoneNumber.getText(), "")) {
+        boolean isNumeric = PhoneNumber.getText().chars().allMatch( Character::isDigit );
+        if (Objects.equals(PhoneNumber.getText(), "")|| !isNumeric) {
             PhoneNumber.setTooltip(tooltip);
             Error = true;
         }
@@ -101,7 +87,8 @@ public class Login
             email.setTooltip(tooltip);
             Error = true;
         }
-        if (Objects.equals(zipCode.getText(), "")) {
+        isNumeric = zipCode.getText().chars().allMatch( Character::isDigit );
+        if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
             Error = true;
         }
