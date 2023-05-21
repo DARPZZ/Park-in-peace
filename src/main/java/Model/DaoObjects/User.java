@@ -16,7 +16,19 @@ public class User
     private StringProperty email;
     private IntegerProperty zipCode;
     private IntegerProperty blackListId;
+    public User() {}
 
+    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
+    {
+        this.name = new SimpleStringProperty(name);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        Password = new SimpleStringProperty(password);
+        this.address = new SimpleStringProperty(address);
+        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
+        this.email = new SimpleStringProperty(email);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.blackListId = new SimpleIntegerProperty(blackListId);
+    }
     public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
     {
         this.userId = new SimpleIntegerProperty(userId);
