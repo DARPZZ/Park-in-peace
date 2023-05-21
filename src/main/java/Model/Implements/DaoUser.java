@@ -1,6 +1,6 @@
 package Model.Implements;
 
-import Model.DaoObjects.User;
+import Model.DaoObject.User;
 
 import java.sql.*;
 import java.sql.Connection;
