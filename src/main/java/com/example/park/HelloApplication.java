@@ -1,6 +1,9 @@
 package com.example.park;
 
 import Model.DaoObject.Resevations;
+import Model.DaoObject.User;
+import Model.DaoObject.tblPlot;
+import Model.Implements.DaoPlot;
 import Model.Implements.DaoResevations;
 import Model.Implements.DaoUser;
 import View.Bookings;
@@ -37,8 +40,6 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-
-        Model.Implements.DaoResevations daoResevations = new DaoResevations();
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
