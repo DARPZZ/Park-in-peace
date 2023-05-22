@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import java.util.List;
 import java.util.Objects;
 public class Login
 {
@@ -21,6 +23,7 @@ public class Login
 
     public void createUser(AnchorPane anchorPane, Button loginButton)
     {
+
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -98,5 +101,40 @@ public class Login
         }else {
             return true;
         }
+    }
+    public void loginScene(AnchorPane anchorPane, Button logIn)
+    {
+        name.setLayoutX(LAYOUT_x);
+        name.setLayoutY(100);
+        password.setLayoutX(LAYOUT_x);
+        password.setLayoutY(150);
+
+        logIn.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                String kodeord = password.getText();
+                String username = name.getText();
+                Model.Implements.DaoUser daoUser = new DaoUser();
+                List<User> userList = daoUser.GetAll();
+
+                boolean validCredentials = false;
+                for (User user : userList) {
+                    if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
+                        validCredentials = true;
+                        break;
+                    }
+                }
+
+                if (validCredentials) {
+
+                    System.out.println("Login successful!");
+                } else {
+                    System.out.println("Login Failed");
+                }
+            }
+        });
+        anchorPane.getChildren().addAll(name,password);
     }
 }
