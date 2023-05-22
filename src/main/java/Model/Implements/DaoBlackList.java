@@ -1,5 +1,5 @@
 package Model.Implements;
-
+/*
 import Model.DaoObject.BlackList;
 import Model.DaoObject.User;
 
@@ -84,3 +84,5 @@ public class DaoBlackList implements DaoInterface<BlackList>
     }
 
 }
+
+ */
