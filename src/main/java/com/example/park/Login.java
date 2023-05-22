@@ -99,7 +99,9 @@ public class Login
         {
             return false;
         }else {
+            HelloApplication.changeScene(SceneName.Main);
             return true;
+
         }
     }
     public void loginScene(AnchorPane anchorPane, Button logIn)
@@ -128,7 +130,7 @@ public class Login
                 }
 
                 if (validCredentials) {
-
+                    HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
                 } else {
                     System.out.println("Login Failed");

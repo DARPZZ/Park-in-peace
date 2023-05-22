@@ -3,6 +3,7 @@ package com.example.park;
 import Model.DaoObject.Resevations;
 import Model.Implements.DaoResevations;
 import Model.Implements.DaoUser;
+import View.Bookings;
 import View.MainPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -30,7 +31,7 @@ public class HelloApplication extends Application
     private static Stage primaryStageHolder = null;
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
 
-    private static HashMap<SceneName, Scene> sceneMap = new HashMap<>();
+
     Login login = new Login();
     @Override
     public void start(Stage stage) throws IOException
@@ -40,6 +41,7 @@ public class HelloApplication extends Application
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
+        SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
