@@ -54,6 +54,7 @@ public abstract class Header
         bookingsBtn.setOnAction(event -> {
             HelloApplication.changeScene(SceneName.Bookings);
         });
+        myPlotBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.PlotPage));
 
         ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);
     }

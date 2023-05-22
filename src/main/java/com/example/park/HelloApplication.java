@@ -5,6 +5,7 @@ import Model.Implements.DaoResevations;
 import Model.Implements.DaoUser;
 import View.Bookings;
 import View.MainPage;
+import View.PlotPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -42,6 +43,7 @@ public class HelloApplication extends Application
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
+        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
@@ -57,7 +59,8 @@ public class HelloApplication extends Application
     {
         launch();
     }
-
+    public static Stage getStage()
+    {return primaryStageHolder;}
     public static void changeScene(SceneName sceneName)
     {
         if (SCENE_MAP.containsKey(sceneName))
