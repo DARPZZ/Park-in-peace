@@ -1,15 +1,10 @@
 package View;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import com.example.park.Login;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
 public class Bookings extends Header
 {
+    Login login = new Login();
 TextField textField = new TextField();
 public Bookings()
 {
@@ -17,6 +12,8 @@ public Bookings()
 }
 public void setScene()
 {
+   String name = login.getLoginName();
+
     ANCHOR_PANE.getChildren().addAll(textField);
 
 }

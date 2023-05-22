@@ -13,6 +13,17 @@ import java.util.List;
 import java.util.Objects;
 public class Login
 {
+    public String getLoginName()
+    {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName)
+    {
+        this.loginName = loginName;
+    }
+
+    private String loginName = "";
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
     TextField password = new TextField();
@@ -23,7 +34,6 @@ public class Login
 
     public void createUser(AnchorPane anchorPane, Button loginButton)
     {
-
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -48,6 +58,7 @@ public class Login
             @Override
             public void handle(ActionEvent event)
             {
+                setLoginName(name.getText());
                 insertInformation();
             }
         });
@@ -118,6 +129,7 @@ public class Login
             {
                 String kodeord = password.getText();
                 String username = name.getText();
+                setLoginName(username);
                 Model.Implements.DaoUser daoUser = new DaoUser();
                 List<User> userList = daoUser.GetAll();
 
@@ -128,6 +140,7 @@ public class Login
                         break;
                     }
                 }
+                System.out.println(getLoginName());
 
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
