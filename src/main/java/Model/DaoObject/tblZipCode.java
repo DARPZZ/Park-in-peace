@@ -3,17 +3,12 @@ package Model.DaoObject;
 public class tblZipCode
 {
     private int zipCode;
-    private int city;
+    private String city;
 
-    public tblZipCode(int zipCode, int city)
+    public tblZipCode(int zipCode, String city)
     {
         this.zipCode = zipCode;
         this.city = city;
-    }
-
-    public tblZipCode(int zipCode)
-    {
-        this.zipCode = zipCode;
     }
 
     public int getZipCode()
@@ -26,12 +21,12 @@ public class tblZipCode
         this.zipCode = zipCode;
     }
 
-    public int getCity()
+    public String getCity()
     {
         return city;
     }
 
-    public void setCity(int city)
+    public void setCity(String city)
     {
         this.city = city;
     }
