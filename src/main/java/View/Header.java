@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 public abstract class Header
 {
     public final Scene SCENE;
-    public final AnchorPane AP;
+    public final AnchorPane ANCHOR_PANE;
     public final Button profileBtn;
     public final Button homeBtn;
     public final Button bookingsBtn;
@@ -16,9 +16,9 @@ public abstract class Header
 
     public Header()
     {
-        AP = new AnchorPane();
-        AP.setOnMouseClicked(event -> AP.requestFocus());
-        SCENE = new Scene(AP, 1280, 720);
+        ANCHOR_PANE = new AnchorPane();
+        ANCHOR_PANE.setOnMouseClicked(event -> ANCHOR_PANE.requestFocus());
+        SCENE = new Scene(ANCHOR_PANE, 1280, 720);
 
         profileBtn = new Button("⚙");
         homeBtn = new Button("Hjem");
@@ -47,7 +47,7 @@ public abstract class Header
         mySpacesBtn.setLayoutY(Y_LAYOUT);
         mySpacesBtn.setPrefSize(WIDTH, HEIGHT);
 
-        AP.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
+        ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
     }
 
     //region getter/setter

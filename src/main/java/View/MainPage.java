@@ -1,30 +1,40 @@
 package View;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 
 public class MainPage extends Header
 {
     public MainPage()
     {
-        ScrollPane sp = new ScrollPane();
-        sp.setLayoutX(this.X_MARGIN);
-        sp.prefHeightProperty().bind(this.SCENE.heightProperty().subtract(this.getYMargin() + 50));
-        sp.prefWidthProperty().bind(this.SCENE.widthProperty().subtract(this.X_MARGIN*2));
-        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        sp.setPannable(true);
-        //scrollPane.setStyle("-fx-background-color:transparent;");
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setLayoutX(this.X_MARGIN);
+        scrollPane.prefHeightProperty().bind(this.SCENE.heightProperty().subtract(this.getYMargin() + 50));
+        scrollPane.prefWidthProperty().bind(this.SCENE.widthProperty().subtract(this.X_MARGIN*2));
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPannable(false);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color:transparent;");
 
-        GridPane gp = new GridPane();
-        gp.prefHeightProperty().bind(sp.prefHeightProperty());
-        gp.prefWidthProperty().bind(sp.prefWidthProperty());
-        gp.setGridLinesVisible(true); // debug
+        TilePane tilePane = new TilePane(10, 10);
+        tilePane.setPadding(new Insets(10,0,10,0));
+        tilePane.setHgap(25);
+        tilePane.setVgap(25);
+        tilePane.setPrefRows(4);
+        tilePane.prefHeightProperty().bind(scrollPane.prefHeightProperty());
+        tilePane.prefWidthProperty().bind(scrollPane.prefWidthProperty());
+        scrollPane.setContent(tilePane);
 
-        sp.setContent(gp);
-
-        AnchorPane.setTopAnchor(sp, this.getYMargin());
-        this.AP.getChildren().add(sp);
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"), "Test"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 2"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 3"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 4"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 5"));
+        AnchorPane.setTopAnchor(scrollPane, this.getYMargin());
+        this.ANCHOR_PANE.getChildren().add(scrollPane);
     }
 }
