@@ -1,5 +1,9 @@
 package View;
 
+import com.example.park.HelloApplication;
+import com.example.park.SceneName;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -46,6 +50,10 @@ public abstract class Header
         AnchorPane.setLeftAnchor(myPlotBtn, AnchorPane.getLeftAnchor(bookingsBtn) + GAP);
         myPlotBtn.setLayoutY(Y_LAYOUT);
         myPlotBtn.setPrefSize(WIDTH, HEIGHT);
+
+        bookingsBtn.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.Bookings);
+        });
 
         ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);
     }
