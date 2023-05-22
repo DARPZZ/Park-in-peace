@@ -152,4 +152,15 @@ public class Login
         });
         anchorPane.getChildren().addAll(name,password);
     }
+    public User createUserObject() {
+        String nameValue = name.getText();
+        String phoneNumberValue = PhoneNumber.getText();
+        String passwordValue = password.getText();
+        String addressValue = adress.getText();
+        String emailValue = email.getText();
+        String zipCodeValue = zipCode.getText();
+        User user = new User(nameValue, phoneNumberValue, passwordValue, addressValue, 0, emailValue, Integer.parseInt(zipCodeValue), 1);
+
+        return user;
+    }
 }
