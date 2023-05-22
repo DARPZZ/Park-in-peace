@@ -28,3 +28,5 @@ replay_pid*
 .gradle/7.5/checksums/checksums.lock
 .gradle/7.5/checksums/checksums.lock
 .gradle/7.5/checksums/checksums.lock
+build/tmp/compileJava/previous-compilation-data.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock

@@ -22,7 +22,7 @@ import java.util.List;
 public class HelloApplication extends Application
 {
 
-    Label toggleLabel = new Label("Press here:");
+    Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
     private static Stage primaryStageHolder = null;
@@ -38,6 +38,7 @@ public class HelloApplication extends Application
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
+
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
@@ -62,31 +63,36 @@ public class HelloApplication extends Application
         ToggleButton toggleButton = new ToggleButton();
         toggleLabel.setLayoutX(600);
         toggleLabel.setLayoutY(20);
-
+        login.loginScene(anchorPane,loginButton);
         toggleButton.setLayoutY(50);
         toggleButton.setLayoutX(600);
         toggleButton.setPrefWidth(150);
         toggleButton.setText("Login");
-
-
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
+
         toggleButton.setOnAction(event ->
         {
             if (toggleButton.isSelected()) {
+                anchorPane.getChildren().clear();
                 toggleButton.setText("Create User");
                 toggleLabel.setText("Press here to login:");
                 login.createUser(anchorPane,loginButton);
                 loginButton.setText("create a new user");
+                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
             } else {
                 toggleButton.setText("Login");
+                anchorPane.getChildren().clear();
                 toggleLabel.setText("Press here to create a new user:");
+                login.loginScene(anchorPane,loginButton);
                 loginButton.setText("login");
+                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
             }
         });
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+
     }
 
 }
