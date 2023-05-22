@@ -40,7 +40,6 @@ public class HelloApplication extends Application
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
-        Scene scene = SCENE_MAP.get(SceneName.Main);
         AnchorPane anchorPane = new AnchorPane();
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
