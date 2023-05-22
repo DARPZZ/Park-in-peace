@@ -11,7 +11,7 @@ public abstract class Header
     public final Button profileBtn;
     public final Button homeBtn;
     public final Button bookingsBtn;
-    public final Button mySpacesBtn;
+    public final Button myPlotBtn;
     public final double X_MARGIN = 60;
 
     public Header()
@@ -23,7 +23,7 @@ public abstract class Header
         profileBtn = new Button("⚙");
         homeBtn = new Button("Hjem");
         bookingsBtn = new Button("Reservationer");
-        mySpacesBtn = new Button("Mine pladser");
+        myPlotBtn = new Button("Mine pladser");
 
         // Sets default button sizes
         final int WIDTH = 150;
@@ -43,11 +43,11 @@ public abstract class Header
         bookingsBtn.setLayoutY(Y_LAYOUT);
         bookingsBtn.setPrefSize(WIDTH, HEIGHT);
 
-        AnchorPane.setLeftAnchor(mySpacesBtn, AnchorPane.getLeftAnchor(bookingsBtn) + GAP);
-        mySpacesBtn.setLayoutY(Y_LAYOUT);
-        mySpacesBtn.setPrefSize(WIDTH, HEIGHT);
+        AnchorPane.setLeftAnchor(myPlotBtn, AnchorPane.getLeftAnchor(bookingsBtn) + GAP);
+        myPlotBtn.setLayoutY(Y_LAYOUT);
+        myPlotBtn.setPrefSize(WIDTH, HEIGHT);
 
-        ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, mySpacesBtn);
+        ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);
     }
 
     //region getter/setter

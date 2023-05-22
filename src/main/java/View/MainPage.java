@@ -3,6 +3,7 @@ package View;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 
@@ -29,11 +30,10 @@ public class MainPage extends Header
         tilePane.prefWidthProperty().bind(scrollPane.prefWidthProperty());
         scrollPane.setContent(tilePane);
 
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"), "Test"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 2"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 3"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 4"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\Users\\45302\\OneDrive\\Billeder\\IMG_0107.jpg"),"test 5"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
+        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
         AnchorPane.setTopAnchor(scrollPane, this.getYMargin());
         this.ANCHOR_PANE.getChildren().add(scrollPane);
     }
