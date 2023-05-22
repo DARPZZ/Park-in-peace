@@ -30,10 +30,7 @@ public class MainPage extends Header
         tilePane.prefWidthProperty().bind(scrollPane.prefWidthProperty());
         scrollPane.setContent(tilePane);
 
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
-        tilePane.getChildren().add(new Thumbnail(new Image("C:\\tmp\\cat2.jpg"), "test"));
+
         AnchorPane.setTopAnchor(scrollPane, this.getYMargin());
         this.ANCHOR_PANE.getChildren().add(scrollPane);
     }
