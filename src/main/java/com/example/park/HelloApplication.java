@@ -1,8 +1,10 @@
 package com.example.park;
 
+import Model.DaoObject.Combine;
 import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.DaoObject.tblPlot;
+import Model.Implements.DaoCombine;
 import Model.Implements.DaoPlot;
 import Model.Implements.DaoResevations;
 import Model.Implements.DaoUser;
@@ -46,8 +48,17 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
+        Model.Implements.DaoCombine daoCombine = new DaoCombine();
+        List<Combine> combineList = daoCombine.GetAll();
 
-        Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        boolean validCredentials = false;
+        for (Combine com : combineList) {
+            System.out.println(com.getDescription());
+            System.out.println(com.getLocation());
+            System.out.println(com.getEndDate());
+        }
+
+            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
