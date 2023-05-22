@@ -1,6 +1,8 @@
-package Model.DaoObjects;
+package Model.DaoObject;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class User
@@ -14,18 +16,30 @@ public class User
     private StringProperty email;
     private IntegerProperty zipCode;
     private IntegerProperty blackListId;
+    public User() {}
 
-    public User(IntegerProperty userId, StringProperty name, StringProperty phoneNumber, StringProperty password, StringProperty address, IntegerProperty acounterNumber, StringProperty email, IntegerProperty zipCode, IntegerProperty blackListId)
+    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
     {
-        this.userId = userId;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        Password = password;
-        this.address = address;
-        this.acounterNumber = acounterNumber;
-        this.email = email;
-        this.zipCode = zipCode;
-        this.blackListId = blackListId;
+        this.name = new SimpleStringProperty(name);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        Password = new SimpleStringProperty(password);
+        this.address = new SimpleStringProperty(address);
+        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
+        this.email = new SimpleStringProperty(email);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.blackListId = new SimpleIntegerProperty(blackListId);
+    }
+    public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
+    {
+        this.userId = new SimpleIntegerProperty(userId);
+        this.name = new SimpleStringProperty(name);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        Password = new SimpleStringProperty(password);
+        this.address = new SimpleStringProperty(address);
+        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
+        this.email = new SimpleStringProperty(email);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.blackListId = new SimpleIntegerProperty(blackListId);
     }
 
     public int getUserId()
