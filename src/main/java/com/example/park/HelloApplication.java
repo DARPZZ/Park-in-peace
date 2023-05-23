@@ -49,7 +49,6 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
-
             Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
@@ -83,7 +82,7 @@ public class HelloApplication extends Application
         toggleButton.setLayoutY(50);
         toggleButton.setLayoutX(600);
         toggleButton.setPrefWidth(150);
-        toggleButton.setText("Login");
+        toggleButton.setText("Create User");
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
@@ -96,7 +95,6 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to login:");
                 login.createUser(anchorPane,loginButton);
                 loginButton.setText("create a new user");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
             } else {
                 toggleButton.setText("Login");
@@ -104,8 +102,9 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to create a new user:");
                 login.loginScene(anchorPane,loginButton);
                 loginButton.setText("login");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+
             }
+            anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
         });
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
