@@ -22,8 +22,8 @@ public class Thumbnail extends VBox
     {
         this.setAlignment(Pos.CENTER);
         this.setSpacing(10);
-        imageView.setFitWidth(262);
-        imageView.setFitHeight(200);
+        imageView.setFitWidth(205);
+        imageView.setFitHeight(150);
         imageView.setStyle("-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: black;");
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16");
         this.getChildren().addAll(imageView, titleLabel);

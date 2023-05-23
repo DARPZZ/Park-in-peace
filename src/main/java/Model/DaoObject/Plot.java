@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 
 public class Plot
 {
@@ -14,14 +14,26 @@ public class Plot
     private StringProperty plotSize;
     private IntegerProperty zipCode;
 
+
     private StringProperty currentSeason;
     private IntegerProperty lowPrice;
     private IntegerProperty midPrice;
     private IntegerProperty highPrice;
 
+    private Image image;
     private boolean toilet;
     private boolean water;
     private boolean electric;
+
+    public Plot(int plotID, String location, String description, String imgPath, String plotSize, int zipCode)
+    {
+        this.plotID = new SimpleIntegerProperty(plotID) ;
+        this.location =new SimpleStringProperty( location);
+        this.description =new SimpleStringProperty( description);
+        this.image = new Image(imgPath);
+        this.plotSize =new SimpleStringProperty( plotSize);
+        this.zipCode =new SimpleIntegerProperty( zipCode);
+    }
 
     public Plot(int plotID, String location, String description, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
     {
@@ -82,6 +94,16 @@ public class Plot
     public void setDescription(String description)
     {
         this.description.set(description);
+    }
+
+    public Image getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Image image)
+    {
+        this.image = image;
     }
 
     public String getPlotSize()

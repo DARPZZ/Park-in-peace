@@ -100,8 +100,6 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
         return null;
     }
 
-
-
     public List<User> GetAll() {
         List<User> userList = new ArrayList<>();
         try (Connection conn = con;
@@ -127,6 +125,5 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
         }
         return userList;
     }
-
 }
 

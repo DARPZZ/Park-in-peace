@@ -1,25 +1,18 @@
 package com.example.park;
 
-import Model.DaoObject.Resevations;
 import Model.Implements.DaoResevations;
-import Model.Implements.DaoUser;
+import View.Advertisement;
 import View.MainPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class HelloApplication extends Application
 {
@@ -29,20 +22,18 @@ public class HelloApplication extends Application
     private final int WIDTH = 1280;
     private static Stage primaryStageHolder = null;
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
-
-    private static HashMap<SceneName, Scene> sceneMap = new HashMap<>();
     Login login = new Login();
     @Override
     public void start(Stage stage) throws IOException
     {
-
-        Model.Implements.DaoResevations daoResevations = new DaoResevations();
+        DaoResevations daoResevations = new DaoResevations();
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
+        SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
         AnchorPane anchorPane = new AnchorPane();
-
-        Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        Scene scene = new MainPage().SCENE;
         createScene(anchorPane);
 
 
@@ -99,7 +90,5 @@ public class HelloApplication extends Application
             }
         });
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
-
     }
-
 }
