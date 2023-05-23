@@ -78,8 +78,8 @@ public class Bookings extends Header implements UserSubscriber
     @Override
     public void onUserReceived(User user)
     {
-        System.out.println(user.getName()+ "ko");
-
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
     }
 }
 

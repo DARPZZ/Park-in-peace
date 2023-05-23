@@ -60,7 +60,7 @@ User user = new User();
             @Override
             public void handle(ActionEvent event)
             {
-                setLoginName(name.getText());
+
                 insertInformation();
             }
         });
@@ -113,7 +113,8 @@ User user = new User();
         {
             return false;
         }else {
-            userPublisher.notifySubscribers(user);
+
+
             HelloApplication.changeScene(SceneName.Main);
             return true;
 
@@ -140,11 +141,12 @@ User user = new User();
                 boolean validCredentials = false;
                 for (User user : userList) {
                     if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
+                        userPublisher.notifySubscribers(user);
                         validCredentials = true;
                         break;
                     }
                 }
-                System.out.println(getLoginName());
+
 
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
@@ -156,6 +158,7 @@ User user = new User();
         });
         anchorPane.getChildren().addAll(name,password);
     }
+    private UserPublisher userPublisher;
 
     @Override
     public void subscribe(UserSubscriber subscriber)
@@ -177,7 +180,7 @@ User user = new User();
             subscriber.onUserReceived(user);
         }
     }
-    private UserPublisher userPublisher;
+
 
     public void setUserPublisher(UserPublisher userPublisher) {
         this.userPublisher = userPublisher;

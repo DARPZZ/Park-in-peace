@@ -16,7 +16,9 @@ public class User
     private StringProperty email;
     private IntegerProperty zipCode;
     private IntegerProperty blackListId;
-    public User() {}
+    public User() {
+
+    }
 
     public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
     {
