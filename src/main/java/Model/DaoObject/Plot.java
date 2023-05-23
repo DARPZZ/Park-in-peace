@@ -22,9 +22,9 @@ public class Plot
     private boolean water;
     private boolean electric;
 
-    public Plot(int plotID, String location, String description, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
+    public Plot(String location, String description, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
     {
-        this.plotID = new SimpleIntegerProperty(plotID) ;
+        //this.plotID = new SimpleIntegerProperty(plotID) ;
         this.location =new SimpleStringProperty( location);
         this.description =new SimpleStringProperty( description);
         this.plotSize =new SimpleStringProperty( plotSize);
