@@ -9,10 +9,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-public class Login
+public class Login implements UserPublisher
 {
+    private List<UserSubscriber> subscribers = new ArrayList<>();
     public String getLoginName()
     {
         return loginName;
@@ -22,7 +24,7 @@ public class Login
     {
         this.loginName = loginName;
     }
-
+User user = new User();
     private String loginName = "";
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
@@ -58,7 +60,7 @@ public class Login
             @Override
             public void handle(ActionEvent event)
             {
-                setLoginName(name.getText());
+
                 insertInformation();
             }
         });
@@ -69,8 +71,9 @@ public class Login
     {
         Model.Implements.DaoUser daoUser = new DaoUser();
             if (validateUser()) {
-                User user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
+                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
+                userPublisher.notifySubscribers(user);
             }
     }
 
@@ -110,6 +113,8 @@ public class Login
         {
             return false;
         }else {
+
+
             HelloApplication.changeScene(SceneName.Main);
             return true;
 
@@ -136,11 +141,12 @@ public class Login
                 boolean validCredentials = false;
                 for (User user : userList) {
                     if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
+                        userPublisher.notifySubscribers(user);
                         validCredentials = true;
                         break;
                     }
                 }
-                System.out.println(getLoginName());
+
 
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
@@ -152,15 +158,31 @@ public class Login
         });
         anchorPane.getChildren().addAll(name,password);
     }
-    public User createUserObject() {
-        String nameValue = name.getText();
-        String phoneNumberValue = PhoneNumber.getText();
-        String passwordValue = password.getText();
-        String addressValue = adress.getText();
-        String emailValue = email.getText();
-        String zipCodeValue = zipCode.getText();
-        User user = new User(nameValue, phoneNumberValue, passwordValue, addressValue, 0, emailValue, Integer.parseInt(zipCodeValue), 1);
+    private UserPublisher userPublisher;
 
-        return user;
+    @Override
+    public void subscribe(UserSubscriber subscriber)
+    {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void unsubscribe(UserSubscriber subscriber)
+    {
+        subscribers.remove(subscriber);
+
+    }
+
+    @Override
+    public void notifySubscribers(User user)
+    {
+        for (UserSubscriber subscriber : subscribers) {
+            subscriber.onUserReceived(user);
+        }
+    }
+
+
+    public void setUserPublisher(UserPublisher userPublisher) {
+        this.userPublisher = userPublisher;
     }
 }
