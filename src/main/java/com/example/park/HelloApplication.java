@@ -1,6 +1,11 @@
 package com.example.park;
 
+import Model.DaoObject.Combine;
 import Model.DaoObject.Resevations;
+import Model.DaoObject.User;
+import Model.DaoObject.tblPlot;
+import Model.Implements.DaoCombine;
+import Model.Implements.DaoPlot;
 import Model.Implements.DaoResevations;
 import Model.Implements.DaoUser;
 import View.Bookings;
@@ -25,7 +30,8 @@ import java.util.List;
 
 public class HelloApplication extends Application
 {
-
+    Login login = new Login();
+    Bookings bookings = new Bookings();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -34,12 +40,11 @@ public class HelloApplication extends Application
     public static final HashMap plotMap = new HashMap<>(); // Key plotID, value: plot object
 
 
-    Login login = new Login();
     @Override
     public void start(Stage stage) throws IOException
     {
-
-        Model.Implements.DaoResevations daoResevations = new DaoResevations();
+        login.setUserPublisher(login); // Giveren
+     login.subscribe(bookings); //tager
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
@@ -47,7 +52,7 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
-        Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
@@ -80,7 +85,7 @@ public class HelloApplication extends Application
         toggleButton.setLayoutY(50);
         toggleButton.setLayoutX(600);
         toggleButton.setPrefWidth(150);
-        toggleButton.setText("Login");
+        toggleButton.setText("Create User");
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
@@ -93,7 +98,6 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to login:");
                 login.createUser(anchorPane,loginButton);
                 loginButton.setText("create a new user");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
             } else {
                 toggleButton.setText("Login");
@@ -101,8 +105,9 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to create a new user:");
                 login.loginScene(anchorPane,loginButton);
                 loginButton.setText("login");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+
             }
+            anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
         });
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 

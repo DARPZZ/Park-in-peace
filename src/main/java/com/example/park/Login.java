@@ -9,10 +9,23 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-public class Login
+public class Login implements UserPublisher
 {
+    private List<UserSubscriber> subscribers = new ArrayList<>();
+    public String getLoginName()
+    {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName)
+    {
+        this.loginName = loginName;
+    }
+User user = new User();
+    private String loginName = "";
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
     TextField password = new TextField();
@@ -23,7 +36,6 @@ public class Login
 
     public void createUser(AnchorPane anchorPane, Button loginButton)
     {
-
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -48,6 +60,7 @@ public class Login
             @Override
             public void handle(ActionEvent event)
             {
+
                 insertInformation();
             }
         });
@@ -58,8 +71,9 @@ public class Login
     {
         Model.Implements.DaoUser daoUser = new DaoUser();
             if (validateUser()) {
-                User user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
+                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
+                userPublisher.notifySubscribers(user);
             }
     }
 
@@ -99,6 +113,8 @@ public class Login
         {
             return false;
         }else {
+
+
             HelloApplication.changeScene(SceneName.Main);
             return true;
 
@@ -118,16 +134,19 @@ public class Login
             {
                 String kodeord = password.getText();
                 String username = name.getText();
+                setLoginName(username);
                 Model.Implements.DaoUser daoUser = new DaoUser();
                 List<User> userList = daoUser.GetAll();
 
                 boolean validCredentials = false;
                 for (User user : userList) {
                     if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
+                        userPublisher.notifySubscribers(user);
                         validCredentials = true;
                         break;
                     }
                 }
+
 
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
@@ -138,5 +157,32 @@ public class Login
             }
         });
         anchorPane.getChildren().addAll(name,password);
+    }
+    private UserPublisher userPublisher;
+
+    @Override
+    public void subscribe(UserSubscriber subscriber)
+    {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void unsubscribe(UserSubscriber subscriber)
+    {
+        subscribers.remove(subscriber);
+
+    }
+
+    @Override
+    public void notifySubscribers(User user)
+    {
+        for (UserSubscriber subscriber : subscribers) {
+            subscriber.onUserReceived(user);
+        }
+    }
+
+
+    public void setUserPublisher(UserPublisher userPublisher) {
+        this.userPublisher = userPublisher;
     }
 }
