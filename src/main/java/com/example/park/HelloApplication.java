@@ -48,15 +48,7 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
-        Model.Implements.DaoCombine daoCombine = new DaoCombine();
-        List<Combine> combineList = daoCombine.GetAll();
 
-        boolean validCredentials = false;
-        for (Combine com : combineList) {
-            System.out.println(com.getDescription());
-            System.out.println(com.getLocation());
-            System.out.println(com.getEndDate());
-        }
 
             Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);

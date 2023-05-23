@@ -30,7 +30,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
     @Override
     public void Update(Combine combine, String fieldname, String value)
     {
-
+        
     }
 
     @Override
