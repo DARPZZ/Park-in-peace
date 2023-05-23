@@ -30,7 +30,8 @@ import java.util.List;
 
 public class HelloApplication extends Application
 {
-
+    Login login = new Login();
+    Bookings bookings = new Bookings();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -38,10 +39,11 @@ public class HelloApplication extends Application
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
 
 
-    Login login = new Login();
     @Override
     public void start(Stage stage) throws IOException
     {
+        login.setUserPublisher(login); // Set Login class as the publisher
+     login.subscribe(bookings);
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);

@@ -9,10 +9,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-public class Login
+public class Login implements UserPublisher
 {
+    private List<UserSubscriber> subscribers = new ArrayList<>();
     public String getLoginName()
     {
         return loginName;
@@ -71,6 +73,7 @@ public class Login
             if (validateUser()) {
                 User user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
+                userPublisher.notifySubscribers(user);
             }
     }
 
@@ -162,5 +165,31 @@ public class Login
         User user = new User(nameValue, phoneNumberValue, passwordValue, addressValue, 0, emailValue, Integer.parseInt(zipCodeValue), 1);
 
         return user;
+    }
+
+    @Override
+    public void subscribe(UserSubscriber subscriber)
+    {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void unsubscribe(UserSubscriber subscriber)
+    {
+        subscribers.remove(subscriber);
+
+    }
+
+    @Override
+    public void notifySubscribers(User user)
+    {
+        for (UserSubscriber subscriber : subscribers) {
+            subscriber.onUserReceived(user);
+        }
+    }
+    private UserPublisher userPublisher;
+
+    public void setUserPublisher(UserPublisher userPublisher) {
+        this.userPublisher = userPublisher;
     }
 }

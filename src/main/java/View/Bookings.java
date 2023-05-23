@@ -6,6 +6,7 @@ import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
 import Model.Implements.DaoUser;
 import com.example.park.Login;
+import com.example.park.UserSubscriber;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Bookings extends Header
+public class Bookings extends Header implements UserSubscriber
 {
     TableView tableView = new TableView();
 
@@ -72,6 +73,12 @@ public class Bookings extends Header
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.setItems(data);
 
+    }
+
+    @Override
+    public void onUserReceived(User user)
+    {
+        System.out.println(user.getName()+ "ko");
     }
 }
 
