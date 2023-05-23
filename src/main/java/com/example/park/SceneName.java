@@ -4,7 +4,7 @@ public enum SceneName
 {
     Login,
     Main,
-    ProfileSettings,
+    ProfilePage,
     Bookings,
     PlotPage,
 }
