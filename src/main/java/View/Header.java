@@ -1,6 +1,9 @@
 package View;
 
-import javafx.geometry.Pos;
+import com.example.park.HelloApplication;
+import com.example.park.SceneName;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -62,6 +65,12 @@ public abstract class Header
         line.endXProperty().bind(SCENE.widthProperty().subtract(15));
 
         ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn, line, USER_LABEL);
+        bookingsBtn.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.Bookings);
+        });
+        myPlotBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.PlotPage));
+
+        ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);
     }
 
     //region getter/setter

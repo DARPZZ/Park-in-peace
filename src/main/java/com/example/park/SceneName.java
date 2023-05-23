@@ -5,5 +5,7 @@ public enum SceneName
     Login,
     Main,
     ProfileSettings,
+    Bookings,
+    PlotPage,
     Advertisement,
 }

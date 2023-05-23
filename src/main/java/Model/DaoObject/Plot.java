@@ -45,7 +45,6 @@ public class Plot
         this.lowPrice = new SimpleIntegerProperty(low);
         this.midPrice = new SimpleIntegerProperty(mid);
         this.highPrice =new SimpleIntegerProperty(high);
-
         this.toilet = toilet;
         this.water  = water;
         this.electric = electric;

@@ -1,8 +1,17 @@
 package com.example.park;
 
+import Model.DaoObject.Combine;
+import Model.DaoObject.Resevations;
+import Model.DaoObject.User;
+import Model.DaoObject.tblPlot;
+import Model.Implements.DaoCombine;
+import Model.Implements.DaoPlot;
 import Model.Implements.DaoResevations;
+import Model.Implements.DaoUser;
+import View.Bookings;
 import View.Advertisement;
 import View.MainPage;
+import View.PlotPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +31,8 @@ public class HelloApplication extends Application
     private final int WIDTH = 1280;
     private static Stage primaryStageHolder = null;
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
+
+
     Login login = new Login();
     @Override
     public void start(Stage stage) throws IOException
@@ -30,10 +41,14 @@ public class HelloApplication extends Application
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
+        SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
+        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         Scene scene = new MainPage().SCENE;
+
+            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
@@ -46,7 +61,8 @@ public class HelloApplication extends Application
     {
         launch();
     }
-
+    public static Stage getStage()
+    {return primaryStageHolder;}
     public static void changeScene(SceneName sceneName)
     {
         if (SCENE_MAP.containsKey(sceneName))
@@ -65,7 +81,7 @@ public class HelloApplication extends Application
         toggleButton.setLayoutY(50);
         toggleButton.setLayoutX(600);
         toggleButton.setPrefWidth(150);
-        toggleButton.setText("Login");
+        toggleButton.setText("Create User");
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
@@ -78,7 +94,6 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to login:");
                 login.createUser(anchorPane,loginButton);
                 loginButton.setText("create a new user");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
             } else {
                 toggleButton.setText("Login");
@@ -86,9 +101,12 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to create a new user:");
                 login.loginScene(anchorPane,loginButton);
                 loginButton.setText("login");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+
             }
+            anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
         });
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+
     }
+
 }
