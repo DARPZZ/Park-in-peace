@@ -21,6 +21,13 @@ public class Combine
     private float highSeasonPrice;
 
 
+    public Combine(String location, int zipCode, Date startDate, Date endDate)
+    {
+        this.location = location;
+        this.zipCode = zipCode;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public Combine(int plotID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
