@@ -31,6 +31,7 @@ public class HelloApplication extends Application
     private final int WIDTH = 1280;
     private static Stage primaryStageHolder = null;
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
+    public static final HashMap plotMap = new HashMap<>(); // Key plotID, value: plot object
 
 
     Login login = new Login();

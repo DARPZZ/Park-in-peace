@@ -14,7 +14,6 @@ public class Plot
     private StringProperty plotSize;
     private IntegerProperty zipCode;
 
-    private StringProperty currentSeason;
     private IntegerProperty lowPrice;
     private IntegerProperty midPrice;
     private IntegerProperty highPrice;
@@ -111,18 +110,6 @@ public class Plot
     public void setZipCode(int zipCode)
     {
         this.zipCode.set(zipCode);
-    }
-
-    public String getCurrentSeason() {
-        return currentSeason.get();
-    }
-
-    public StringProperty currentSeasonProperty() {
-        return currentSeason;
-    }
-
-    public void setCurrentSeason(String currentSeason) {
-        this.currentSeason.set(currentSeason);
     }
 
     public int getLowPrice() {
