@@ -42,8 +42,8 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        login.setUserPublisher(login); // Set Login class as the publisher
-     login.subscribe(bookings);
+        login.setUserPublisher(login); // Giveren
+     login.subscribe(bookings); //tager
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);

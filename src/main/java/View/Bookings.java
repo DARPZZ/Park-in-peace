@@ -79,6 +79,7 @@ public class Bookings extends Header implements UserSubscriber
     public void onUserReceived(User user)
     {
         System.out.println(user.getName()+ "ko");
+
     }
 }
 

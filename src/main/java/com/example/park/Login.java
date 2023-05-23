@@ -24,7 +24,7 @@ public class Login implements UserPublisher
     {
         this.loginName = loginName;
     }
-
+User user = new User();
     private String loginName = "";
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
@@ -71,7 +71,7 @@ public class Login implements UserPublisher
     {
         Model.Implements.DaoUser daoUser = new DaoUser();
             if (validateUser()) {
-                User user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
+                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
                 userPublisher.notifySubscribers(user);
             }
@@ -113,6 +113,7 @@ public class Login implements UserPublisher
         {
             return false;
         }else {
+            userPublisher.notifySubscribers(user);
             HelloApplication.changeScene(SceneName.Main);
             return true;
 
@@ -154,17 +155,6 @@ public class Login implements UserPublisher
             }
         });
         anchorPane.getChildren().addAll(name,password);
-    }
-    public User createUserObject() {
-        String nameValue = name.getText();
-        String phoneNumberValue = PhoneNumber.getText();
-        String passwordValue = password.getText();
-        String addressValue = adress.getText();
-        String emailValue = email.getText();
-        String zipCodeValue = zipCode.getText();
-        User user = new User(nameValue, phoneNumberValue, passwordValue, addressValue, 0, emailValue, Integer.parseInt(zipCodeValue), 1);
-
-        return user;
     }
 
     @Override
