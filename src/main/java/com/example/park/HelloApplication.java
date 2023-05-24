@@ -1,13 +1,6 @@
 package com.example.park;
 
-import Model.DaoObject.Combine;
-import Model.DaoObject.Resevations;
-import Model.DaoObject.User;
-import Model.DaoObject.tblPlot;
-import Model.Implements.DaoCombine;
-import Model.Implements.DaoPlot;
 import Model.Implements.DaoResevations;
-import Model.Implements.DaoUser;
 import View.Bookings;
 import View.Advertisement;
 import View.MainPage;
@@ -46,11 +39,9 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-        Scene scene = new MainPage().SCENE;
+        Scene scene = new Advertisement().SCENE;
 
-            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
-
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
@@ -61,6 +52,7 @@ public class HelloApplication extends Application
     {
         launch();
     }
+
     public static Stage getStage()
     {return primaryStageHolder;}
     public static void changeScene(SceneName sceneName)
