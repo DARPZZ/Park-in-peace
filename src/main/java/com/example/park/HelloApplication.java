@@ -39,6 +39,7 @@ public class HelloApplication extends Application
     private static final HashMap<SceneName, Scene> SCENE_MAP = new HashMap<>();
 
 
+
     @Override
     public void start(Stage stage) throws IOException
     {

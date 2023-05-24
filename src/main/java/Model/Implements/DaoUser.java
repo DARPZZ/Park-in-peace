@@ -9,16 +9,6 @@ import java.util.List;
 
 public class DaoUser extends Model.Implements.Connection implements DaoInterface<User>
 {
-    /*
-    private static String userName = "sa";
-    private static String password = "123456";
-    private static String databaseName = "dbParkInPeace";
-    private static String Port = "1433";
-    private static Connection con;
-    private CallableStatement callableStatement;
-
-     */
-
     public DaoUser()
     {
         try {
