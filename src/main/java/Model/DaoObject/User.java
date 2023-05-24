@@ -20,7 +20,7 @@ public class User
 
     }
 
-    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
+    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode )
     {
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
@@ -29,10 +29,8 @@ public class User
         this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
-        
-        this.blackListId = new SimpleIntegerProperty(blackListId);
     }
-    public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
+    public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode)
     {
         this.userId = new SimpleIntegerProperty(userId);
         this.name = new SimpleStringProperty(name);
@@ -42,7 +40,7 @@ public class User
         this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
-        this.blackListId = new SimpleIntegerProperty(blackListId);
+
     }
 
     public int getUserId()

@@ -80,8 +80,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getString("fldAddress"),
                         rs.getInt("fldAcountNumber"),
                         rs.getString("fldEmail"),
-                        rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID"));
+                        rs.getInt("fldZipcode"));
                 return user;
             }
         }catch (Exception e) {
@@ -109,8 +108,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getString("fldAddress"),
                         rs.getInt("fldAcountNumber"),
                         rs.getString("fldEmail"),
-                        rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID")));
+                        rs.getInt("fldZipcode")));
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
