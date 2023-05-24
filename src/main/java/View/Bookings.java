@@ -25,7 +25,7 @@ public class Bookings extends Header implements UserSubscriber {
     List<Combine> combineList;
 
     public Bookings() {
-        currentUserID = 0; // Initialize with default value
+        currentUserID = 0;
         combineList = daoCombine.GetAll();
         tableView.setLayoutX(200);
         tableView.setLayoutY(200);
@@ -51,16 +51,16 @@ public class Bookings extends Header implements UserSubscriber {
             System.out.println("currentUserID: " + currentUserID);
             System.out.println("com.getUserID(): " + com.getUserID());
             if (currentUserID == com.getUserID()) {
-                System.out.println("INDE");
+
                 combineDataList.add(combine);
             }
         }
-        // Move this line here
+
       createTable();
     }
     public void createTable()
     {
-        System.out.println(combineDataList.size() + " create");
+
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
 
@@ -76,12 +76,6 @@ public class Bookings extends Header implements UserSubscriber {
         tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
-        tableView.setItems(data);
-        System.out.println(data.size() + " data size");
-        System.out.println(data.isEmpty() + " is data empty");
-
-        System.out.println(tableView.getItems().size() + " table view items size");
-        System.out.println(tableView.getItems().isEmpty() + " is table view items empty");
 
         tableView.setItems(data);
     }
@@ -91,8 +85,6 @@ public class Bookings extends Header implements UserSubscriber {
     @Override
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
-        System.out.println(user.getName() + " name");
-        System.out.println(currentUserID + " should work");
         getData();
     }
 
