@@ -37,7 +37,7 @@ public class Bookings extends Header implements UserSubscriber
     public Bookings()
     {
         currentUserID = 0;
-        //combineList = daoCombine.GetAll();
+        combineList = daoCombine.GetAll();
         plotOwnerList = daoOwner.GetAll();
         tableView.setLayoutX(50);
         tableView.setLayoutY(200);
@@ -130,7 +130,7 @@ public class Bookings extends Header implements UserSubscriber
     {
         currentUserID = user.getUserId();
         getData2();
-        //getData();
+        getData();
 
     }
     public void createTable2()

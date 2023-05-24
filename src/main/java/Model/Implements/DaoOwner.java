@@ -47,8 +47,8 @@ public class DaoOwner extends Connection implements DaoInterface<PlotOwner>
     public List<PlotOwner> GetAll()
     {
         List<PlotOwner> plotOwnerList = new ArrayList<>();
-        try (java.sql.Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call getOwner()}")) {
+        try (
+             CallableStatement stmt =con.prepareCall("{call getOwner()}")) {
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
