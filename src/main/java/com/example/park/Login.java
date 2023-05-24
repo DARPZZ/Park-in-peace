@@ -3,9 +3,7 @@ import Model.DaoObject.User;
 import Model.Implements.DaoUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -24,7 +22,7 @@ public class Login implements UserPublisher
     {
         this.loginName = loginName;
     }
-User user = new User();
+    User user = new User();
     private String loginName = "";
     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
@@ -34,7 +32,7 @@ User user = new User();
     TextField zipCode = new TextField();
     private final int LAYOUT_x = 600;
 
-    public void createUser(AnchorPane anchorPane, Button loginButton)
+    public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
@@ -60,8 +58,13 @@ User user = new User();
             @Override
             public void handle(ActionEvent event)
             {
-
                 insertInformation();
+                toggleButton.setText("Login");
+                anchorPane.getChildren().clear();
+                toggleLabel.setText("Press here to create a new user:");
+                loginScene(anchorPane,loginButton);
+                loginButton.setText("login");
+                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
             }
         });
         anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode);
@@ -73,7 +76,7 @@ User user = new User();
             if (validateUser()) {
                  user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
                 daoUser.Create(user);
-                userPublisher.notifySubscribers(user);
+                //userPublisher.notifySubscribers(user);
             }
     }
 
@@ -113,9 +116,6 @@ User user = new User();
         {
             return false;
         }else {
-
-
-            HelloApplication.changeScene(SceneName.Main);
             return true;
 
         }
@@ -146,7 +146,6 @@ User user = new User();
                         break;
                     }
                 }
-
 
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
