@@ -4,14 +4,11 @@ import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.DaoObject.tblPlot;
 
-import java.sql.CallableStatement;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoPlot extends Connection implements DaoInterface<tblPlot>
+public class DaoPlot extends Connection implements DaoInterface<Plot>
 {
     public DaoPlot()
     {
@@ -22,19 +19,19 @@ public class DaoPlot extends Connection implements DaoInterface<tblPlot>
         }
     }
     @Override
-    public void Create(tblPlot tblPlot)
+    public void Create(Plot tblPlot)
     {
 
     }
 
     @Override
-    public void Update(tblPlot tblPlot, String fieldname, String value)
+    public void Update(Plot tblPlot, String fieldname, String value)
     {
 
     }
 
     @Override
-    public void Delete(tblPlot tblPlot, int ID)
+    public void Delete(Plot tblPlot, int ID)
     {
         try {
             java.sql.Connection conn = con;
@@ -47,21 +44,36 @@ public class DaoPlot extends Connection implements DaoInterface<tblPlot>
     }
 
     @Override
-    public tblPlot Get(int ID)
+    public Plot Get(int ID)
     {
         try {
             java.sql.Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call getPlot(?)}");
             stmt.setInt(1, ID);
             ResultSet rs = stmt.executeQuery();
+            CallableStatement servicesPrice = conn.prepareCall("{call getPlotPricingServices(?)}");
+            ResultSet servicesPriceRS = servicesPrice.executeQuery();
+            servicesPriceRS.next();
+            boolean[] services = new boolean[3];
+            for (int i = 0; i <3 ; i++)
+            {
+                services[i] = servicesPriceRS.getBoolean(i);
+            }
+            float[] prices = new float[3];
+            for (int i = 0; i <3 ; i++)
+            {
+                prices[i+3] = servicesPriceRS.getFloat(i);
+            }
             if (rs.next()) {
-                tblPlot tblPlot = new tblPlot( rs.getInt("fldPlotID"),
+                Plot plot = new Plot( rs.getInt("fldPlotID"),
                         rs.getString("fldLocation"),
                         rs.getString("fldDescription"),
                         rs.getString("fldImage"),
                         rs.getInt("fldPlotSizeID"),
-                        rs.getInt("fldZipcode"));
-                return tblPlot;
+                        rs.getInt("fldZipcode"),
+                        services[0],services[1],services[2],
+                        prices[0],prices[1],prices[2]);
+                return plot;
             }
         }catch (Exception e) {
 

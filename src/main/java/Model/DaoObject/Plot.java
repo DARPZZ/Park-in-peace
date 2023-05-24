@@ -11,6 +11,7 @@ public class Plot
     private IntegerProperty plotID;
     private StringProperty location;
     private StringProperty description;
+    private String imagePath;
     private StringProperty plotSize;
     private IntegerProperty zipCode;
 
@@ -22,11 +23,11 @@ public class Plot
     private boolean water;
     private boolean electric;
 
-    public Plot(String location, String description, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
+    public Plot(String location, String description,String img, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
     {
-        //this.plotID = new SimpleIntegerProperty(plotID) ;
         this.location =new SimpleStringProperty( location);
         this.description =new SimpleStringProperty( description);
+        this.imagePath = img;
         this.plotSize =new SimpleStringProperty( plotSize);
         this.zipCode =new SimpleIntegerProperty( zipCode);
         this.lowPrice = new SimpleIntegerProperty(low);
@@ -34,6 +35,20 @@ public class Plot
         this.highPrice =new SimpleIntegerProperty(high);
         this.toilet = toilet;
         this.water  = water;
+        this.electric = electric;
+    }
+    public Plot(int plotID,String location, String description,String img, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric) {
+        this.plotID = new SimpleIntegerProperty(plotID);
+        this.location = new SimpleStringProperty(location);
+        this.description = new SimpleStringProperty(description);
+        this.imagePath = img;
+        this.plotSize = new SimpleStringProperty(plotSize);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.lowPrice = new SimpleIntegerProperty(low);
+        this.midPrice = new SimpleIntegerProperty(mid);
+        this.highPrice = new SimpleIntegerProperty(high);
+        this.toilet = toilet;
+        this.water = water;
         this.electric = electric;
     }
 
@@ -170,5 +185,13 @@ public class Plot
 
     public void setElectric(boolean electric) {
         this.electric = electric;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

@@ -69,20 +69,29 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public User Get(int ID)
     {
         try {Connection conn = con;
+            ArrayList<Integer> blacklist = new ArrayList<>();
             CallableStatement stmt = conn.prepareCall("{call getUser(?)}");
             stmt.setInt(1, ID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-           User user = new User(rs.getInt("fldUserID"),
-                        rs.getString("fldName"),
-                        rs.getString("fldPhoneNumber"),
-                        rs.getString("fldPassword"),
-                        rs.getString("fldAddress"),
-                        rs.getInt("fldAcountNumber"),
-                        rs.getString("fldEmail"),
-                        rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID"));
-                        
+            ResultSet resultSetUser = stmt.executeQuery();
+            CallableStatement csBlacklist = conn.prepareCall(" {call getBlacklist(?)}");
+            csBlacklist.setInt(1,ID);
+            ResultSet blackListResult = csBlacklist.executeQuery();
+            while (blackListResult.next())
+            {
+                blacklist.add(blackListResult.getInt("fldBlackList"));
+            }
+
+            if (resultSetUser.next()) {
+           User user = new User(resultSetUser.getInt("fldUserID"),
+                        resultSetUser.getString("fldName"),
+                        resultSetUser.getString("fldPhoneNumber"),
+                        resultSetUser.getString("fldPassword"),
+                        resultSetUser.getString("fldAddress"),
+                        resultSetUser.getInt("fldAcountNumber"),
+                        resultSetUser.getString("fldEmail"),
+                        resultSetUser.getInt("fldZipcode"),
+                        blacklist);
+
                 return user;
             }
         }catch (Exception e) {
@@ -100,6 +109,14 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
+            ArrayList<Integer> blacklist = new ArrayList<>();
+            CallableStatement csBlacklist = conn.prepareCall(" {call getAllBlackList()}");
+            ResultSet blackListResult = csBlacklist.executeQuery();
+            while (blackListResult.next())
+            {
+                blacklist.add(blackListResult.getInt("fldBlackList"));
+            }
+
 
             // Process the result set
             while (rs.next()) {
@@ -111,7 +128,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getInt("fldAcountNumber"),
                         rs.getString("fldEmail"),
                         rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID")));
+                        blacklist));
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
