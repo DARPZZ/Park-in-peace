@@ -1,3 +1,7 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
+-- noinspection SqlDialectInspectionForFile
+
 use dbParkInPeace
 /*
 GO
@@ -100,7 +104,7 @@ GO
 CREATE PROCEDURE getAllBlackList
 as
 begin
-select * from tblBlackList
+select fldBlackList from tblBlackList
 end
 
 
@@ -181,6 +185,15 @@ end
 
 
 
+CREATE PROCEDURE getPlotPricingServices (@plotID int)
+as
+begin
+select fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice FROM tblSeasonPlot JOIN
+tblSeason ON tblSeasonPlot.fldSeasonID = tblSeason.fldSeasonID WHERE tblSeasonPlot.fldPlotID = @plotID
+UNION
+SELECT fldToilet,fldWater,fldElectric FROM tblParkingService join
+tblService ON tblParkingService.fldServiceID = tblService.fldServiceID WHERE tblParkingService.fldPlotID =@plotID
+end
 
 GO
 CREATE PROCEDURE getAllSeasonPlot
