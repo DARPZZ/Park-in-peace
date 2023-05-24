@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Bookings extends Header implements UserSubscriber {
-
+    Label yourePlots = new Label();
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
@@ -27,7 +28,7 @@ public class Bookings extends Header implements UserSubscriber {
     public Bookings() {
         currentUserID = 0;
         combineList = daoCombine.GetAll();
-        tableView.setLayoutX(200);
+        tableView.setLayoutX(50);
         tableView.setLayoutY(200);
         setScene();
     }
@@ -39,24 +40,24 @@ public class Bookings extends Header implements UserSubscriber {
     }
 
     public void getData() {
+
         for (Combine com : combineList) {
             int userID = com.getUserID();
             String location = com.getLocation();
             int zipcode = com.getZipCode();
             Date startDate = com.getStartDate();
             Date endDate = com.getEndDate();
+            System.out.println(userID + "use");
+            System.out.println(location + " loc");
 
             Combine combine = new Combine(userID, location, zipcode, startDate, endDate);
 
-            System.out.println("currentUserID: " + currentUserID);
-            System.out.println("com.getUserID(): " + com.getUserID());
-            if (currentUserID == com.getUserID()) {
-
+            if (currentUserID == userID) { // Check for userID match
                 combineDataList.add(combine);
             }
         }
 
-      createTable();
+        createTable();
     }
     public void createTable()
     {
@@ -85,7 +86,9 @@ public class Bookings extends Header implements UserSubscriber {
     @Override
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
+
         getData();
+        System.out.println(currentUserID  + " reeeee");
     }
 
 }

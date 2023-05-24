@@ -50,7 +50,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
     {
         List<Combine> combineList = new ArrayList<>();
         try (java.sql.Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call [dbo].[combine]()}")) {
+             CallableStatement stmt = conn.prepareCall("{call combine()}")) {
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
@@ -58,7 +58,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
             // Process the result set
             while (rs.next()) {
                 combineList.add(new Combine(
-                        rs.getInt("flduserID"),
+                        rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),
                         rs.getString("fldLocation"),
                         rs.getString("fldDescription"),
@@ -77,9 +77,11 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
             }
         } catch (SQLException e) {
             System.out.println(e);
-           // Handle the exception appropriately
+            // Handle the exception appropriately
         }
         return combineList;
     }
 }
+
+
 
