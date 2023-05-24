@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -14,12 +15,24 @@ import static Model.Implements.Connection.*;
 public class ProfilePage extends Header{
     private static final int NUM_COLS = 2;
        public ProfilePage(){
-            
+
+            Image pp = new Image("C:\\Users\\jakob\\Desktop\\Dokumenter\\lola-color.png");
+
+            ImageView profilePic = new ImageView();
+            profilePic.setImage(pp);
+            profilePic.setX(100);
+            profilePic.setY(200);
+            profilePic.prefHeight(300);
+            profilePic.prefWidth(300);
+
 
             GridPane gridPane = new GridPane();
             gridPane.setPadding(new Insets(10));
             gridPane.setVgap(10);
             gridPane.setHgap(10);
+            gridPane.setLayoutX(500);
+            gridPane.setLayoutY(200);
+
 
             // Create the text fields
             TextField nameField = new TextField();
@@ -31,13 +44,13 @@ public class ProfilePage extends Header{
             TextField accountField = new TextField();
 
             // Add the text fields to the GridPane
-            gridPane.addRow(0, createLabel("Name"), nameField);
-            gridPane.addRow(1, createLabel("Address"), addressField);
-            gridPane.addRow(2, createLabel("Phone no."), phoneField);
+            gridPane.addRow(0, createLabel("Navn"), nameField);
+            gridPane.addRow(1, createLabel("Adresse"), addressField);
+            gridPane.addRow(2, createLabel("Telefon"), phoneField);
             gridPane.addRow(3, createLabel("Email"), emailField);
-            gridPane.addRow(4, createLabel("Company name"), companyField);
-            gridPane.addRow(5, createLabel("Bank name"), bankField);
-            gridPane.addRow(6, createLabel("Account no."), accountField);
+            gridPane.addRow(4, createLabel("Virksomhed"), companyField);
+            gridPane.addRow(5, createLabel("Bank"), bankField);
+            gridPane.addRow(6, createLabel("Konto nr."), accountField);
 
             // Configure the column constraints
             for (int i = 0; i < NUM_COLS; i++) {
@@ -50,7 +63,7 @@ public class ProfilePage extends Header{
 
             gridPane.add(saveButton, 0, 7, NUM_COLS, 1);
 
-
+            this.ANCHOR_PANE.getChildren().addAll(gridPane,profilePic);
     }
 
     private TextField createLabel(String labelText) {
@@ -59,51 +72,5 @@ public class ProfilePage extends Header{
         label.setStyle("-fx-opacity: 1;");
         return label;
     }
-/*
-    private void fetchUserInfoFromDatabase (
-            TextField nameField, TextField addressField, TextField phoneField,
-            TextField emailField, TextField companyField, TextField bankField,
-            TextField accountField) {
-
-        try {
-            // Create a database connection
-            Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
-
-            // Create a statement
-            Statement statement = connection.createStatement();
-
-            // Execute the query to fetch user information
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM userinfo");
-
-            // Check if there are any rows returned
-            if (resultSet.next()) {
-                // Retrieve the values from the result set
-                String name = resultSet.getString("name");
-                String address = resultSet.getString("address");
-                String phone = resultSet.getString("phone");
-                String email = resultSet.getString("email");
-                String company = resultSet.getString("company");
-                String bank = resultSet.getString("bank");
-                String account = resultSet.getString("account");
-
-                // Update the text fields with the retrieved values
-                nameField.setText(name);
-                addressField.setText(address);
-                phoneField.setText(phone);
-                emailField.setText(email);
-                companyField.setText(company);
-                bankField.setText(bank);
-                accountField.setText(account);
-            }
-
-            // Close the result set, statement, and connection
-            resultSet.close();
-            statement.close();
-            connection.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 
 }
