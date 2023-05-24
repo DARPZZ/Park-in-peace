@@ -1,5 +1,8 @@
 package View;
 
+import Model.DaoObject.User;
+import com.example.park.UserPublisher;
+import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,9 +13,20 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import java.sql.*;
+import java.util.ArrayList;
+
 import static Model.Implements.Connection.*;
 
-public class ProfilePage extends Header{
+public class ProfilePage extends Header implements UserSubscriber {
+
+    private ArrayList<TextField> textFields = new ArrayList<>();
+    private User loggedIn;
+
+    public void onUserReceived(User user){
+
+        loggedIn = user;
+    }
+
     private static final int NUM_COLS = 2;
        public ProfilePage(){
 
@@ -42,6 +56,12 @@ public class ProfilePage extends Header{
             TextField companyField = new TextField();
             TextField bankField = new TextField();
             TextField accountField = new TextField();
+            textFields.add(0, nameField);
+            textFields.add(1, addressField);
+            textFields.add(2, phoneField);
+            textFields.add(3, emailField);
+            textFields.add(4, accountField);
+
 
             // Add the text fields to the GridPane
             gridPane.addRow(0, createLabel("Navn"), nameField);
@@ -73,4 +93,12 @@ public class ProfilePage extends Header{
         return label;
     }
 
+    public void broadcast(){
+
+        textFields.get(0).setText(loggedIn.getName());
+        textFields.get(1).setText(loggedIn.getAddress());
+        textFields.get(2).setText(loggedIn.getPhoneNumber());
+        textFields.get(3).setText(loggedIn.getEmail());
+        textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));
+    }
 }
