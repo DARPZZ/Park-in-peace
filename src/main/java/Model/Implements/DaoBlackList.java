@@ -1,6 +1,6 @@
 package Model.Implements;
-/*
-import Model.DaoObject.BlackList;
+
+import Model.DaoObject.tblBlackList;
 import Model.DaoObject.User;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoBlackList implements DaoInterface<BlackList>
+public class DaoBlackList implements DaoInterface<tblBlackList>
 {
     private static String userName = "sa";
     private static String password = "123456";
@@ -27,32 +27,32 @@ public class DaoBlackList implements DaoInterface<BlackList>
 
 
     @Override
-    public void Create(BlackList blackList)
+    public void Create(tblBlackList blackList)
     {
 
     }
 
     @Override
-    public void Update(BlackList blackList, String fieldname, String value)
+    public void Update(tblBlackList blackList, String fieldname, String value)
     {
 
     }
 
     @Override
-    public void Delete(BlackList blackList, int ID)
+    public void Delete(tblBlackList blackList, int ID)
     {
 
     }
 
     @Override
-    public BlackList Get(int ID)
+    public tblBlackList Get(int ID)
     {
         try {Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call getUser(?)}");
             stmt.setInt(1, ID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                BlackList blackList = new BlackList(rs.getInt("fldBlackListID"),
+                tblBlackList blackList = new tblBlackList(rs.getInt("fldBlackListID"),
                         rs.getBoolean("fldBlackList"));
                 return blackList;
             }
@@ -63,9 +63,9 @@ public class DaoBlackList implements DaoInterface<BlackList>
     }
 
     @Override
-    public List<BlackList> GetAll()
+    public List<tblBlackList> GetAll()
     {
-        List<BlackList> blackLists = new ArrayList<>();
+        List<tblBlackList> blackLists = new ArrayList<>();
         try (Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call getAllBlackList()}")) {
 
@@ -74,7 +74,7 @@ public class DaoBlackList implements DaoInterface<BlackList>
 
             // Process the result set
             while (rs.next()) {
-                blackLists.add(new BlackList(rs.getInt("fldBlackListID"),
+                blackLists.add(new tblBlackList(rs.getInt("fldBlackListID"),
                         rs.getBoolean("fldBlackList")));
             }
         } catch (SQLException e) {
@@ -85,4 +85,4 @@ public class DaoBlackList implements DaoInterface<BlackList>
 
 }
 
- */
+

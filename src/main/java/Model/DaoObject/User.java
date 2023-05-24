@@ -29,6 +29,7 @@ public class User
         this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
+        
         this.blackListId = new SimpleIntegerProperty(blackListId);
     }
     public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)

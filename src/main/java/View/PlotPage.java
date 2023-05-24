@@ -17,8 +17,17 @@ import java.util.ArrayList;
 
 public class PlotPage extends Header
 {
+    ArrayList<TextField> textFieldList = new ArrayList<>();
+    ArrayList<Label> labelList = new ArrayList<>();
+    ArrayList<CheckBox> checkBoxes =new ArrayList<>();
+    String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
+    String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
 
     public  PlotPage()
+    {
+        createUI();
+    }
+    private void createUI()
     {
         Stage dialog = new Stage();
         dialog.initOwner(HelloApplication.getStage());
@@ -39,11 +48,7 @@ public class PlotPage extends Header
 
         });
         //endregion
-        ArrayList<TextField> textFieldList = new ArrayList<>();
-        ArrayList<Label> labelList = new ArrayList<>();
-        ArrayList<CheckBox> checkBoxes =new ArrayList<>();
-        String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
-        String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
+
 
         int formStartX = 10;
         int formStartY = 110;
@@ -126,10 +131,12 @@ public class PlotPage extends Header
                         Integer.parseInt(textFieldList.get(4).getText()),
                         Integer.parseInt(textFieldList.get(5).getText()),
                         Integer.parseInt(textFieldList.get(6).getText()),
-                        checkBoxes.get(0).isSelected(),checkBoxes.get(1).isSelected(),checkBoxes.get(2).isSelected());
+                        checkBoxes.get(0).isSelected(),
+                        checkBoxes.get(1).isSelected(),
+                        checkBoxes.get(2).isSelected());
                 //HelloApplication.plotMap.put(1,plotNew);
 
-               // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
+                // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
 
 
             }
@@ -141,15 +148,15 @@ public class PlotPage extends Header
             public void handle(ActionEvent event) {
                 backGround.setVisible(true);
                 backGround.setDisable(false);
+
                 AnchorPane popUp = new AnchorPane();
                 popUp.setPrefSize(800 ,600);
                 popUp.getChildren().addAll(textFieldList);
                 popUp.getChildren().addAll(labelList);
-                popUp.getChildren().add(descriptionField);
-                popUp.getChildren().add(imagePlaceholder);
-                popUp.getChildren().add(confirmForm);
+                popUp.getChildren().addAll(descriptionField,imagePlaceholder,confirmForm);
                 popUp.getChildren().addAll(checkBoxes);
                 Scene dialogScene = new Scene(popUp, 800, 600);
+
                 dialog.setScene(dialogScene);
                 dialog.show();
 
@@ -160,5 +167,9 @@ public class PlotPage extends Header
         ANCHOR_PANE.getChildren().addAll(createPlot,backGround);
     }
 
+    private void createAnnonce()
+    {
+
+    }
 
 }
