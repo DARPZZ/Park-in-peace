@@ -15,7 +15,6 @@ public class User
     private IntegerProperty acounterNumber;
     private StringProperty email;
     private IntegerProperty zipCode;
-    private IntegerProperty blackListId;
     public User() {
 
     }
@@ -163,18 +162,5 @@ public class User
         this.zipCode.set(zipCode);
     }
 
-    public int getBlackListId()
-    {
-        return blackListId.get();
-    }
 
-    public IntegerProperty blackListIdProperty()
-    {
-        return blackListId;
-    }
-
-    public void setBlackListId(int blackListId)
-    {
-        this.blackListId.set(blackListId);
-    }
 }
