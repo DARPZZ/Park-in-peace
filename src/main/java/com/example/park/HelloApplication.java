@@ -32,7 +32,9 @@ import java.util.List;
 public class HelloApplication extends Application
 {
     Login login = new Login();
-   Bookings bookings = new Bookings();
+    Bookings bookings = new Bookings();
+
+    ProfilePage profilePage = new ProfilePage();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -44,18 +46,20 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        login.setUserPublisher(login); // Giveren
+
         login.subscribe(bookings); //tager
+        login.subscribe(profilePage);
+        login.setUserPublisher(login); // Giveren
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
-        SCENE_MAP.put(SceneName.ProfilePage, new ProfilePage().SCENE);
+        SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
         AnchorPane anchorPane = new AnchorPane();
-        Scene scene = new ProfilePage().SCENE;
-        //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        //Scene scene = profilePage.SCENE;
+        Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
