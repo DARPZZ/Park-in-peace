@@ -31,7 +31,7 @@ import java.util.List;
 public class HelloApplication extends Application
 {
     Login login = new Login();
-    Bookings bookings = new Bookings();
+   Bookings bookings = new Bookings();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -43,11 +43,12 @@ public class HelloApplication extends Application
     public void start(Stage stage) throws IOException
     {
         login.setUserPublisher(login); // Giveren
-     login.subscribe(bookings); //tager
+        login.subscribe(bookings); //tager
+
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
-        SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
+        SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
@@ -95,7 +96,9 @@ public class HelloApplication extends Application
                 anchorPane.getChildren().clear();
                 toggleButton.setText("Create User");
                 toggleLabel.setText("Press here to login:");
-                login.createUser(anchorPane,loginButton);
+
+                login.createUser(anchorPane,loginButton,toggleButton,toggleLabel);
+
                 loginButton.setText("create a new user");
 
             } else {
@@ -104,7 +107,6 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Press here to create a new user:");
                 login.loginScene(anchorPane,loginButton);
                 loginButton.setText("login");
-
             }
             anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
         });

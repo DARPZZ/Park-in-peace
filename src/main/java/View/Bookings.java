@@ -1,61 +1,66 @@
 package View;
 
 import Model.DaoObject.Combine;
-import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
-import Model.Implements.DaoUser;
-import com.example.park.Login;
 import com.example.park.UserSubscriber;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Bookings extends Header implements UserSubscriber
-{
-    TableView tableView = new TableView();
+public class Bookings extends Header implements UserSubscriber {
 
+    private int currentUserID;
+    private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
-    Model.Implements.DaoCombine daoCombine = new DaoCombine();
+    DaoCombine daoCombine = new DaoCombine();
+    List<Combine> combineList;
 
-
-    public Bookings()
-    {
+    public Bookings() {
+        currentUserID = 0; // Initialize with default value
+        combineList = daoCombine.GetAll();
+        tableView.setLayoutX(200);
+        tableView.setLayoutY(200);
         setScene();
     }
-    public void setScene()
-    {
-        getData();
+
+
+
+    public void setScene() {
         ANCHOR_PANE.getChildren().addAll(tableView);
     }
-    public void getData()
-    {
 
-        List<Combine> combineList = daoCombine.GetAll();
+    public void getData() {
         for (Combine com : combineList) {
+            int userID = com.getUserID();
             String location = com.getLocation();
             int zipcode = com.getZipCode();
             Date startDate = com.getStartDate();
             Date endDate = com.getEndDate();
-            Combine combine = new Combine(location, zipcode, startDate, endDate);
-            combineDataList.add(combine);
-            createTableViewLejer();
-        }
-    }
 
-    public void createTableViewLejer()
+            Combine combine = new Combine(userID, location, zipcode, startDate, endDate);
+
+            System.out.println("currentUserID: " + currentUserID);
+            System.out.println("com.getUserID(): " + com.getUserID());
+            if (currentUserID == com.getUserID()) {
+                System.out.println("INDE");
+                combineDataList.add(combine);
+            }
+        }
+        // Move this line here
+      createTable();
+    }
+    public void createTable()
     {
-        tableView.setLayoutX(50);
-        tableView.setLayoutY(300);
+        System.out.println(combineDataList.size() + " create");
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
 
@@ -72,15 +77,23 @@ public class Bookings extends Header implements UserSubscriber
 
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.setItems(data);
+        System.out.println(data.size() + " data size");
+        System.out.println(data.isEmpty() + " is data empty");
 
+        System.out.println(tableView.getItems().size() + " table view items size");
+        System.out.println(tableView.getItems().isEmpty() + " is table view items empty");
+
+        tableView.setItems(data);
     }
+
+
 
     @Override
-    public void onUserReceived(User user)
-    {
-        System.out.println(user.getName());
-        System.out.println(user.getEmail());
+    public void onUserReceived(User user) {
+        currentUserID = user.getUserId();
+        System.out.println(user.getName() + " name");
+        System.out.println(currentUserID + " should work");
+        getData();
     }
+
 }
-
-
