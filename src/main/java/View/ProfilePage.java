@@ -13,6 +13,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import java.sql.*;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import static Model.Implements.Connection.*;
@@ -30,10 +31,10 @@ public class ProfilePage extends Header implements UserSubscriber {
     private static final int NUM_COLS = 2;
        public ProfilePage(){
 
-            Image pp = new Image("C:\\Users\\jakob\\Desktop\\Dokumenter\\lola-color.png");
+            //Image pp = new Image("C:\\Users\\jakob\\Desktop\\Dokumenter\\lola-color.png");
 
             ImageView profilePic = new ImageView();
-            profilePic.setImage(pp);
+            //profilePic.setImage(pp);
             profilePic.setX(100);
             profilePic.setY(200);
             profilePic.prefHeight(300);
@@ -94,7 +95,6 @@ public class ProfilePage extends Header implements UserSubscriber {
     }
 
     public void broadcast(){
-
         textFields.get(0).setText(loggedIn.getName());
         textFields.get(1).setText(loggedIn.getAddress());
         textFields.get(2).setText(loggedIn.getPhoneNumber());

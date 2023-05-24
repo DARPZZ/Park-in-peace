@@ -82,6 +82,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getString("fldEmail"),
                         rs.getInt("fldZipcode"),
                         rs.getInt("fldBlackListID"));
+                        
                 return user;
             }
         }catch (Exception e) {

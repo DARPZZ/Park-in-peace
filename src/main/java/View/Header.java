@@ -58,6 +58,7 @@ public abstract class Header
 
         profileBtn.setOnAction(event -> {
             HelloApplication.changeScene(SceneName.ProfilePage);
+            HelloApplication.profilePage.broadcast();
         });
 
         ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);

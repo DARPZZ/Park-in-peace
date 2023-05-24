@@ -33,8 +33,7 @@ public class HelloApplication extends Application
 {
     Login login = new Login();
     Bookings bookings = new Bookings();
-
-    ProfilePage profilePage = new ProfilePage();
+    public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;

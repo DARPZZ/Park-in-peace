@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 public class User
 {
     private IntegerProperty userId;
@@ -16,11 +18,12 @@ public class User
     private StringProperty email;
     private IntegerProperty zipCode;
     private IntegerProperty blackListId;
+    private ArrayList<Integer> blackList;
     public User() {
 
     }
 
-    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
+    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId, ArrayList<Integer> blackList)
     {
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
@@ -29,8 +32,8 @@ public class User
         this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
-        
         this.blackListId = new SimpleIntegerProperty(blackListId);
+        this.blackList = blackList;
     }
     public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, int blackListId)
     {
@@ -178,5 +181,13 @@ public class User
     public void setBlackListId(int blackListId)
     {
         this.blackListId.set(blackListId);
+    }
+
+    public ArrayList<Integer> getBlackList() {
+        return blackList;
+    }
+
+    public void setBlackList(ArrayList<Integer> blackList) {
+        this.blackList = blackList;
     }
 }
