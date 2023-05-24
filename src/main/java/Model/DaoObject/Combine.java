@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Combine
 {
+    private int userID;
     private int plotID;
     private String location;
     private String description;
@@ -21,9 +22,18 @@ public class Combine
     private float highSeasonPrice;
 
 
-
-    public Combine(int plotID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID,String location, int zipCode, Date startDate, Date endDate)
     {
+        this.userID = userID;
+        this.location = location;
+        this.zipCode = zipCode;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Combine(int userID,int plotID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    {
+        this.userID = userID;
         this.plotID = plotID;
         this.location = location;
         this.description = description;
@@ -39,6 +49,21 @@ public class Combine
         this.lowSeasonPrice = lowSeasonPrice;
         this.midSeasonPrice = midSeasonPrice;
         this.highSeasonPrice = highSeasonPrice;
+    }
+
+    public Combine()
+    {
+
+    }
+
+    public int getUserID()
+    {
+        return userID;
+    }
+
+    public void setUserID(int userID)
+    {
+        this.userID = userID;
     }
 
     public int getPlotID()

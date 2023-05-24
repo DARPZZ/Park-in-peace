@@ -58,6 +58,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
             // Process the result set
             while (rs.next()) {
                 combineList.add(new Combine(
+                        rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),
                         rs.getString("fldLocation"),
                         rs.getString("fldDescription"),
@@ -75,9 +76,12 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
                         rs.getFloat("fldHighSeasonPrice")));
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+            System.out.println(e);
+            // Handle the exception appropriately
         }
         return combineList;
     }
 }
+
+
 
