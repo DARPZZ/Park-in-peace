@@ -56,6 +56,10 @@ public abstract class Header
         });
         myPlotBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.PlotPage));
 
+        profileBtn.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.ProfilePage);
+        });
+
         ANCHOR_PANE.getChildren().addAll(profileBtn, homeBtn, bookingsBtn, myPlotBtn);
     }
 

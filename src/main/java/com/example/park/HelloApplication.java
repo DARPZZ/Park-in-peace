@@ -11,6 +11,7 @@ import Model.Implements.DaoUser;
 import View.Bookings;
 import View.MainPage;
 import View.PlotPage;
+import View.ProfilePage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -51,9 +52,10 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
+        SCENE_MAP.put(SceneName.ProfilePage, new ProfilePage().SCENE);
         AnchorPane anchorPane = new AnchorPane();
-
-            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        Scene scene = new ProfilePage().SCENE;
+        //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
