@@ -1,13 +1,7 @@
 package com.example.park;
 
-import Model.DaoObject.Combine;
-import Model.DaoObject.Resevations;
-import Model.DaoObject.User;
-import Model.DaoObject.tblPlot;
-import Model.Implements.DaoCombine;
-import Model.Implements.DaoPlot;
-import Model.Implements.DaoResevations;
-import Model.Implements.DaoUser;
+import Model.DaoObject.*;
+import Model.Implements.*;
 import View.Bookings;
 import View.MainPage;
 import View.PlotPage;
@@ -43,6 +37,7 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
+
         login.setUserPublisher(login); // Giveren
         login.subscribe(bookings); //tager
 
