@@ -33,13 +33,13 @@ public class HelloApplication extends Application
         DaoResevations daoResevations = new DaoResevations();
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
+        SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,new Bookings().SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
-        SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-        Scene scene = new Advertisement().SCENE;
+        Scene scene = SCENE_MAP.get(SceneName.Main);
 
         createScene(anchorPane);
 

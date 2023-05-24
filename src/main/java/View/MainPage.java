@@ -2,6 +2,10 @@ package View;
 
 import Model.DaoObject.Combine;
 import Model.Implements.DaoCombine;
+import Service.CombinePublisher;
+import Service.Topic;
+import com.example.park.HelloApplication;
+import com.example.park.SceneName;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -22,6 +26,8 @@ public class MainPage extends Header
     private RadioButton waterBtn;
     private ScrollPane scrollPane;
     private TilePane tilePane;
+
+    CombinePublisher publish = CombinePublisher.getInstance();
 
     public MainPage()
     {
@@ -89,8 +95,25 @@ public class MainPage extends Header
 
         for (Combine ad : DaoAdvertisements.GetAll())
         {
-            advertisementTree.put(ad.getPlotID(), ad);
-            tp.getChildren().add(new Thumbnail(new Image(ad.getImage()), ad.getLocation()));
+            if(ad != null)
+            {
+                advertisementTree.put(ad.getPlotID(), ad);
+
+                try
+                {
+                    Thumbnail thumbnail = new Thumbnail(new Image(ad.getImage()), ad.getLocation());
+                    thumbnail.setOnMouseReleased(event -> {
+                        publish.publish(Topic.MainPage, ad);
+                        HelloApplication.changeScene(SceneName.Advertisement);
+                    });
+                    tp.getChildren().add(thumbnail);
+                }
+                catch (Exception e)
+                {
+                    System.err.println("An error occured " + e.getMessage());
+                }
+
+            }
         }
     }
 
