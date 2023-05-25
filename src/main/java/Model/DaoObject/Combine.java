@@ -51,6 +51,11 @@ public class Combine
         this.highSeasonPrice = highSeasonPrice;
     }
 
+    public Combine()
+    {
+
+    }
+
     public int getUserID()
     {
         return userID;

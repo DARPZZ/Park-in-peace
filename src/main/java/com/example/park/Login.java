@@ -154,6 +154,7 @@ public class Login implements UserPublisher
                     System.out.println("Login Failed");
                 }
             }
+
         });
         anchorPane.getChildren().addAll(name,password);
     }

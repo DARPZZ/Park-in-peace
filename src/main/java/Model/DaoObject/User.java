@@ -37,10 +37,12 @@ public class User
     }
     public User(String name, String phoneNumber, String password, String address, String email, int zipCode)
     {
+        this.userId = new SimpleIntegerProperty(userId);
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
         Password = new SimpleStringProperty(password);
         this.address = new SimpleStringProperty(address);
+        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
     }
