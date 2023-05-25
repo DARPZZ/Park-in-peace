@@ -3,37 +3,36 @@ package View;
 import Model.DaoObject.Combine;
 import Model.Implements.DaoCombine;
 import Service.CombinePublisher;
-import Service.Topic;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 public class MainPage extends Header
 {
-    private TreeMap<Integer, Combine> advertisementTree;
+    private List<Combine> advertisementList;
     private TextField searchField;
     private Button filterBtn;
-    private RadioButton toiletBtn;
-    private RadioButton electricityBtn;
-    private RadioButton waterBtn;
     private ScrollPane scrollPane;
     private TilePane tilePane;
 
-    CombinePublisher publish = CombinePublisher.getInstance();
+    private Pane popUpBackground;
+    private AnchorPane popUpContent;
 
     public MainPage()
     {
         setupFilterControlsLayout();
         setupScrollPaneLayout();
         fillAds(tilePane);
+        setupPopUpBackground();
     }
 
     private void setupFilterControlsLayout()
@@ -48,20 +47,9 @@ public class MainPage extends Header
         filterBtn.setPrefSize(40, HEIGHT);
         filterBtn.setLayoutX(searchField.getLayoutX() + searchField.getPrefWidth() + 20);
         filterBtn.setLayoutY(searchField.getLayoutY());
+        filterBtn.setOnAction(event -> showPopUp());
 
-        toiletBtn = new RadioButton("Toilet");
-        toiletBtn.setLayoutX(filterBtn.getLayoutX() + filterBtn.getWidth() + 50);
-        toiletBtn.setLayoutY(searchField.getLayoutY() + 5);
-
-        electricityBtn = new RadioButton("Strøm");
-        electricityBtn.setLayoutX(toiletBtn.getLayoutX() + 100);
-        electricityBtn.setLayoutY(toiletBtn.getLayoutY());
-
-        waterBtn = new RadioButton("Vand");
-        waterBtn.setLayoutX(electricityBtn.getLayoutX() + 100);
-        waterBtn.setLayoutY(electricityBtn.getLayoutY());
-
-        this.ANCHOR_PANE.getChildren().addAll(searchField, filterBtn, toiletBtn, electricityBtn, waterBtn);
+        this.ANCHOR_PANE.getChildren().addAll(searchField, filterBtn);
     }
 
     private void setupScrollPaneLayout()
@@ -90,20 +78,19 @@ public class MainPage extends Header
 
     private void fillAds(TilePane tp)
     {
-        DaoCombine DaoAdvertisements = new DaoCombine();
-        advertisementTree = new TreeMap<>();
+        advertisementList = new ArrayList<>(new DaoCombine().GetAll());
+        CombinePublisher publish = CombinePublisher.getInstance();
 
-        for (Combine ad : DaoAdvertisements.GetAll())
+        for (Combine ad : advertisementList)
         {
             if(ad != null)
             {
-                advertisementTree.put(ad.getPlotID(), ad);
-
                 try
                 {
                     Thumbnail thumbnail = new Thumbnail(new Image(ad.getImage()), ad.getLocation());
-                    thumbnail.setOnMouseReleased(event -> {
-                        publish.publish(Topic.MainPage, ad);
+                    thumbnail.setOnMouseReleased(event ->
+                    {
+                        publish.publish(SceneName.Main, ad);
                         HelloApplication.changeScene(SceneName.Advertisement);
                     });
                     tp.getChildren().add(thumbnail);
@@ -112,14 +99,8 @@ public class MainPage extends Header
                 {
                     System.err.println("An error occured " + e.getMessage());
                 }
-
             }
         }
-    }
-
-    private void sortAds()
-    {
-
     }
 
     private void filterAds()
@@ -127,86 +108,64 @@ public class MainPage extends Header
 
     }
 
-    //region getter/setter
-
-    public TreeMap<Integer, Combine> getAdvertisementTree()
+    private void setupPopUpBackground()
     {
-        return advertisementTree;
+        popUpBackground = new Pane();
+        popUpBackground.prefHeightProperty().bind(SCENE.heightProperty());
+        popUpBackground.prefWidthProperty().bind(SCENE.widthProperty());
+        popUpBackground.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+        popUpBackground.setVisible(false);
+        popUpBackground.setOnMouseClicked(event -> hidePopUp());
+        this.ANCHOR_PANE.getChildren().add(popUpBackground);
+
+        popUpContent = new AnchorPane();
+        popUpContent.setStyle("-fx-background-color: white; -fx-padding: 20;");
+        popUpContent.setVisible(false);
+        popUpContent.setPrefSize(SCENE.getWidth() / 2.5,SCENE.getHeight() / 1.2);
+        popUpContent.setLayoutX(SCENE.getWidth()/2 - (popUpContent.getPrefWidth()/2));
+        popUpContent.setLayoutY(SCENE.getHeight()/2 - (popUpContent.getPrefHeight()/2));
+
+        GridPane gp = new GridPane();
+        gp.setPrefSize(popUpContent.getPrefWidth(), popUpContent.getPrefHeight());
+        gp.setGridLinesVisible(true);
+        popUpContent.getChildren().add(gp);
+
+        Label priceRangeLabel = new Label("Prisramme");
+        gp.add(priceRangeLabel, 0, 0, 2, 1);
+
+        TextField minPriceTf = new TextField();
+        minPriceTf.setPromptText("Minimumspris");
+        gp.add(minPriceTf, 0, 1);
+
+        TextField maxPriceTf = new TextField();
+        maxPriceTf.setPromptText("Maksimumspris");
+        gp.add(maxPriceTf, 1, 1);
+
+        Label service = new Label("Faciliteter");
+        gp.add(service, 0, 4, 2, 1);
+
+        RadioButton toiletBtn = new RadioButton("Toilet");
+        gp.add(toiletBtn, 0, 5);
+
+        RadioButton electricityBtn = new RadioButton("Strøm");
+        gp.add(electricityBtn, 1, 5);
+
+        RadioButton waterBtn = new RadioButton("Vand");
+        gp.add(waterBtn, 0, 6);
+
+
+        this.ANCHOR_PANE.getChildren().add(popUpContent);
+    }
+    private void showPopUp()
+    {
+        popUpBackground.setVisible(true);
+        popUpContent.setVisible(true);
     }
 
-    public void setAdvertisementTree(TreeMap<Integer, Combine> advertisementTree)
+    private void hidePopUp()
     {
-        this.advertisementTree = advertisementTree;
+        popUpBackground.setVisible(false);
+        popUpContent.setVisible(false);
     }
 
-    public TextField getSearchField()
-    {
-        return searchField;
-    }
-
-    public void setSearchField(TextField searchField)
-    {
-        this.searchField = searchField;
-    }
-
-    public Button getFilterBtn()
-    {
-        return filterBtn;
-    }
-
-    public void setFilterBtn(Button filterBtn)
-    {
-        this.filterBtn = filterBtn;
-    }
-
-    public RadioButton getToiletBtn()
-    {
-        return toiletBtn;
-    }
-
-    public void setToiletBtn(RadioButton toiletBtn)
-    {
-        this.toiletBtn = toiletBtn;
-    }
-
-    public RadioButton getElectricityBtn()
-    {
-        return electricityBtn;
-    }
-
-    public void setElectricityBtn(RadioButton electricityBtn)
-    {
-        this.electricityBtn = electricityBtn;
-    }
-
-    public RadioButton getWaterBtn()
-    {
-        return waterBtn;
-    }
-
-    public void setWaterBtn(RadioButton waterBtn)
-    {
-        this.waterBtn = waterBtn;
-    }
-
-    public ScrollPane getScrollPane()
-    {
-        return scrollPane;
-    }
-
-    public void setScrollPane(ScrollPane scrollPane)
-    {
-        this.scrollPane = scrollPane;
-    }
-
-    public TilePane getTilePane()
-    {
-        return tilePane;
-    }
-
-    public void setTilePane(TilePane tilePane)
-    {
-        this.tilePane = tilePane;
-    }
-    //endregion
 }

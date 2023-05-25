@@ -45,7 +45,6 @@ public class HelloApplication extends Application
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         Scene scene = SCENE_MAP.get(SceneName.Main);
 
-            Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         createScene(anchorPane);
 
 
