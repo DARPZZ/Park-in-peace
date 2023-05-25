@@ -120,6 +120,7 @@ public class Bookings extends Header implements UserSubscriber
         });
         zipcodeColumn.setOnEditCommit(table ->
         {
+
             table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
         });
 
