@@ -1,8 +1,6 @@
 package View;
 
 import Model.DaoObject.Combine;
-import Model.DaoObject.Resevations;
-import Model.Implements.DaoResevations;
 import Service.CombinePublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
@@ -35,19 +33,91 @@ public class Advertisement extends Header
         subscribe.subscribe(SceneName.Main, this::handleAdvertisementUpdate);
         imageView.setLayoutX(X_MARGIN);
         imageView.setLayoutY(this.getYMargin() + 80);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(600);
+        imageView.setFitWidth(200);
         setupLayout();
         setupBackBtn();
     }
 
     private void setupLayout()
     {
-        GridPane gp = new GridPane();
-        gp.setPrefWidth(300);
-        gp.setVgap(5);
-        gp.setLayoutX(this.SCENE.getWidth() - 400);
-        gp.setLayoutY(this.getYMargin() + 80);
+        GridPane gpDateReserve = new GridPane();
+        gpDateReserve.setPrefWidth(300);
+        gpDateReserve.setVgap(5);
+        gpDateReserve.setLayoutX(this.SCENE.getWidth() - 400);
+        gpDateReserve.setLayoutY(this.getYMargin() + 80);
 
         DatePicker startDate = new DatePicker();
+        DatePicker endDate = new DatePicker();
+        setupDatePickers(startDate, endDate);
+
+        Button reserveBtn = new Button("Reserver");
+        reserveBtn.setPrefSize(gpDateReserve.getPrefWidth(), gpDateReserve.getPrefHeight()/gpDateReserve.getRowCount());
+        reserveBtn.setOnAction(event -> reserveDate(startDate.getValue(), endDate.getValue()));
+
+        Label pricePrDayPromptLabel = new Label("Pris pr. day: ");
+        pricePrDayLabel = new Label();
+        Label totalPricePromptLabel = new Label("I alt: ");
+        totalPriceLabel = new Label();
+        totalPriceLabel.setVisible(false);
+
+        gpDateReserve.add(startDate,0,0);
+        gpDateReserve.add(endDate,1, 0);
+        gpDateReserve.add(reserveBtn,0, 1, 3, 1);
+        gpDateReserve.add(pricePrDayPromptLabel, 0, 2);
+        gpDateReserve.add(pricePrDayLabel, 1, 2);
+        gpDateReserve.add(totalPricePromptLabel, 0, 3);
+        gpDateReserve.add(totalPriceLabel, 1, 3);
+
+        GridPane gpDescription = new GridPane();
+        gpDescription.setLayoutX(imageView.getLayoutX());
+        gpDescription.setLayoutY(imageView.getLayoutY());
+        gpDescription.setGridLinesVisible(true);
+
+        Label addressLabel = new Label("Adresse ");
+        gpDescription.add(addressLabel, 0, 0);
+        Label addressDataLabel = new Label();
+        gpDescription.add(addressDataLabel, 1, 0);
+
+        this.ANCHOR_PANE.getChildren().addAll(gpDateReserve, imageView, gpDescription);
+    }
+
+    private void setupBackBtn()
+    {
+        Button backBtn = new Button();
+        backBtn.setLayoutY(this.getProfileBtn().getLayoutY());
+        backBtn.setLayoutX(X_MARGIN);
+        backBtn.setPrefSize(this.getProfileBtn().getPrefWidth(), this.getProfileBtn().getPrefHeight());
+        backBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.Main));
+        this.ANCHOR_PANE.getChildren().add(backBtn);
+    }
+
+    private void handleAdvertisementUpdate(Combine updatedAdvertisement)
+    {
+        advertisement = updatedAdvertisement;
+        if (advertisement != null)
+        {
+            imageView.setImage(new Image(advertisement.getImage()));
+            setLabelValues();
+        }
+    }
+
+    private void setLabelValues()
+    {
+        try
+        {
+            pricePrDayLabel.setText("" + advertisement.getMidSeasonPrice());
+        }
+        catch (Exception e)
+        {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
+        totalPriceLabel.textProperty().bind(TOTAL_PRICE_VALUE.asString());
+    }
+
+    private void setupDatePickers(DatePicker startDate, DatePicker endDate)
+    {
         startDate.setPromptText("Start dato");
         startDate.setDayCellFactory(callback -> new DateCell()
         {
@@ -59,7 +129,7 @@ public class Advertisement extends Header
                 setDisable(date.isBefore(minDate));
             }
         });
-        DatePicker endDate = new DatePicker();
+
         endDate.setPromptText("Slut dato");
         endDate.setDisable(true);
 
@@ -94,59 +164,6 @@ public class Advertisement extends Header
                 totalPriceLabel.setVisible(true);
             }
         });
-
-        Button reserveBtn = new Button("Reserver");
-        reserveBtn.setPrefSize(gp.getPrefWidth(), gp.getPrefHeight()/gp.getRowCount());
-        reserveBtn.setOnAction(event -> reserveDate(startDate.getValue(), endDate.getValue()));
-
-        Label pricePrDayPromptLabel = new Label("Pris pr. day: ");
-        pricePrDayLabel = new Label();
-        Label totalPricePromptLabel = new Label("I alt: ");
-        totalPriceLabel = new Label();
-        totalPriceLabel.setVisible(false);
-
-        gp.add(startDate,0,0);
-        gp.add(endDate,1, 0);
-        gp.add(reserveBtn,0, 1, 3, 1);
-        gp.add(pricePrDayPromptLabel, 0, 2);
-        gp.add(pricePrDayLabel, 1, 2);
-        gp.add(totalPricePromptLabel, 0, 3);
-        gp.add(totalPriceLabel, 1, 3);
-
-        this.ANCHOR_PANE.getChildren().addAll(gp, imageView);
-    }
-
-    private void setupBackBtn()
-    {
-        Button backBtn = new Button();
-        backBtn.setLayoutY(this.getProfileBtn().getLayoutY());
-        backBtn.setLayoutX(X_MARGIN);
-        backBtn.setPrefSize(this.getProfileBtn().getPrefWidth(), this.getProfileBtn().getPrefHeight());
-        backBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.Main));
-        this.ANCHOR_PANE.getChildren().add(backBtn);
-    }
-
-    private void handleAdvertisementUpdate(Combine updatedAdvertisement)
-    {
-        advertisement = updatedAdvertisement;
-        if (advertisement != null)
-        {
-            imageView.setImage(new Image(advertisement.getImage()));
-            setLabelValues();
-        }
-    }
-
-    private void setLabelValues()
-    {
-        try
-        {
-            pricePrDayLabel.setText("" + advertisement.getMidSeasonPrice());
-        }
-        catch (Exception e)
-        {
-            System.err.println("An error occurred: " + e.getMessage());
-        }
-        totalPriceLabel.textProperty().bind(TOTAL_PRICE_VALUE.asString());
     }
 
     private void reserveDate(LocalDate startDate, LocalDate endDate)

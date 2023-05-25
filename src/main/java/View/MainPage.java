@@ -6,15 +6,12 @@ import Service.CombinePublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 public class MainPage extends Header
 {
@@ -153,9 +150,9 @@ public class MainPage extends Header
         RadioButton waterBtn = new RadioButton("Vand");
         gp.add(waterBtn, 0, 6);
 
-
         this.ANCHOR_PANE.getChildren().add(popUpContent);
     }
+
     private void showPopUp()
     {
         popUpBackground.setVisible(true);
@@ -167,5 +164,4 @@ public class MainPage extends Header
         popUpBackground.setVisible(false);
         popUpContent.setVisible(false);
     }
-
 }
