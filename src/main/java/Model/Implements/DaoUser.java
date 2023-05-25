@@ -9,16 +9,6 @@ import java.util.List;
 
 public class DaoUser extends Model.Implements.Connection implements DaoInterface<User>
 {
-    /*
-    private static String userName = "sa";
-    private static String password = "123456";
-    private static String databaseName = "dbParkInPeace";
-    private static String Port = "1433";
-    private static Connection con;
-    private CallableStatement callableStatement;
-
-     */
-
     public DaoUser()
     {
         try {
@@ -32,7 +22,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public void Create(User user)
     {
         try (Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?,?,?)}")) {
+             CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?,?)}")) {
             stmt.setString(1,user.getName());
             stmt.setString(2, user.getPhoneNumber());
             stmt.setString(3, user.getPassword());
@@ -40,7 +30,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             stmt.setInt(5, user.getAcounterNumber());
             stmt.setString(6, user.getEmail());
             stmt.setInt(7, user.getZipCode());
-            stmt.setInt(8, user.getBlackListId());
+
 
             stmt.execute();
 
@@ -90,8 +80,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getString("fldAddress"),
                         rs.getInt("fldAcountNumber"),
                         rs.getString("fldEmail"),
-                        rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID"));
+                        rs.getInt("fldZipcode"));
                 return user;
             }
         }catch (Exception e) {
@@ -119,8 +108,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                         rs.getString("fldAddress"),
                         rs.getInt("fldAcountNumber"),
                         rs.getString("fldEmail"),
-                        rs.getInt("fldZipcode"),
-                        rs.getInt("fldBlackListID")));
+                        rs.getInt("fldZipcode")));
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately

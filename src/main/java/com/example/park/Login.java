@@ -74,7 +74,7 @@ public class Login implements UserPublisher
     {
         Model.Implements.DaoUser daoUser = new DaoUser();
             if (validateUser()) {
-                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()), 1);
+                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()));
                 daoUser.Create(user);
                 //userPublisher.notifySubscribers(user);
             }
@@ -154,6 +154,7 @@ public class Login implements UserPublisher
                     System.out.println("Login Failed");
                 }
             }
+
         });
         anchorPane.getChildren().addAll(name,password);
     }
