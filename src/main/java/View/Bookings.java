@@ -1,11 +1,9 @@
 package View;
 
 import Model.DaoObject.Combine;
-import Model.DaoObject.PlotOwner;
 import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
-import Model.Implements.DaoOwner;
 import Model.Implements.DaoResevations;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
@@ -24,16 +22,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.NumberStringConverter;
-
-import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 public class Bookings extends Header implements UserSubscriber
 {
     Button lejerButton = new Button("Lejer");
@@ -137,18 +132,14 @@ public class Bookings extends Header implements UserSubscriber
         {
             table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
-            Date endDate = table.getTableView().getItems().get(table.getTablePosition().getRow()).getEndDate();
 
+            DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
+            String endDate = dtformat.format(table.getNewValue());
 
             Resevations resevations = new Resevations();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String date = "1212-02-02";
-            System.out.println(endDate + " end date");
-            System.out.println(date + " reeeeeeeeeeeeeeeeeeeeeee");
-            System.out.println(resid + " res id");
 
-            //convert String to LocalDate
-            LocalDate localDate = LocalDate.parse(date, formatter);
+            LocalDate localDate = LocalDate.parse(endDate, formatter);
             resevations.setReservationID(resid);
             resevations.setEndDate(localDate);
 
@@ -165,7 +156,6 @@ public class Bookings extends Header implements UserSubscriber
     }
     public void updateEndDate(Resevations resevations)
     {
-        System.out.println(resevations.getEndDate()+ "Computer skærm");
         new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
     }
 
