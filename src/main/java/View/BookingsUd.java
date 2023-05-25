@@ -53,6 +53,10 @@ public class BookingsUd extends Header implements UserSubscriber
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
         tableView.setPrefWidth(350);
+        yourePlots.setLayoutX(190);
+        yourePlots.setLayoutY(225);
+
+
         changeBack();
     }
     public void changeBack()
@@ -68,9 +72,7 @@ public class BookingsUd extends Header implements UserSubscriber
             int userID = plo.getUserID();
             Date startDate = plo.getStartDate();
             Date endDate = plo.getSlutDate();
-
             PlotOwner plotOwner = new PlotOwner(plotID, location, zipcode,userID, startDate, endDate);
-
 
             if (currentUserID == userID) { // Check for userID match
                 PloOwnerDataList.add(plotOwner);
