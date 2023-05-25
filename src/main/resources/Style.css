@@ -27,7 +27,6 @@
 }
 .label {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
     -fx-font-weight: bolder;
 }
 .table-cell {
@@ -39,5 +38,13 @@
 }
 
 .table-view .scroll-bar .thumb {
-    -fx-background-color: #4CAF50;
+    -fx-background-color: #6f8d70;
+}
+.button:pressed {
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+    -fx-translate-y: 2px;
+    -fx-translate-x: 2px;
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #3c3c3c;
 }

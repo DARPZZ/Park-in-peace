@@ -2,6 +2,7 @@ package View;
 
 import Model.DaoObject.Combine;
 import Model.DaoObject.PlotOwner;
+import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
 import Model.Implements.DaoOwner;
@@ -21,9 +22,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +43,7 @@ public class Bookings extends Header implements UserSubscriber
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
     DaoCombine daoCombine = new DaoCombine();
-    DaoResevations daoResevations = new DaoResevations();
+
     List<Combine> combineList;
 
 
@@ -76,12 +82,13 @@ public class Bookings extends Header implements UserSubscriber
 
         for (Combine com : combineList) {
             int userID = com.getUserID();
+            int resevationsID = com.getResevationsID();
             String location = com.getLocation();
             int zipcode = com.getZipCode();
             Date startDate = com.getStartDate();
             Date endDate = com.getEndDate();
 
-            Combine combine = new Combine(userID, location, zipcode, startDate, endDate);
+            Combine combine = new Combine(userID,resevationsID, location, zipcode, startDate, endDate);
 
             if (currentUserID == userID) {
                 combineDataList.add(combine);
@@ -93,45 +100,59 @@ public class Bookings extends Header implements UserSubscriber
 
     public void createTable()
     {
+
         tableView.setEditable(true);
+        TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
+        resevationsIdColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getResevationsID()).asString());
+
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
-        addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        resevationsIdColumn.setVisible(false);
+
 
         TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
-        zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
 
         TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
+        StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEndDate()));
-        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
-        tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
+        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        tableView.getColumns().addAll(resevationsIdColumn,addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.setItems(data);
 
-        addressColumn.setOnEditCommit(table ->
-        {table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(table.getNewValue());
-            //daoResevations.Update(table.getTableView().getItems().get(table.getTablePosition().getRow()));
-        });
-        zipcodeColumn.setOnEditCommit(table ->
-        {
-
-            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
-        });
-
         startDateColumn.setOnEditCommit(table ->
         {
             table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+
         });
 
         endDateColumn.setOnEditCommit(table ->
         {
             table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+            int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+            Date endDate = table.getTableView().getItems().get(table.getTablePosition().getRow()).getEndDate();
+
+
+            Resevations resevations = new Resevations();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String date = "1212-02-02";
+            System.out.println(endDate + " end date");
+            System.out.println(date + " reeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resid + " res id");
+
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            resevations.setReservationID(resid);
+            resevations.setEndDate(localDate);
+
+            updateEndDate(resevations);
         });
 
     }
@@ -141,6 +162,11 @@ public class Bookings extends Header implements UserSubscriber
     {
         currentUserID = user.getUserId();
         getData();
+    }
+    public void updateEndDate(Resevations resevations)
+    {
+        System.out.println(resevations.getEndDate()+ "Computer skærm");
+        new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
     }
 
 

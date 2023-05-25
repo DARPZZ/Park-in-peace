@@ -59,6 +59,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
                 combineList.add(new Combine(
                         rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),
+                        rs.getInt("fldreservationID"),
                         rs.getString("fldLocation"),
                         rs.getString("fldDescription"),
                         rs.getString("fldPlotSize"),

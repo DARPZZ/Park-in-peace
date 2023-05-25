@@ -6,6 +6,7 @@ public class Combine
 {
     private int userID;
     private int plotID;
+    private int resevationsID;
     private String location;
     private String description;
     private String plotSize;
@@ -22,19 +23,21 @@ public class Combine
     private float highSeasonPrice;
 
 
-    public Combine(int userID,String location, int zipCode, Date startDate, Date endDate)
+    public Combine(int userID,int resevationsID,String location, int zipCode, Date startDate, Date endDate)
     {
         this.userID = userID;
+        this.resevationsID = resevationsID;
         this.location = location;
         this.zipCode = zipCode;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public Combine(int userID,int plotID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
         this.userID = userID;
         this.plotID = plotID;
+        this.resevationsID = resevationsID;
         this.location = location;
         this.description = description;
         this.plotSize = plotSize;
@@ -54,6 +57,16 @@ public class Combine
     public Combine()
     {
 
+    }
+
+    public int getResevationsID()
+    {
+        return resevationsID;
+    }
+
+    public void setResevationsID(int resevationsID)
+    {
+        this.resevationsID = resevationsID;
     }
 
     public int getUserID()
