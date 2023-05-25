@@ -34,6 +34,7 @@ public class Login implements UserPublisher
 
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
+
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -122,6 +123,7 @@ public class Login implements UserPublisher
     }
     public void loginScene(AnchorPane anchorPane, Button logIn)
     {
+
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
         password.setLayoutX(LAYOUT_x);

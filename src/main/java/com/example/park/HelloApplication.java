@@ -40,6 +40,10 @@ public class HelloApplication extends Application
     public void start(Stage stage) throws IOException
     {
 
+
+
+
+
         login.setUserPublisher(login); // Giveren
         login.subscribe(bookings); //tager
         login.subscribe(bookingsUd);
@@ -53,11 +57,12 @@ public class HelloApplication extends Application
         AnchorPane anchorPane = new AnchorPane();
 
             Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-        createScene(anchorPane);
-
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
+        createScene(anchorPane);
         stage.show();
     }
 

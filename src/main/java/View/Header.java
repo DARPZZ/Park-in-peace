@@ -23,6 +23,8 @@ public abstract class Header
         ANCHOR_PANE = new AnchorPane();
         ANCHOR_PANE.setOnMouseClicked(event -> ANCHOR_PANE.requestFocus());
         SCENE = new Scene(ANCHOR_PANE, 1280, 720);
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        SCENE.getStylesheets().add(css);
 
         profileBtn = new Button("⚙");
         homeBtn = new Button("Hjem");
