@@ -5,6 +5,7 @@ import Model.DaoObject.PlotOwner;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
 import Model.Implements.DaoOwner;
+import Model.Implements.DaoResevations;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
@@ -19,6 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DateStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +37,7 @@ public class Bookings extends Header implements UserSubscriber
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
     DaoCombine daoCombine = new DaoCombine();
+    DaoResevations daoResevations = new DaoResevations();
     List<Combine> combineList;
 
 
@@ -88,24 +93,46 @@ public class Bookings extends Header implements UserSubscriber
 
     public void createTable()
     {
-
+        tableView.setEditable(true);
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+        addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
+        zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
         TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
 
         TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEndDate()));
-
+        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
         tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
-
         tableView.setItems(data);
+
+        addressColumn.setOnEditCommit(table ->
+        {table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(table.getNewValue());
+            //daoResevations.Update(table.getTableView().getItems().get(table.getTablePosition().getRow()));
+        });
+        zipcodeColumn.setOnEditCommit(table ->
+        {
+            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+        });
+
+        startDateColumn.setOnEditCommit(table ->
+        {
+            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+        });
+
+        endDateColumn.setOnEditCommit(table ->
+        {
+            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+        });
+
     }
 
     @Override
