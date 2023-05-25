@@ -5,12 +5,17 @@ import Model.DaoObject.PlotOwner;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
 import Model.Implements.DaoOwner;
+import com.example.park.HelloApplication;
+import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,16 +26,15 @@ import java.util.List;
 
 public class Bookings extends Header implements UserSubscriber
 {
-    Label yourePlots = new Label();
+    Button lejerButton = new Button("Lejer");
+    Button udLejerButton = new Button("Udlejer");
+    Label youreResevations = new Label("Youre resevations");
     private int currentUserID;
-    private TableView<PlotOwner> tableView = new TableView<>();
+    private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
     DaoCombine daoCombine = new DaoCombine();
     List<Combine> combineList;
 
-    List<PlotOwner> PloOwnerDataList = new ArrayList<>();
-    DaoOwner daoOwner = new DaoOwner();
-    List<PlotOwner> plotOwnerList;
 
 
 
@@ -38,16 +42,28 @@ public class Bookings extends Header implements UserSubscriber
     {
         currentUserID = 0;
         combineList = daoCombine.GetAll();
-        plotOwnerList = daoOwner.GetAll();
-        tableView.setLayoutX(50);
-        tableView.setLayoutY(200);
         setScene();
     }
 
 
     public void setScene()
     {
-        ANCHOR_PANE.getChildren().addAll(tableView);
+        tableView.setLayoutX(50);
+        tableView.setLayoutY(250);
+        tableView.setPrefWidth(350);
+        youreResevations.setLayoutX(190);
+        youreResevations.setLayoutY(225);
+        lejerButton.setLayoutX(225);
+        lejerButton.setPrefWidth(150);
+        lejerButton.setLayoutY(125);
+        udLejerButton.setPrefWidth(lejerButton.getPrefWidth());
+        udLejerButton.setLayoutY(lejerButton.getLayoutY());
+        udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
+        udLejerButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event) {HelloApplication.changeScene(SceneName.BookingsUd);}});
+        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
     }
 
     public void getData()
@@ -59,19 +75,17 @@ public class Bookings extends Header implements UserSubscriber
             int zipcode = com.getZipCode();
             Date startDate = com.getStartDate();
             Date endDate = com.getEndDate();
-            System.out.println(userID + "use");
-            System.out.println(location + " loc");
 
             Combine combine = new Combine(userID, location, zipcode, startDate, endDate);
 
-            if (currentUserID == userID) { // Check for userID match
+            if (currentUserID == userID) {
                 combineDataList.add(combine);
             }
         }
 
-        //createTable();
+        createTable();
     }
-/*
+
     public void createTable()
     {
 
@@ -94,65 +108,11 @@ public class Bookings extends Header implements UserSubscriber
         tableView.setItems(data);
     }
 
- */
-
-
-
-    public void getData2()
-    {
-
-        System.out.println(plotOwnerList.size() + " pååååå");
-
-        for (PlotOwner plo : plotOwnerList) {
-            int plotID = plo.getPlotID();
-            String location = plo.getLocation();
-            int zipcode = plo.getZipCode();
-            int userID = plo.getUserID();
-            Date startDate = plo.getStartDate();
-            Date endDate = plo.getSlutDate();
-
-
-
-            PlotOwner plotOwner = new PlotOwner(plotID, location, zipcode,userID, startDate, endDate);
-            System.out.println(currentUserID + "current id");
-            System.out.println(plotOwner.getUserID() + "userID");
-
-
-            if (currentUserID == userID) { // Check for userID match
-                PloOwnerDataList.add(plotOwner);
-            }
-        }
-        createTable2();
-        System.out.println(plotOwnerList.size() + " sizeeeeeeeee");
-    }
     @Override
     public void onUserReceived(User user)
     {
         currentUserID = user.getUserId();
-        getData2();
         getData();
-
-    }
-    public void createTable2()
-    {
-
-        TableColumn<PlotOwner, String> addressColumn = new TableColumn<>("Address");
-        addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
-
-        TableColumn<PlotOwner, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
-        zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
-
-        TableColumn<PlotOwner, Date> startDateColumn = new TableColumn<>("Start Date");
-        startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
-
-        TableColumn<PlotOwner, Date> endDateColumn = new TableColumn<>("End Date");
-        endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSlutDate()));
-
-        tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
-
-        ObservableList<PlotOwner> data = FXCollections.observableArrayList(PloOwnerDataList);
-
-        tableView.setItems(data);
     }
 
 

@@ -3,6 +3,7 @@ package com.example.park;
 import Model.DaoObject.*;
 import Model.Implements.*;
 import View.Bookings;
+import View.BookingsUd;
 import View.MainPage;
 import View.PlotPage;
 import javafx.application.Application;
@@ -26,6 +27,7 @@ public class HelloApplication extends Application
 {
     Login login = new Login();
    Bookings bookings = new Bookings();
+   BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -40,12 +42,14 @@ public class HelloApplication extends Application
 
         login.setUserPublisher(login); // Giveren
         login.subscribe(bookings); //tager
+        login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
+        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
             Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
