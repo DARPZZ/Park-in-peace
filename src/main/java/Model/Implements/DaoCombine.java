@@ -49,8 +49,8 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
     public List<Combine> GetAll()
     {
         List<Combine> combineList = new ArrayList<>();
-        try (java.sql.Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call combine()}")) {
+        try (
+             CallableStatement stmt = con.prepareCall("{call combine()}")) {
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
