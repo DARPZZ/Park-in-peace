@@ -30,7 +30,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             stmt.setInt(5, user.getAcounterNumber());
             stmt.setString(6, user.getEmail());
             stmt.setInt(7, user.getZipCode());
-            stmt.setInt(8, user.getBlackListId());
+            //stmt.setInt(8, user.getBlackListId());
 
             stmt.execute();
 

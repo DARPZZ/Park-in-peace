@@ -136,6 +136,7 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 Model.Implements.DaoUser daoUser = new DaoUser();
+                //region update getuser method - userLoginCheck storedprocedure er lavet
                 List<User> userList = daoUser.GetAll();
 
                 boolean validCredentials = false;
@@ -146,7 +147,7 @@ public class Login implements UserPublisher
                         break;
                     }
                 }
-
+                //region end
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");

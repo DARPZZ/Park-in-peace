@@ -17,7 +17,6 @@ public class User
     private IntegerProperty acounterNumber;
     private StringProperty email;
     private IntegerProperty zipCode;
-    private IntegerProperty blackListId;
     private ArrayList<Integer> blackList;
     public User() {
 
@@ -37,12 +36,10 @@ public class User
     }
     public User(String name, String phoneNumber, String password, String address, String email, int zipCode)
     {
-        this.userId = new SimpleIntegerProperty(userId);
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
         Password = new SimpleStringProperty(password);
         this.address = new SimpleStringProperty(address);
-        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
     }
@@ -167,20 +164,6 @@ public class User
         this.zipCode.set(zipCode);
     }
 
-    public int getBlackListId()
-    {
-        return blackListId.get();
-    }
-
-    public IntegerProperty blackListIdProperty()
-    {
-        return blackListId;
-    }
-
-    public void setBlackListId(int blackListId)
-    {
-        this.blackListId.set(blackListId);
-    }
 
     public ArrayList<Integer> getBlackList() {
         return blackList;

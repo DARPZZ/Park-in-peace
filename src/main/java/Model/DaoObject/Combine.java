@@ -14,8 +14,10 @@ public class Combine
     private boolean toilet;
     private boolean el;
     private boolean Water;
+
     private Date startDate;
     private Date endDate;
+
     private String seasonName;
     private float lowSeasonPrice;
     private float midSeasonPrice;
