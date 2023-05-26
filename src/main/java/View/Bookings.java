@@ -1,13 +1,14 @@
 package View;
 
 import Model.DaoObject.Combine;
-import Model.DaoObject.PlotOwner;
+import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
-import Model.Implements.DaoOwner;
+import Model.Implements.DaoResevations;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,10 +20,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
+import javafx.util.converter.DateStringConverter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleBiFunction;
 
 public class Bookings extends Header implements UserSubscriber
 {
@@ -32,19 +43,15 @@ public class Bookings extends Header implements UserSubscriber
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
-    DaoCombine daoCombine = new DaoCombine();
-    List<Combine> combineList;
-
-
+    private boolean isUpdatingDate = false;
+    private ScheduledExecutorService executorService;
 
 
     public Bookings()
     {
         currentUserID = 0;
-        combineList = daoCombine.GetAll();
         setScene();
     }
-
 
     public void setScene()
     {
@@ -59,6 +66,11 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setPrefWidth(lejerButton.getPrefWidth());
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
+
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        Runnable getData = this::getData;
+
+        executorService.scheduleAtFixedRate(getData, 0, 4, TimeUnit.SECONDS);
         udLejerButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -68,52 +80,88 @@ public class Bookings extends Header implements UserSubscriber
 
     public void getData()
     {
-
+        DaoCombine daoCombine = new DaoCombine();
+        List<Combine> combineList = daoCombine.GetAll();
+        combineDataList.clear();
         for (Combine com : combineList) {
             int userID = com.getUserID();
+            int resevationsID = com.getResevationsID();
             String location = com.getLocation();
             int zipcode = com.getZipCode();
-            Date startDate = com.getStartDate();
-            Date endDate = com.getEndDate();
-
-            Combine combine = new Combine(userID, location, zipcode, startDate, endDate);
-
+            Date startDate = (Date) com.getStartDate();
+            Date endDate = (Date) com.getEndDate();
+            Combine combine = new Combine(userID,resevationsID, location, zipcode, startDate, endDate);
             if (currentUserID == userID) {
                 combineDataList.add(combine);
             }
         }
-
-        createTable();
+        Platform.runLater(() -> {
+            if (!isUpdatingDate) {
+                createTable();
+            }
+        });
     }
 
-    public void createTable()
-    {
+    public void createTable() {
+        if (tableView.getColumns().isEmpty()) {
+            tableView.setEditable(true);
+            TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
+            resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
+            resevationsIdColumn.setVisible(false);
 
-        TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
-        addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+            TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
+            addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
 
-        TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
-        zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
+            TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
+            zipcodeColumn.setCellValueFactory(cellData -> cellData.getValue().zipCodeProperty().asObject());
 
-        TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
-        startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
+            TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
+            startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
 
-        TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
-        endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEndDate()));
+            StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
+            startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
-        tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
+            TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
+            endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
+            endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
+            endDateColumn.setOnEditStart(event -> { isUpdatingDate = true;});
+            endDateColumn.setOnEditCommit(table ->
+            {
+                //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+                int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+                DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
+                String endDate = dtformat.format(table.getNewValue());
+                Resevations resevations = new Resevations();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate localDate = LocalDate.parse(endDate, formatter);
+                resevations.setReservationID(resid);
+                resevations.setEndDate(localDate);
+                updateEndDate(resevations);
+                isUpdatingDate = false;
+
+            });
+            tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
+
+        }
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
-
-        tableView.setItems(data);
+        tableView.getItems().setAll(data);
     }
+
+
+
 
     @Override
-    public void onUserReceived(User user)
-    {
+    public void onUserReceived(User user) {
         currentUserID = user.getUserId();
-        getData();
+      getData();
     }
 
+
+    public void updateEndDate(Resevations resevations)
+    {
+        new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+    }
+//TODO updateStartDate
 
 }

@@ -3,12 +3,13 @@ package Model.DaoObject;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Resevations
 {
-    private IntegerProperty reservationID;
+    private int reservationID;
     private LocalDate startDate;
     private LocalDate endDate;
     private IntegerProperty userID;
@@ -25,7 +26,7 @@ public class Resevations
     }
     public Resevations(int resID, LocalDate start, LocalDate end, int uID, int ploID)
     {
-        this.reservationID = new SimpleIntegerProperty(resID);
+        this.reservationID = resID;
         this.startDate = start;
         this.endDate = end;
         this.userID = new SimpleIntegerProperty(uID);
@@ -33,16 +34,19 @@ public class Resevations
 
     }
 
-    public int getReservationID() {
-        return reservationID.get();
+    public Resevations()
+    {
+
     }
 
-    public IntegerProperty reservationIDProperty() {
+    public int getReservationID()
+    {
         return reservationID;
     }
 
-    public void setReservationID(int reservationID) {
-        this.reservationID.set(reservationID);
+    public void setReservationID(int reservationID)
+    {
+        this.reservationID = reservationID;
     }
 
     public LocalDate getStartDate() {
@@ -84,4 +88,5 @@ public class Resevations
     public void setPlotID(int plotID) {
         this.plotID.set(plotID);
     }
+
 }
