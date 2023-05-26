@@ -55,7 +55,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             lastInsert.executeUpdate();
             //lastInsert.close();
             resultSet.close();
-
+            tblPlot.setPlotID(plotid);
             System.out.println("Done done");
 
 
