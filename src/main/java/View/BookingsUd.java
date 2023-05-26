@@ -72,8 +72,8 @@ public class BookingsUd extends Header implements UserSubscriber
             String location = plo.getLocation();
             int zipcode = plo.getZipCode();
             int userID = plo.getUserID();
-            Date startDate = plo.getStartDate();
-            Date endDate = plo.getSlutDate();
+            Date startDate = (Date) plo.getStartDate();
+            Date endDate = (Date) plo.getSlutDate();
             PlotOwner plotOwner = new PlotOwner(plotID, location, zipcode,userID, startDate, endDate);
 
             if (currentUserID == userID) { // Check for userID match
@@ -90,23 +90,24 @@ public class BookingsUd extends Header implements UserSubscriber
     }
     public void createTable()
     {
+        StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         tableView.setEditable(true);
 
         TableColumn<PlotOwner, String> addressColumn = new TableColumn<>("Address");
-        addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+        addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
         addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         TableColumn<PlotOwner, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
-        zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
+        zipcodeColumn.setCellValueFactory(cellData -> cellData.getValue().zipCodeProperty().asObject());
         zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
         TableColumn<PlotOwner, Date> startDateColumn = new TableColumn<>("Start Date");
-        startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
+        startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<PlotOwner, Date> endDateColumn = new TableColumn<>("End Date");
-        endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSlutDate()));
-        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
+        endDateColumn.setCellValueFactory(cellData -> cellData.getValue().slutDateProperty());
+        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
 
         tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
