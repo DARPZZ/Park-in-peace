@@ -29,11 +29,11 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             createRawPlot.setInt(5,tblPlot.getUserID());
             ResultSet resultSet = createRawPlot.executeQuery();
             resultSet.next();
-            createRawPlot.close();
+            //createRawPlot.close();
             plotid = resultSet.getInt(1);
             System.out.println("rawdone");
 
-            CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSizeFirstPass(?,?,?,?,?,?,?,?)}");
+            CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSizeFirstPass(?,?,?,?,?,?,?)}");
             firstPassInsert.setBoolean(1,tblPlot.isToilet());
             firstPassInsert.setBoolean(2,tblPlot.isElectric());
             firstPassInsert.setBoolean(3,tblPlot.isWater());
@@ -42,7 +42,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             firstPassInsert.setFloat(6,tblPlot.getHighPrice());
             firstPassInsert.setString(7,tblPlot.getPlotSize());
             resultSet = firstPassInsert.executeQuery();
-            firstPassInsert.close();
+            //firstPassInsert.close();
             resultSet.next();
 
             System.out.println("firstpass done");
@@ -53,7 +53,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             lastInsert.setInt(3,resultSet.getInt(2));
             lastInsert.setInt(4,resultSet.getInt(3));
             lastInsert.executeUpdate();
-            lastInsert.close();
+            //lastInsert.close();
             resultSet.close();
 
             System.out.println("Done done");
@@ -173,7 +173,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     }
 
     @Override
-    public void Delete(Plot tblPlot, int ID)
+    public void Delete(Plot tblPlot, int ID) // member to set ON DELETE CASCADE i DB CREATE SCRIPT
     {
         try {
             java.sql.Connection conn = con;
