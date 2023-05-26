@@ -288,7 +288,7 @@ end
 */
 /*
 go
-alter PROCEDURE combine
+Create PROCEDURE combine
 AS
 BEGIN
   SELECT
@@ -299,6 +299,7 @@ BEGIN
     tblService.fldElectric,
     tblService.fldToilet,
     tblService.fldWater,
+	tblResevations.fldreservationID,
     tblResevations.fldStartDate,
     tblResevations.fldEndDate,
     tblResevations.flduserID,
@@ -317,6 +318,7 @@ BEGIN
     LEFT JOIN tblSeasonPlot ON tblSeasonPlot.fldPlotID = tblPlot.fldPlotID
     LEFT JOIN tblSeason ON tblSeason.fldSeasonID = tblSeasonPlot.fldSeasonID
     LEFT JOIN tblZipcodeCity ON tblZipcodeCity.fldZipcode = tblPlot.fldZipcode
+	
 END
 */
 GO
