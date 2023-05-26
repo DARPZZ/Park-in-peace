@@ -43,7 +43,7 @@ public class Bookings extends Header implements UserSubscriber
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
-    private boolean isUpdatingStartDate = false;
+    private boolean isUpdatingDate = false;
     private ScheduledExecutorService executorService;
 
 
@@ -70,7 +70,7 @@ public class Bookings extends Header implements UserSubscriber
         executorService = Executors.newSingleThreadScheduledExecutor();
         Runnable getData = this::getData;
 
-        executorService.scheduleAtFixedRate(getData, 0, 5, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(getData, 0, 4, TimeUnit.SECONDS);
         udLejerButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -90,14 +90,13 @@ public class Bookings extends Header implements UserSubscriber
             int zipcode = com.getZipCode();
             Date startDate = (Date) com.getStartDate();
             Date endDate = (Date) com.getEndDate();
-
             Combine combine = new Combine(userID,resevationsID, location, zipcode, startDate, endDate);
             if (currentUserID == userID) {
                 combineDataList.add(combine);
             }
         }
         Platform.runLater(() -> {
-            if (!isUpdatingStartDate) {
+            if (!isUpdatingDate) {
                 createTable();
             }
         });
@@ -106,9 +105,9 @@ public class Bookings extends Header implements UserSubscriber
     public void createTable() {
         if (tableView.getColumns().isEmpty()) {
             tableView.setEditable(true);
-
             TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
             resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
+            resevationsIdColumn.setVisible(false);
 
             TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
             addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
@@ -118,6 +117,7 @@ public class Bookings extends Header implements UserSubscriber
 
             TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
             startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+
             StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
             startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
@@ -125,9 +125,25 @@ public class Bookings extends Header implements UserSubscriber
             endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
             endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
-            tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
-        }
+            endDateColumn.setOnEditStart(event -> { isUpdatingDate = true;});
+            endDateColumn.setOnEditCommit(table ->
+            {
+                //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+                int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+                DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
+                String endDate = dtformat.format(table.getNewValue());
+                Resevations resevations = new Resevations();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate localDate = LocalDate.parse(endDate, formatter);
+                resevations.setReservationID(resid);
+                resevations.setEndDate(localDate);
+                updateEndDate(resevations);
+                isUpdatingDate = false;
 
+            });
+            tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
+
+        }
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.getItems().setAll(data);
     }
