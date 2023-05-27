@@ -1,6 +1,8 @@
 package Model.Implements;
 
 import java.sql.CallableStatement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 abstract public class Connection
 {
@@ -10,5 +12,20 @@ abstract public class Connection
     public static String Port = "1433";
     public static java.sql.Connection con;
     public CallableStatement callableStatement;
+    private boolean conClosed;
+    void createConnection() {
+        try {
+            conClosed = con.isClosed();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        if (conClosed == false) {
+            try {
+                con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
+            } catch (SQLException e) {
+                System.err.println("Database connection fail" + e.getMessage());
+            }
+        }
+    }
 
 }

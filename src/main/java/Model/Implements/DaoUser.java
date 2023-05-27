@@ -9,18 +9,16 @@ import java.util.List;
 
 public class DaoUser extends Model.Implements.Connection implements DaoInterface<User>
 {
+
     public DaoUser()
     {
-        try {
-            con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
-        } catch (SQLException e) {
-            System.err.println("Database connection fail" + e.getMessage());
-        }
     }
+
 
     @Override
     public void Create(User user)
     {
+        createConnection();
         try (Connection conn = con)
         {
             int userid=0;
@@ -42,7 +40,6 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                 CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
                 blackListInsert.setInt(1,i);
                 blackListInsert.setInt(2,userid);
-                blackListInsert.close();
             }
             user.setUserId(userid);
 
@@ -55,6 +52,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public void Update( User user, String fieldname, String value)
     {
+        createConnection();
         try
         {Connection conn = con;
         CallableStatement stmt = conn.prepareCall("{call updateUser(?,?,?)}");
@@ -70,6 +68,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public void Delete(User user, int ID)
     {
+        createConnection();
         try {Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call deleteUser(?)}");
             stmt.setInt(1, ID);
@@ -82,6 +81,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public User Get(int ID)
     {
+        createConnection();
         try {Connection conn = con;
             ArrayList<Integer> blacklist = new ArrayList<>();
             CallableStatement stmt = conn.prepareCall("{call getUser(?)}");
@@ -117,6 +117,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
 
 
     public List<User> GetAll() {
+        createConnection();
         List<User> userList = new ArrayList<>();
         try (Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call getAllUser()}")) {
@@ -155,6 +156,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
 
     public void removeBlackList(User user, int blacklist)
     {
+        createConnection();
         try {
             CallableStatement remove = con.prepareCall("{CALL removeBlackList(?,?)}");
             remove.setInt(1,user.getUserId());
@@ -168,6 +170,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     }
     public void addBlackList(User user, int blacklist)
     {
+        createConnection();
         try {
             CallableStatement add = con.prepareCall("{CALL addBlackList(?,?)}");
             add.setInt(1,user.getUserId());
@@ -177,6 +180,40 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             System.out.println(e);
         }
 
+    }
+    public ArrayList<Integer> getBlackListedBy(User user)
+    {
+        createConnection();
+        ArrayList<Integer> blacklist = new ArrayList<>();
+        try {
+            CallableStatement list = con.prepareCall("{CALL getBlackListedBy(?)}");
+            list.setInt(1,user.getUserId());
+            ResultSet resultSet = list.executeQuery();
+            while (resultSet.next())
+            {
+                blacklist.add(resultSet.getInt(1));
+            }
+            return blacklist;
+        }catch (Exception e ){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public User checkLogin (String username, String password)
+    {
+        createConnection();
+        try {
+            CallableStatement checklogin = con.prepareCall("{CALL userLoginCheck(?,?)}");
+            checklogin.setString(1, password);
+            checklogin.setString(2, username);
+            ResultSet resultSet = checklogin.executeQuery();
+            resultSet.next();
+            User user = Get(resultSet.getInt("fldUserID"));
+            return user;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 
 }

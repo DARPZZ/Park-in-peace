@@ -2,7 +2,7 @@ package View;
 
 import Model.DaoObject.Plot;
 import Model.Implements.DaoPlot;
-import Model.PlotList;
+import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
 import javafx.event.ActionEvent;

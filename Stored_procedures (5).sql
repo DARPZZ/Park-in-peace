@@ -285,7 +285,7 @@ GO
 CREATE PROCEDURE getAllPlots
 as
 begin
-SELECT fldUserID,fldPlotID,fldLocation, fldImage, fldPlotSize,fldZipcode from tblPlot
+SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fldZipcode from tblPlot
 LEFT JOIN
 tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
 end
@@ -502,4 +502,11 @@ begin
 IF NOT EXISTS (SELECT fldBlackList FROM tblBlackList WHERE fldUserID = @fldUserID AND fldBlackList = @fldBlackList)
 	INSERT INTO tblBlackList (fldBlackList,fldUserID) VALUES (@fldBlackList,@fldUserID)
 
+end
+
+GO
+CREATE PROCEDURE getBlackListedBy (@fldUserID int)
+    as
+begin
+SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
 end

@@ -1,5 +1,10 @@
 package com.example.park;
+import Model.DaoObject.Plot;
+import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
+import Model.DatabaseWorker.BlackList;
+import Model.DatabaseWorker.PlotList;
+import Model.DatabaseWorker.ReservationList;
 import Model.Implements.DaoUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -137,14 +142,21 @@ public class Login implements UserPublisher
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
-                Model.Implements.DaoUser daoUser = new DaoUser();
+                user = BlackList.getSingleton().checkLogin(username,kodeord);
+                //Model.Implements.DaoUser daoUser = new DaoUser();
                 //region update getuser method - userLoginCheck storedprocedure er lavet
+                userPublisher.notifySubscribers(user);
+                HelloApplication.changeScene(SceneName.Main);
+                System.out.println("Login successful!");
+
+                /*
                 List<User> userList = daoUser.GetAll();
 
                 boolean validCredentials = false;
-                for (User user : userList) {
-                    if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
-                        userPublisher.notifySubscribers(user);
+                for (User userIterate : userList) {
+                    if (userIterate.getName().equals(username) && userIterate.getPassword().equals(kodeord)) {
+                        userPublisher.notifySubscribers(userIterate);
+                        user = userIterate;
                         validCredentials = true;
                         break;
                     }
@@ -156,6 +168,11 @@ public class Login implements UserPublisher
                 } else {
                     System.out.println("Login Failed");
                 }
+                ReservationList.getSingleton().setList();
+                PlotList.getSingleton().setList();
+                BlackList.getSingleton().setBlackList(user);
+
+                 */
             }
 
         });
