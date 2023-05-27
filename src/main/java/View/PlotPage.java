@@ -138,8 +138,7 @@ public class PlotPage extends Header
                         Float.parseFloat(textFieldList.get(3).getText()),
                         Float.parseFloat(textFieldList.get(4).getText()),
                         Float.parseFloat(textFieldList.get(5).getText()));
-                DaoPlot meme = new DaoPlot();
-                meme.Create(plotNew);
+                        PlotList.getSingleton().CreatePlot(plotNew);
                 // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
 
 

@@ -38,7 +38,9 @@ public final class PlotList
     {plotList.add(plot);}
 
     public void CreatePlot(Plot tblPlot)
-    {plotWorker.Create(tblPlot);}
+    {   plotWorker.Create(tblPlot);
+        plotList.add(tblPlot);
+    }
 
     public void UpdatePlot(Plot tblPlot, String fieldname, String value)
     {
