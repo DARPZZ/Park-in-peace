@@ -9,20 +9,20 @@ import java.util.List;
 
 public class DaoUser extends Model.Implements.Connection implements DaoInterface<User>
 {
+
     public DaoUser()
     {
-        try {
-            con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
-        } catch (SQLException e) {
-            System.err.println("Database connection fail" + e.getMessage());
-        }
     }
+
 
     @Override
     public void Create(User user)
     {
-        try (Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?,?,?)}")) {
+        createConnection();
+        try (Connection conn = con)
+        {
+            int userid=0;
+            CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?,?)}");
             stmt.setString(1,user.getName());
             stmt.setString(2, user.getPhoneNumber());
             stmt.setString(3, user.getPassword());
@@ -30,9 +30,19 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             stmt.setInt(5, user.getAcounterNumber());
             stmt.setString(6, user.getEmail());
             stmt.setInt(7, user.getZipCode());
-            //stmt.setInt(8, user.getBlackListId());
 
-            stmt.execute();
+
+            ResultSet resultSet = stmt.executeQuery();
+            resultSet.next();
+            userid =resultSet.getInt(1);
+            for (Integer i: user.getBlackList()) // could be better with samlet string storedprocedure
+            {
+                CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
+                blackListInsert.setInt(1,i);
+                blackListInsert.setInt(2,userid);
+            }
+            user.setUserId(userid);
+
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -42,12 +52,14 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public void Update( User user, String fieldname, String value)
     {
-        try{Connection conn = con;
+        createConnection();
+        try
+        {Connection conn = con;
         CallableStatement stmt = conn.prepareCall("{call updateUser(?,?,?)}");
         stmt.setInt(1,user.getUserId());
         stmt.setString(2, fieldname);
         stmt.setString(3, value);
-            stmt.executeUpdate();
+        stmt.executeUpdate();
 
     }catch (SQLException e) {
             System.out.println(e);}
@@ -56,6 +68,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public void Delete(User user, int ID)
     {
+        createConnection();
         try {Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call deleteUser(?)}");
             stmt.setInt(1, ID);
@@ -68,6 +81,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     @Override
     public User Get(int ID)
     {
+        createConnection();
         try {Connection conn = con;
             ArrayList<Integer> blacklist = new ArrayList<>();
             CallableStatement stmt = conn.prepareCall("{call getUser(?)}");
@@ -103,24 +117,28 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
 
 
     public List<User> GetAll() {
+        createConnection();
         List<User> userList = new ArrayList<>();
         try (Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call getAllUser()}")) {
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
-            ArrayList<Integer> blacklist = new ArrayList<>();
-            CallableStatement csBlacklist = conn.prepareCall(" {call getAllBlackList()}");
-            ResultSet blackListResult = csBlacklist.executeQuery();
-            while (blackListResult.next())
-            {
-                blacklist.add(blackListResult.getInt("fldBlackList"));
-            }
-
-
             // Process the result set
+            int currentID =0;
             while (rs.next()) {
-                userList.add(new User( rs.getInt("fldUserID"),
+                currentID = rs.getInt("fldUserID");
+                ArrayList<Integer> blacklist = new ArrayList<>();
+                CallableStatement getBlacklist = conn.prepareCall(" {call getBlacklist(?)}");
+                getBlacklist.setInt(1,currentID);
+                ResultSet getblackListResult = getBlacklist.executeQuery();
+                while (getblackListResult.next())
+                {
+                    blacklist.add(getblackListResult.getInt("fldBlackList"));
+                }
+
+
+                userList.add(new User( currentID,
                         rs.getString("fldName"),
                         rs.getString("fldPhoneNumber"),
                         rs.getString("fldPassword"),
@@ -134,6 +152,68 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             e.printStackTrace(); // Handle the exception appropriately
         }
         return userList;
+    }
+
+    public void removeBlackList(User user, int blacklist)
+    {
+        createConnection();
+        try {
+            CallableStatement remove = con.prepareCall("{CALL removeBlackList(?,?)}");
+            remove.setInt(1,user.getUserId());
+            remove.setInt(2,blacklist);
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+
+    }
+    public void addBlackList(User user, int blacklist)
+    {
+        createConnection();
+        try {
+            CallableStatement add = con.prepareCall("{CALL addBlackList(?,?)}");
+            add.setInt(1,user.getUserId());
+            add.setInt(2,blacklist);
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
+    public ArrayList<Integer> getBlackListedBy(User user)
+    {
+        createConnection();
+        ArrayList<Integer> blacklist = new ArrayList<>();
+        try {
+            CallableStatement list = con.prepareCall("{CALL getBlackListedBy(?)}");
+            list.setInt(1,user.getUserId());
+            ResultSet resultSet = list.executeQuery();
+            while (resultSet.next())
+            {
+                blacklist.add(resultSet.getInt(1));
+            }
+            return blacklist;
+        }catch (Exception e ){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public User checkLogin (String username, String password)
+    {
+        createConnection();
+        try {
+            CallableStatement checklogin = con.prepareCall("{CALL userLoginCheck(?,?)}");
+            checklogin.setString(1, password);
+            checklogin.setString(2, username);
+            ResultSet resultSet = checklogin.executeQuery();
+            resultSet.next();
+            User user = Get(resultSet.getInt("fldUserID"));
+            return user;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 
 }

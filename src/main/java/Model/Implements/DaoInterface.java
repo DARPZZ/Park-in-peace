@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface DaoInterface<T>
 {
+
     public abstract void Create(T t);
 
     public abstract void Update(T t, String fieldname, String value);

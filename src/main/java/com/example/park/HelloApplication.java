@@ -123,5 +123,4 @@ public class HelloApplication extends Application
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
     }
-
-}
+    }

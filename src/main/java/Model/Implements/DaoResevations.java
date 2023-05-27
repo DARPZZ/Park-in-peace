@@ -22,6 +22,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
      */
     public DaoResevations()
     {
+        createConnection();
         try {
             con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
         } catch (SQLException e) {
@@ -34,6 +35,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     @Override
     public void Create(Resevations resevations)
     {
+        createConnection();
         try (Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call insertResevation(?,?,?,?)}")) {
             stmt.setString(1, String.valueOf(resevations.getStartDate()));
@@ -52,6 +54,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     @Override
     public void Update(Resevations resevations, String fieldname, String value)
     {
+        createConnection();
         try{Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call updateResevations(?,?,?)}");
             stmt.setInt(1,resevations.getReservationID());
@@ -66,6 +69,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     @Override
     public void Delete(Resevations resevations, int ID)
     {
+        createConnection();
         try {Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call delteResevations(?)}");
             stmt.setInt(1, ID);
@@ -78,6 +82,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     @Override
     public Resevations Get(int ID)
     {
+        createConnection();
             try {Connection conn = con;
                 CallableStatement stmt = conn.prepareCall("{call getresevastion(?)}");
                 stmt.setInt(1, ID);
@@ -99,6 +104,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     @Override
     public List<Resevations> GetAll()
     {
+        createConnection();
         List<Resevations> resevationsList = new ArrayList<>();
         try (Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call getAllResevations()}")) {

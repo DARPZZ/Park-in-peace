@@ -45,8 +45,8 @@ CREATE PROCEDURE insertUser (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX)
 	@fldEmail varchar(max), @fldZipcode int)
 as
 begin
-DECLARE @sql varchar(MAX)
-SET @sql = 'insert into [dbo].[tblUser]
+SET NOCOUNT ON
+insert into [dbo].[tblUser]
            ([fldName]
            ,[fldPhoneNumber]
            ,[fldPassword]
@@ -54,10 +54,8 @@ SET @sql = 'insert into [dbo].[tblUser]
            ,[fldAcountNumber]
            ,[fldEmail]
            ,[fldZipcode])
-		   values(''' + @fldName + ''' ,''' + @fldPhoneNumber + ''' , ''' + @fldPassword + ''' , ''' + @fldAddress +''', ' + CAST( @fldAcountNumber as varchar) + 
-				', ''' + @fldEmail + ''' , ' + CAST(@fldZipcode as varchar) +')'
-					print (@sql)
-					execute (@sql)
+		   values(@fldName,@fldPhoneNumber,@fldPassword,@fldAddress,@fldAcountNumber,@fldEmail,@fldZipcode);
+		   SELECT SCOPE_IDENTITY()
 end
 */
 
@@ -96,6 +94,13 @@ DECLARE @sql varchar(MAX)
 SET @sql ='UPDATE tblResevations set ' + @fieldname +' = ''' + @value + ''' where fldreservationID = ' + CAST( @fldreservationID as varchar)
 print @sql
 execute (@SQL)
+end
+
+GO
+CREATE PROCEDURE insertBlacklist (@fldBlacklist int, @fldUserID int)
+as
+begin
+insert into tblBlackList (fldBlackList, fldUserID) Values(@fldBlacklist,@fldUserID)
 end
 
 
@@ -280,7 +285,7 @@ GO
 CREATE PROCEDURE getAllPlots
 as
 begin
-SELECT fldUserID,fldPlotID,fldLocation, fldImage, fldPlotSize,fldZipcode from tblPlot
+SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fldZipcode from tblPlot
 LEFT JOIN
 tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
 end
@@ -360,6 +365,7 @@ SELECT fldPlotSize FROM  tblPlot JOIN
 tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID WHERE tblPlot.fldPlotID = @fldPlotID
 end
 
+GO
 CREATE PROCEDURE updatePlotSize (@fldPlotSize varchar(MAX), @fldPlotSizeID int)
     as
 begin
@@ -376,6 +382,8 @@ set @value2 =@value
 set @SQL = N'UPDATE tblPlot SET '+ @fieldname +' = '+CHAR(39) + @value2 +CHAR(39) + ' WHERE fldPlotID =' + @ID2
 exec sp_executesql @SQL
 end
+
+GO
 CREATE PROCEDURE updatePlotIntegers (@fieldname varchar(MAX), @value int, @ID int)
     as
 begin
@@ -388,6 +396,7 @@ set @SQL = N'UPDATE tblPlot SET '+ @fieldname +' = ' + @value2 + ' WHERE fldPlot
 exec sp_executesql @SQL
 end
 
+GO
 CREATE PROCEDURE updatePlotServices (@fieldname varchar(MAX), @value VARCHAR(MAX), @ID int)
     as
 begin
@@ -400,6 +409,7 @@ set @SQL = N'UPDATE tblService SET '+ @fieldname +' = ' + @value2 + ' WHERE fldS
 exec sp_executesql @SQL
 end
 
+GO
 CREATE PROCEDURE getPlotServiceID (@ID int)
     as
 begin
@@ -407,6 +417,7 @@ SELECT tblService.fldServiceID FROM tblParkingService JOIN
                                     tblService ON tblService.fldServiceID = tblParkingService.fldServiceID WHERE tblParkingService.fldPlotID =2
 end
 
+GO
 CREATE PROCEDURE updatePlotPricing (@fieldname varchar(MAX), @value float, @ID int)
     as
 begin
@@ -419,6 +430,7 @@ set @SQL = N'UPDATE tblSeason SET '+ @fieldname +' = ' + @value2 + ' WHERE fldSe
 exec sp_executesql @SQL
 end
 
+GO
 CREATE PROCEDURE getPlotSeasonID(@ID int)
     as
 begin
@@ -426,6 +438,7 @@ SELECT tblSeason.fldSeasonID FROM tblSeasonPlot JOIN
                                   tblSeason ON tblSeason.fldSeasonID = tblSeasonPlot.fldSeasonID WHERE tblSeasonPlot.fldPlotID =2
 end
 
+GO
 CREATE PROCEDURE createPlotNoPlotSize (@Location VARCHAR(MAX), @Description VARCHAR(MAX), @Image VARCHAR(MAX), @ZipCode int, @UserID int)
     as
 begin
@@ -434,12 +447,14 @@ VALUES (@Location,@Description,@Image,@ZipCode,@UserID)
 SELECT SCOPE_IDENTITY()
 end
 
+GO
 CREATE PROCEDURE getPlotID (@userID int, @location VARCHAR(MAX))
     as
 begin
 SELECT MAX(1) fldPlotID FROM tblPlot WHERE fldUserID =@userID AND fldLocation =@location
 end
 
+GO
 CREATE PROCEDURE insertSeasonServiceSizeFirstPass (
     @fldToilet int, @fldElectric int , @fldWater int, @fldLowSeasonPrice float,@fldMediumSeasonPrice float,@fldHighSeasonPrice float,
     @fldPlotSize NVARCHAR(MAX))
@@ -457,6 +472,7 @@ SET @zipID =SCOPE_IDENTITY()
 SELECT @serviceID, @seasonID, @zipID
 end
 
+GO
 CREATE PROCEDURE insertPlotLastPass (@plotID int, @serviceID int,@seasonID int,@sizeID int)
     as
 begin
@@ -465,8 +481,32 @@ INSERT INTO tblParkingService (fldPlotID, fldServiceID) VALUES (@plotID,@service
 UPDATE tblPlot SET fldPlotSizeID = @sizeID WHERE fldPlotID = @plotID
 end
 
+GO
 CREATE PROCEDURE userLoginCheck (@password VARCHAR(MAX), @username VARCHAR(MAX))
     as
 begin
 SELECT * FROM tblUser WHERE fldPassword =@password AND fldName =@username
+end
+
+GO
+CREATE PROCEDURE removeBlackList (@fldUserID int, @fldBlackList int)
+    as
+begin
+DELETE tblBlackList WHERE fldUserID = @fldUserID AND fldBlackList = @fldBlackList
+end
+
+GO
+CREATE PROCEDURE addBlackList (@fldUserID int, @fldBlackList int)
+    as
+begin
+IF NOT EXISTS (SELECT fldBlackList FROM tblBlackList WHERE fldUserID = @fldUserID AND fldBlackList = @fldBlackList)
+	INSERT INTO tblBlackList (fldBlackList,fldUserID) VALUES (@fldBlackList,@fldUserID)
+
+end
+
+GO
+CREATE PROCEDURE getBlackListedBy (@fldUserID int)
+    as
+begin
+SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
 end

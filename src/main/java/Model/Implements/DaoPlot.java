@@ -9,6 +9,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
 {
     public DaoPlot()
     {
+        createConnection();
         try {
             con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
         } catch (SQLException e) {
@@ -18,6 +19,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public void Create(Plot tblPlot)
     {
+        createConnection();
         try
         {
             int plotid=0;
@@ -55,7 +57,9 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             lastInsert.executeUpdate();
             //lastInsert.close();
             resultSet.close();
+
             tblPlot.setPlotID(plotid);
+
             System.out.println("Done done");
 
 
@@ -69,6 +73,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public void Update(Plot tblPlot, String fieldname, String value)
     {
+        createConnection();
         switch (fieldname) {
             case "fldLowSeasonPrice","fldMidSeasonPrice","HighSeasonPrice":
             {
@@ -175,6 +180,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public void Delete(Plot tblPlot, int ID) // member to set ON DELETE CASCADE i DB CREATE SCRIPT
     {
+        createConnection();
         try {
             java.sql.Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call deletePlot(?)}");
@@ -188,6 +194,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public Plot Get(int ID)
     {
+        createConnection();
         try {
             java.sql.Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call getPlot(?)}");
@@ -226,24 +233,25 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     }
 
     @Override
-    public List<Plot> GetAll()
+    public ArrayList<Plot> GetAll()
     {
-        List<Plot> plotList = new ArrayList<>();
+        createConnection();
+        ArrayList<Plot> plotList = new ArrayList<Plot>();
         try (java.sql.Connection conn = con;
              CallableStatement stmt = conn.prepareCall("{call getAllPlots()}"))
         {
-            CallableStatement servicesPrice = conn.prepareCall("{call getAllPlotPricingServices(?)}");
+            CallableStatement servicesPrice = conn.prepareCall("{call getAllPlotPricingServices()}");
             ResultSet servicesPriceRS = servicesPrice.executeQuery();
             servicesPriceRS.next();
             boolean[] services = new boolean[3];
             for (int i = 0; i <3 ; i++)
             {
-                services[i] = servicesPriceRS.getBoolean(i);
+                services[i] = servicesPriceRS.getBoolean(i+1);
             }
             float[] prices = new float[3];
             for (int i = 0; i <3 ; i++)
             {
-                prices[i+3] = servicesPriceRS.getFloat(i);
+                prices[i] = servicesPriceRS.getFloat(i+1);
             }
 
             // Execute the stored procedure
