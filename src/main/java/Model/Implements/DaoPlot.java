@@ -259,9 +259,8 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                          prices[i] = priceRS.getFloat(i+1);
                      }
                      System.out.println("e");
-                     CallableStatement stmt2 = con.prepareCall("{call getAllPlots()}");
                      ResultSet rs = stmt.executeQuery();
-
+                     rs.next();
                 plotList.add(new Plot(
                         rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),
