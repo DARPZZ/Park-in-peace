@@ -231,14 +231,15 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         try
              {
                  CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
-                 ResultSet rs = stmt.executeQuery();
-                 while (rs.next())
+                 ResultSet rs2 = stmt.executeQuery();
+                 while (rs2.next())
                  {
-                    plotIDs.add(rs.getInt(1)) ;
+                    plotIDs.add(rs2.getInt(1)) ;
                  }
                  System.out.println("me2");
                  for (Integer j:plotIDs)
                  {
+                     createConnection();
                      CallableStatement servicesCS = con.prepareCall("{call getPlotServices(?)}");
                      servicesCS.setInt(1,j);
                      ResultSet servicesRS = servicesCS.executeQuery();
@@ -257,6 +258,10 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                          if (priceRS.next())
                          prices[i] = priceRS.getFloat(i+1);
                      }
+                     System.out.println("e");
+                     CallableStatement stmt2 = con.prepareCall("{call getAllPlots()}");
+                     ResultSet rs = stmt.executeQuery();
+
                 plotList.add(new Plot(
                         rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),

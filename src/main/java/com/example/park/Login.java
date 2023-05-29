@@ -143,7 +143,7 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
-                PlotList.getSingleton().setList();
+                //PlotList.getSingleton().setList();
                 ReservationList.getSingleton().setList();
                 //BlackList.getSingleton().setBlackList(user);
                 //Model.Implements.DaoUser daoUser = new DaoUser();
