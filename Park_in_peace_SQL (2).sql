@@ -1,6 +1,7 @@
 use dbParkInPeace
 --CREATE DATABASE dbParkInPeace
 
+/*
 GO
 ALTER TABLE [dbo].[tblBlackList] DROP CONSTRAINT [fk_BLA]
     GO
@@ -10,7 +11,7 @@ ALTER TABLE [dbo].[tblResevations] DROP CONSTRAINT [fk_PLres]
     GO
 ALTER TABLE [dbo].[tblUser] DROP CONSTRAINT [fk_ZIP]
     GO
-ALTER TABLE [dbo].[tblSeason] DROP CONSTRAINT [fk_Psea]
+ALTER TABLE [dbo].[tblSeason] DROP CONSTRAINT [fk_PLsea]
     GO
 ALTER TABLE [dbo].[tblPlot] DROP CONSTRAINT [fk_plot]
     GO
@@ -20,9 +21,9 @@ ALTER TABLE [dbo].[tblPlot] DROP CONSTRAINT [fk_PLuse]
     GO
 ALTER TABLE [dbo].[tblParkingService] DROP CONSTRAINT [fk_Pser]
     GO
-ALTER TABLE [dbo].[tblParkingService] DROP CONSTRAINT [fk_SERps]
+ALTER TABLE [dbo].[tblParkingService] DROP CONSTRAINT [fk_PSplo]
     GO
-
+	*/
 
 
 drop table if exists dbo.tblBlackList
@@ -84,10 +85,8 @@ fldZipcode int
 Create table tblService
 (
     fldServiceID int not null IDENTITY(1,1) PRIMARY KEY,
-    fldServiceValue bit,
-    fldServiceType varchar(MAX),
-    fldParkingServiceID int
-)
+    fldServiceType varchar(MAX)
+    )
 CREATE TABLE tblParkingService
 (
     fldParkingServiceID int IDENTITY (1,1) PRIMARY KEY,
@@ -130,11 +129,16 @@ ALTER TABLE tblPlot
 CONSTRAINT fk_PLsiz foreign key (fldPlotSizeID) references tblPlotSize  (fldPlotSizeID) ,
 CONSTRAINT fk_PLuse foreign key (fldUserID) references tblUser (fldUserID)
 
+ALTER TABLE tblSeason
+    add constraint fk_PLsea
+        foreign key (fldPlotID) references tblPlot(fldPlotID) ON DELETE CASCADE
+
 ALTER TABLE tblParkingService
     add constraint fk_Pser
         foreign key(fldPlotID) references tblPlot (fldPlotID) ON DELETE CASCADE,
-CONSTRAINT fk_SERps foreign key (fldServiceID) references tblService (fldServiceID) ON DELETE CASCADE
+CONSTRAINT fk_PSplo foreign key (fldServiceID) references tblService(fldServiceID)
 
-ALTER TABLE tblSeason
-    add constraint fk_Psea
-        foreign key (fldPlotID) references tblPlot(fldPlotID) ON DELETE CASCADE
+--preload service types
+INSERT INTO tblService (fldServiceType) VALUES ('Toilet')
+INSERT INTO tblService (fldServiceType) VALUES ('Water')
+INSERT INTO tblService (fldServiceType) VALUES ('Electric')

@@ -143,6 +143,8 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
+                PlotList.getSingleton().setList();
+                ReservationList.getSingleton().setList();
                 //Model.Implements.DaoUser daoUser = new DaoUser();
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 userPublisher.notifySubscribers(user);

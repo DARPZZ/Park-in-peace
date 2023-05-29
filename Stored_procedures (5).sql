@@ -188,29 +188,6 @@ end
 
 
 
-
-GO
-CREATE PROCEDURE getPlotPricingServices (@plotID int)
-as
-begin
-select fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice FROM tblSeasonPlot JOIN
-tblSeason ON tblSeasonPlot.fldSeasonID = tblSeason.fldSeasonID WHERE tblSeasonPlot.fldPlotID = @plotID
-UNION
-SELECT fldToilet,fldWater,fldElectric FROM tblParkingService join
-tblService ON tblParkingService.fldServiceID = tblService.fldServiceID WHERE tblParkingService.fldPlotID =@plotID
-end
-
-    GO
-CREATE PROCEDURE getallPlotPricingServices
-as
-begin
-select fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice FROM tblSeasonPlot JOIN
-tblSeason ON tblSeasonPlot.fldSeasonID = tblSeason.fldSeasonID
-UNION
-SELECT fldToilet,fldWater,fldElectric FROM tblParkingService join
-tblService ON tblParkingService.fldServiceID = tblService.fldServiceID
-end
-
 GO
 CREATE PROCEDURE getAllSeasonPlot
 as
@@ -397,7 +374,7 @@ exec sp_executesql @SQL
 end
 
 GO
-CREATE PROCEDURE updatePlotServices (@fieldname varchar(MAX), @value VARCHAR(MAX), @ID int)
+CREATE PROCEDURE insertServicePlot ( @ID int, @value int)
     as
 begin
 DECLARE @SQL NVARCHAR(MAX)
@@ -405,16 +382,15 @@ DECLARE @value2 NVARCHAR(MAX)
 DECLARE @ID2 NVARCHAR(MAX)
 set @ID2 = @ID
 set @value2 =@value
-set @SQL = N'UPDATE tblService SET '+ @fieldname +' = ' + @value2 + ' WHERE fldServiceID =' + @ID2
+set @SQL = N'INSERT INTO tblParkingServices (fldPlotID,fldServiceID) VALUES('+@ID2+','+@value2+')'
 exec sp_executesql @SQL
 end
 
 GO
-CREATE PROCEDURE getPlotServiceID (@ID int)
+CREATE PROCEDURE deleteServicePlot (@ID int, @value int)
     as
 begin
-SELECT tblService.fldServiceID FROM tblParkingService JOIN
-                                    tblService ON tblService.fldServiceID = tblParkingService.fldServiceID WHERE tblParkingService.fldPlotID =2
+DELETE tblParkingService WHERE fldPlotID = @ID AND fldServiceID = @value
 end
 
 GO
@@ -426,16 +402,8 @@ DECLARE @value2 NVARCHAR(MAX)
 DECLARE @ID2 NVARCHAR(MAX)
 set @ID2 = @ID
 set @value2 =@value
-set @SQL = N'UPDATE tblSeason SET '+ @fieldname +' = ' + @value2 + ' WHERE fldSeasonID =' + @ID2
+set @SQL = N'UPDATE tblSeason SET '+ @fieldname +' = ' + @value2 + ' WHERE fldPlotID =' + @ID2
 exec sp_executesql @SQL
-end
-
-GO
-CREATE PROCEDURE getPlotSeasonID(@ID int)
-    as
-begin
-SELECT tblSeason.fldSeasonID FROM tblSeasonPlot JOIN
-                                  tblSeason ON tblSeason.fldSeasonID = tblSeasonPlot.fldSeasonID WHERE tblSeasonPlot.fldPlotID =2
 end
 
 GO
@@ -447,39 +415,38 @@ VALUES (@Location,@Description,@Image,@ZipCode,@UserID)
 SELECT SCOPE_IDENTITY()
 end
 
-GO
-CREATE PROCEDURE getPlotID (@userID int, @location VARCHAR(MAX))
-    as
-begin
-SELECT MAX(1) fldPlotID FROM tblPlot WHERE fldUserID =@userID AND fldLocation =@location
-end
 
 GO
-CREATE PROCEDURE insertSeasonServiceSizeFirstPass (
-    @fldToilet int, @fldElectric int , @fldWater int, @fldLowSeasonPrice float,@fldMediumSeasonPrice float,@fldHighSeasonPrice float,
-    @fldPlotSize NVARCHAR(MAX))
+CREATE PROCEDURE insertSeasonServiceSize(
+    @fldToiletID int, @fldElectricID int , @fldWaterID int, @fldLowSeasonPrice float,@fldMediumSeasonPrice float,@fldHighSeasonPrice float,
+    @fldPlotSize NVARCHAR(MAX),@fldPlotID int)
     as
 begin
-DECLARE @serviceID int
-DECLARE @seasonID int
 DECLARE @zipID int
-INSERT INTO tblService (fldToilet,fldElectric,fldWater) VALUES (@fldToilet,@fldElectric,@fldWater)
-SET @serviceID = SCOPE_IDENTITY()
-INSERT INTO tblSeason (fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (@fldLowSeasonPrice,@fldMediumSeasonPrice,@fldHighSeasonPrice)
-SET @seasonID = SCOPE_IDENTITY()
-INSERT INTO tblPlotSize (fldPlotSize) VALUES (@fldPlotSize)
+INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldToiletID)  IF(@fldToiletID >0)
+INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)  IF(@fldWaterID >0)
+INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)  IF(@fldElectricID >0)
+INSERT INTO tblSeason (fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice, fldPlotID) VALUES (@fldLowSeasonPrice,@fldMediumSeasonPrice,@fldHighSeasonPrice,@fldPlotID);
+INSERT INTO tblPlotSize (fldPlotSize) VALUES (@fldPlotSize);
 SET @zipID =SCOPE_IDENTITY()
-SELECT @serviceID, @seasonID, @zipID
+UPDATE tblPlot SET fldPlotSizeID = @zipID WHERE fldPlotID = @fldPlotID
+end
+
+go
+CREATE PROCEDURE getPlotServices (@plotID int)
+    as
+begin
+SELECT fldServiceID FROM tblParkingService WHERE fldPlotID =@plotID
 end
 
 GO
-CREATE PROCEDURE insertPlotLastPass (@plotID int, @serviceID int,@seasonID int,@sizeID int)
+CREATE PROCEDURE getPlotPrices (@plotID int)
     as
 begin
-INSERT INTO tblParkingService (fldPlotID, fldServiceID) VALUES (@plotID,@serviceID)
-    INSERT INTO tblSeasonPlot (fldPlotID,fldSeasonID) VALUES (@plotID,@seasonID)
-UPDATE tblPlot SET fldPlotSizeID = @sizeID WHERE fldPlotID = @plotID
+SELECT fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice FROM tblSeason WHERE fldPlotID =@plotID
 end
+
+
 
 GO
 CREATE PROCEDURE userLoginCheck (@password VARCHAR(MAX), @username VARCHAR(MAX))
