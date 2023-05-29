@@ -148,3 +148,8 @@ INSERT INTO tblPlotSize (fldPlotSize) VALUES ('small')
 INSERT INTO tblPlotSize (fldPlotSize) VALUES ('mid')
 INSERT INTO tblPlotSize (fldPlotSize) VALUES ('large')
 INSERT INTO tblPlotSize (fldPlotSize) VALUES ('verylarge')
+
+INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Sønderborg',6400)
+INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Gråsten',6300)
+INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Aabenraa',6200)
+INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Haderslev',6100)
