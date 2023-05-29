@@ -41,13 +41,13 @@ public class Bookings extends Header implements UserSubscriber
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
 
-
+    List<Plot> plotList = PlotList.getSingleton().getList();
+    List<Resevations> reservationList = ReservationList.getSingleton().getList();
     public Bookings()
     {
         currentUserID = 0;
         setScene();
         updateTabels();
-
     }
 
 
@@ -79,27 +79,38 @@ public class Bookings extends Header implements UserSubscriber
             public void handle(ActionEvent event) {HelloApplication.changeScene(SceneName.BookingsUd);}});
         ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
     }
+    public void getData() {
 
-    public void getData()
-    {
 
-        for (Plot plotList:PlotList.getSingleton().getList()) {
+        combineDataList.clear();
 
-            for (Resevations res : ReservationList.getSingleton().getList()) {
-                int userID = res.getUserID();
-                int resevationsID = res.getReservationID();
-                String location = plotList.getLocation();
-                int zipcode = plotList.getZipCode();
-                LocalDate localStartDate = res.getStartDate();
-                LocalDate localEndDate = res.getEndDate();
-                Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                Combine combine = new Combine(userID, resevationsID, location, zipcode, startDate, endDate);
-                if (currentUserID == userID) {
-                    combineDataList.add(combine);
+        List<Integer> reservedPlotIds = new ArrayList<>();
+        System.out.println(ReservationList.getSingleton().getList() + " resevation list");
+        for (Resevations res : reservationList) {
+            int userID = res.getUserID();
+            int reservationID = res.getReservationID();
+            LocalDate localStartDate = res.getStartDate();
+            LocalDate localEndDate = res.getEndDate();
+            Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            String location ="";
+            int zipCode =0;
+
+            for (Plot plot : plotList) {
+
+                if (res.getPlotID() == plot.getPlotID()) {
+                    location = plot.getLocation();
+                    zipCode = plot.getZipCode();
                 }
             }
+
+            if (currentUserID == userID) {
+                reservedPlotIds.add(res.getPlotID());
+                Combine combine = new Combine(userID, reservationID, location, zipCode, startDate, endDate);
+                combineDataList.add(combine);
+            }
         }
+
         createTable();
     }
 
@@ -144,8 +155,6 @@ public class Bookings extends Header implements UserSubscriber
             resevations.setReservationID(resid);
             resevations.setEndDate(localDate);
             updateEndDate(resevations);
-
-
         });
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
@@ -172,21 +181,28 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
+
         bookingsBtn.setOnAction(event ->
         {
             tableView.getColumns().clear();
+            reservationList.clear();
+            ReservationList.getSingleton().setList();
+
             getData();
         });
         lejerButton.setOnAction(event ->
         {
             tableView.getColumns().clear();
+            reservationList.clear();
+            ReservationList.getSingleton().setList();
             getData();
         });
         udLejerButton.setOnAction(event ->
         {
             tableView.getColumns().clear();
+            reservationList.clear();
+            ReservationList.getSingleton().setList();
             getData();
         });
     }
-
 }

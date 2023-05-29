@@ -227,17 +227,17 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         ArrayList<Plot> plotList = new ArrayList<Plot>();
         boolean[] services = new boolean[3];
         float[] prices = new float[3];
-        System.out.println("mem");
+        //System.out.println("mem");
         try
              {
                  CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
                  ResultSet rs2 = stmt.executeQuery();
                  while (rs2.next())
                  {
-                    plotIDs.add(rs2.getInt(1)) ;
-                 }
-                 System.out.println("me2");
-                 for (Integer j:plotIDs)
+                    plotIDs.add(rs2.getInt(2)) ;
+
+
+                  for (Integer j:plotIDs)
                  {
                      createConnection();
                      CallableStatement servicesCS = con.prepareCall("{call getPlotServices(?)}");
@@ -247,7 +247,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                      {
                          if (servicesRS.next())
                              services[i] = true;
-                         System.out.println("mems");
+                        // System.out.println("mems");
                      }
                      CallableStatement price = con.prepareCall("{call getPlotPrices(?)}");
                      price.setInt(1,j);
@@ -256,25 +256,28 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                      for (int i = 0; i <3 ; i++)
                      {
                          if (priceRS.next())
-                         prices[i] = priceRS.getFloat(i+1);
+                             prices[i] = priceRS.getFloat(i+1);
                      }
-                     System.out.println("e");
-                     ResultSet rs = stmt.executeQuery();
-                     rs.next();
-                plotList.add(new Plot(
-                        rs.getInt("fldUserID"),
-                        rs.getInt("fldPlotID"),
-                        rs.getString("fldLocation"),
-                        rs.getString("fldDescription"),
-                        rs.getString("fldImage"),
-                        rs.getString("fldPlotSize"),
-                        rs.getInt("fldZipcode"),
-                        services[0],services[1],services[2],
-                        prices[0],prices[1],prices[2]));
+                     //System.out.println("e");
+                     //  ResultSet rs = stmt.executeQuery();
+                     //  rs.next();
+                     plotList.add(new Plot(
+                             rs2.getInt("fldUserID"),
+                             rs2.getInt("fldPlotID"),
+                             rs2.getString("fldLocation"),
+                             rs2.getString("fldDescription"),
+                             rs2.getString("fldImage"),
+                             rs2.getString("fldPlotSize"),
+                             rs2.getInt("fldZipcode"),
+                             services[0],services[1],services[2],
+                             prices[0],prices[1],prices[2]));
+                 }
+
                  }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
+
         return plotList;
 
     }

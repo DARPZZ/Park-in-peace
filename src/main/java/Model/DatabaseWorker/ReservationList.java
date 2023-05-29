@@ -29,6 +29,7 @@ public final class ReservationList
         for (Resevations r: resevationsWorker.GetAll())
         {
          list.add(r);
+            System.out.println(r + " ko");
         }
     }
     public void addList(Resevations resevations)
