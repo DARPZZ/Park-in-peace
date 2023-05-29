@@ -2,11 +2,8 @@ package com.example.park;
 
 import Model.DaoObject.*;
 import Model.Implements.*;
-import View.Bookings;
-import View.BookingsUd;
-import View.MainPage;
-import View.PlotPage;
-import View.ProfilePage;
+import View.*;
+//import View.BookingsUd;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,8 +25,8 @@ public class HelloApplication extends Application
 {
     Login login = new Login();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
-    Bookings bookings = new Bookings();
-    BookingsUd bookingsUd = new BookingsUd();
+    //Bookings bookings = new Bookings();
+    //BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -47,18 +44,18 @@ public class HelloApplication extends Application
 
 
         login.setUserPublisher(login); // Giveren
-        login.subscribe(bookings); //tager
+        //login.subscribe(bookings); //tager
         login.subscribe(profilePage);
         login.setUserPublisher(login); // Giveren
-        login.subscribe(bookingsUd);
+        //login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
-        SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
+        //SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
-        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
+        //SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
             Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);

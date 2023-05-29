@@ -1,6 +1,5 @@
 package Model.Implements;
 
-import Model.DaoObject.PlotOwner;
 import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 

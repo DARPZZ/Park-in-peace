@@ -78,10 +78,11 @@ public class Login implements UserPublisher
 
     public void insertInformation()
     {
-        Model.Implements.DaoUser daoUser = new DaoUser();
+        //Model.Implements.DaoUser daoUser = new DaoUser();
+        System.out.println("");
             if (validateUser()) {
                  user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), email.getText(), Integer.parseInt(zipCode.getText()));
-                daoUser.Create(user);
+                BlackList.getSingleton().CreateUser(user);
                 //userPublisher.notifySubscribers(user);
             }
     }

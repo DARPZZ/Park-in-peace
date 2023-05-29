@@ -117,7 +117,7 @@ GO
 CREATE PROCEDURE getBlacklist (@fldBlackListID int)
 as
 begin
-select * from tblUser where fldBlackListID = @fldBlackListID
+select * from fldBlackList where fldBlackListID = @fldBlackListID
 end
 
 
