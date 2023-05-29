@@ -5,11 +5,16 @@ import Model.Implements.DaoCombine;
 import Service.CombinePublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,8 @@ public class MainPage extends Header
     private boolean electricityFilter;
     private boolean waterFilter;
     private boolean wifiFilter;
+    private IntegerProperty minPrice;
+    private IntegerProperty maxPrice;
 
     public MainPage()
     {
@@ -136,10 +143,37 @@ public class MainPage extends Header
         TextField minPriceTf = new TextField();
         minPriceTf.setPromptText("Minimumspris");
         gp.add(minPriceTf, 0, 1);
+        this.minPrice = new SimpleIntegerProperty();
+
+        minPrice.bind(Bindings.createIntegerBinding(() ->
+        {
+            try
+            {
+                return Integer.parseInt(minPriceTf.getText());
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+
+            }
+        }, minPriceTf.textProperty()));
 
         TextField maxPriceTf = new TextField();
         maxPriceTf.setPromptText("Maksimumspris");
         gp.add(maxPriceTf, 2, 1);
+        this.maxPrice = new SimpleIntegerProperty();
+
+        maxPrice.bind(Bindings.createIntegerBinding(() ->
+        {
+            try
+            {
+                return Integer.parseInt(maxPriceTf.getText());
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+            }
+        }, maxPriceTf.textProperty()));
 
         Label binderLabel = new Label("-");
         gp.add(binderLabel, 1, 1);
