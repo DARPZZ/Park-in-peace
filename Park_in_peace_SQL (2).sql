@@ -142,3 +142,9 @@ CONSTRAINT fk_PSplo foreign key (fldServiceID) references tblService(fldServiceI
 INSERT INTO tblService (fldServiceType) VALUES ('Toilet')
 INSERT INTO tblService (fldServiceType) VALUES ('Water')
 INSERT INTO tblService (fldServiceType) VALUES ('Electric')
+
+INSERT INTO tblPlotSize (fldPlotSize) VALUES ('verysmall')
+INSERT INTO tblPlotSize (fldPlotSize) VALUES ('small')
+INSERT INTO tblPlotSize (fldPlotSize) VALUES ('mid')
+INSERT INTO tblPlotSize (fldPlotSize) VALUES ('large')
+INSERT INTO tblPlotSize (fldPlotSize) VALUES ('verylarge')

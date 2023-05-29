@@ -39,7 +39,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             plotid = resultSet.getInt(1);
             System.out.println("rawdone");
 
-            CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?)}");
+            CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?,?)}");
             if(tblPlot.isToilet() == true)
             {firstPassInsert.setInt(1,toiletID);}
             else
@@ -57,6 +57,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             firstPassInsert.setFloat(6,tblPlot.getHighPrice());
             firstPassInsert.setString(7,tblPlot.getPlotSize());
             firstPassInsert.setInt(8,plotid);
+            firstPassInsert.setInt(9,tblPlot.getZipCode());
             firstPassInsert.executeUpdate();
             resultSet.next();
 

@@ -419,17 +419,19 @@ end
 GO
 CREATE PROCEDURE insertSeasonServiceSize(
     @fldToiletID int, @fldElectricID int , @fldWaterID int, @fldLowSeasonPrice float,@fldMediumSeasonPrice float,@fldHighSeasonPrice float,
-    @fldPlotSize NVARCHAR(MAX),@fldPlotID int)
+    @fldPlotSize NVARCHAR(MAX),@fldPlotID int,@fldZip int)
     as
 begin
-DECLARE @zipID int
+DECLARE @plotsizeID int
 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldToiletID)  IF(@fldToiletID >0)
 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)  IF(@fldWaterID >0)
 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)  IF(@fldElectricID >0)
 INSERT INTO tblSeason (fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice, fldPlotID) VALUES (@fldLowSeasonPrice,@fldMediumSeasonPrice,@fldHighSeasonPrice,@fldPlotID);
 INSERT INTO tblPlotSize (fldPlotSize) VALUES (@fldPlotSize);
-SET @zipID =SCOPE_IDENTITY()
-UPDATE tblPlot SET fldPlotSizeID = @zipID WHERE fldPlotID = @fldPlotID
+SET @plotsizeID = (SELECT fldPlotSizeID FROM tblPlotSize WHERE fldPlotSize =@fldPlotSize)
+UPDATE tblPlot SET fldPlotSizeID = @plotsizeID WHERE fldPlotID = @fldPlotID
+UPDATE tblPlot SET fldZipcode = @fldZip WHERE fldPlotID = @fldPlotID
+
 end
 
 go
