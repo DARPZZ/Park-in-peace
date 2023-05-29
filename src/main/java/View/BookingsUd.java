@@ -1,8 +1,10 @@
 package View;
 
 import Model.DaoObject.PlotOwner;
+import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoOwner;
+import Model.Implements.DaoResevations;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
@@ -13,10 +15,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
+import javafx.util.converter.DateStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +31,7 @@ public class BookingsUd extends Header implements UserSubscriber
     private TableView<PlotOwner> tableView = new TableView<>();
     List<PlotOwner> PloOwnerDataList = new ArrayList<>();
     DaoOwner daoOwner = new DaoOwner();
+
     Label yourePlots = new Label("Youre plots");
     List<PlotOwner> plotOwnerList;
     private int currentUserID;
@@ -55,8 +59,6 @@ public class BookingsUd extends Header implements UserSubscriber
         tableView.setPrefWidth(350);
         yourePlots.setLayoutX(190);
         yourePlots.setLayoutY(225);
-
-
         changeBack();
     }
     public void changeBack()
@@ -79,7 +81,6 @@ public class BookingsUd extends Header implements UserSubscriber
             }
         }
         createTable();
-
     }
     @Override
     public void onUserReceived(User user)
@@ -89,23 +90,30 @@ public class BookingsUd extends Header implements UserSubscriber
     }
     public void createTable()
     {
+        tableView.setEditable(true);
 
         TableColumn<PlotOwner, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLocation()));
+        addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         TableColumn<PlotOwner, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getZipCode()).asObject());
+        zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
         TableColumn<PlotOwner, Date> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStartDate()));
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
 
         TableColumn<PlotOwner, Date> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSlutDate()));
+        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DateStringConverter()));
+
 
         tableView.getColumns().addAll(addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         ObservableList<PlotOwner> data = FXCollections.observableArrayList(PloOwnerDataList);
-
         tableView.setItems(data);
+
     }
+
 }

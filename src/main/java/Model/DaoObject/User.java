@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 public class User
 {
     private IntegerProperty userId;
@@ -15,12 +17,14 @@ public class User
     private IntegerProperty acounterNumber;
     private StringProperty email;
     private IntegerProperty zipCode;
+    private ArrayList<Integer> blackList;
     public User() {
 
     }
 
-    public User(String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode )
+    public User(int ID,String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode, ArrayList<Integer> blackList)
     {
+        this.userId = new SimpleIntegerProperty(ID);
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
         Password = new SimpleStringProperty(password);
@@ -28,18 +32,16 @@ public class User
         this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.blackList = blackList;
     }
-    public User(int userId, String name, String phoneNumber, String password, String address, int acounterNumber, String email, int zipCode)
+    public User(String name, String phoneNumber, String password, String address, String email, int zipCode)
     {
-        this.userId = new SimpleIntegerProperty(userId);
         this.name = new SimpleStringProperty(name);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
         Password = new SimpleStringProperty(password);
         this.address = new SimpleStringProperty(address);
-        this.acounterNumber = new SimpleIntegerProperty(acounterNumber);
         this.email = new SimpleStringProperty(email);
         this.zipCode = new SimpleIntegerProperty(zipCode);
-
     }
 
     public int getUserId()
@@ -163,4 +165,11 @@ public class User
     }
 
 
+    public ArrayList<Integer> getBlackList() {
+        return blackList;
+    }
+
+    public void setBlackList(ArrayList<Integer> blackList) {
+        this.blackList = blackList;
+    }
 }

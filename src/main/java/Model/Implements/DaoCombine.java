@@ -51,7 +51,6 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
         List<Combine> combineList = new ArrayList<>();
         try (
              CallableStatement stmt = con.prepareCall("{call combine()}")) {
-
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();
 
@@ -60,6 +59,7 @@ public class DaoCombine extends Connection implements DaoInterface<Combine>
                 combineList.add(new Combine(
                         rs.getInt("fldUserID"),
                         rs.getInt("fldPlotID"),
+                        rs.getInt("fldreservationID"),
                         rs.getString("fldLocation"),
                         rs.getString("fldDescription"),
                         rs.getString("fldPlotSize"),

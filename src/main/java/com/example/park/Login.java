@@ -1,5 +1,10 @@
 package com.example.park;
+import Model.DaoObject.Plot;
+import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
+import Model.DatabaseWorker.BlackList;
+import Model.DatabaseWorker.PlotList;
+import Model.DatabaseWorker.ReservationList;
 import Model.Implements.DaoUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +39,7 @@ public class Login implements UserPublisher
 
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
+
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -74,7 +80,7 @@ public class Login implements UserPublisher
     {
         Model.Implements.DaoUser daoUser = new DaoUser();
             if (validateUser()) {
-                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), 0, email.getText(), Integer.parseInt(zipCode.getText()));
+                 user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), email.getText(), Integer.parseInt(zipCode.getText()));
                 daoUser.Create(user);
                 //userPublisher.notifySubscribers(user);
             }
@@ -122,6 +128,7 @@ public class Login implements UserPublisher
     }
     public void loginScene(AnchorPane anchorPane, Button logIn)
     {
+
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
         password.setLayoutX(LAYOUT_x);
@@ -135,24 +142,40 @@ public class Login implements UserPublisher
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
-                Model.Implements.DaoUser daoUser = new DaoUser();
+                user = BlackList.getSingleton().checkLogin(username,kodeord);
+                PlotList.getSingleton().setList();
+                ReservationList.getSingleton().setList();
+                //BlackList.getSingleton().setBlackList(user);
+                //Model.Implements.DaoUser daoUser = new DaoUser();
+                //region update getuser method - userLoginCheck storedprocedure er lavet
+                userPublisher.notifySubscribers(user);
+                HelloApplication.changeScene(SceneName.Main);
+                System.out.println("Login successful!");
+
+                /*
                 List<User> userList = daoUser.GetAll();
 
                 boolean validCredentials = false;
-                for (User user : userList) {
-                    if (user.getName().equals(username) && user.getPassword().equals(kodeord)) {
-                        userPublisher.notifySubscribers(user);
+                for (User userIterate : userList) {
+                    if (userIterate.getName().equals(username) && userIterate.getPassword().equals(kodeord)) {
+                        userPublisher.notifySubscribers(userIterate);
+                        user = userIterate;
                         validCredentials = true;
                         break;
                     }
                 }
-
+                //region end
                 if (validCredentials) {
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
                 } else {
                     System.out.println("Login Failed");
                 }
+                ReservationList.getSingleton().setList();
+                PlotList.getSingleton().setList();
+                BlackList.getSingleton().setBlackList(user);
+
+                 */
             }
 
         });
