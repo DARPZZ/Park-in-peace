@@ -208,7 +208,8 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             checklogin.setString(2, username);
             ResultSet resultSet = checklogin.executeQuery();
             resultSet.next();
-            User user = Get(resultSet.getInt("fldUserID"));
+            User user = new User
+                    (resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(7),resultSet.getInt(8));
             return user;
         }catch (Exception e){
             System.out.println(e);
