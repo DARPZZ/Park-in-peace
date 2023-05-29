@@ -10,6 +10,7 @@ public class Thumbnail extends VBox
 {
     private ImageView imageView;
     private Label titleLabel;
+    private Label priceLabel;
 
     public Thumbnail(Image image, String title)
     {
@@ -18,14 +19,27 @@ public class Thumbnail extends VBox
         setupLayout();
     }
 
+    public Thumbnail(Image image, String title, String price)
+    {
+        imageView = new ImageView(image);
+        titleLabel = new Label(title);
+        priceLabel = new Label(price);
+        setupLayout();
+    }
+
     private void setupLayout()
     {
         this.setAlignment(Pos.CENTER);
-        this.setSpacing(10);
-        imageView.setFitWidth(205);
+        this.setSpacing(5);
+        imageView.setFitWidth(200);
         imageView.setFitHeight(150);
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14");
         this.getChildren().addAll(imageView, titleLabel);
+
+        if (priceLabel != null)
+        {
+            this.getChildren().add(priceLabel);
+        }
     }
 
     //region getter/setter

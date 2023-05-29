@@ -1,5 +1,8 @@
 package Model.DaoObject;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.Date;
 
 public class Combine
@@ -11,9 +14,9 @@ public class Combine
     private String plotSize;
     private int zipCode;
     private String image;
-    private boolean toilet;
-    private boolean el;
-    private boolean Water;
+    private BooleanProperty toiletProperty;
+    private BooleanProperty elProperty;
+    private BooleanProperty waterProperty;
     private Date startDate;
     private Date endDate;
     private String seasonName;
@@ -40,9 +43,9 @@ public class Combine
         this.plotSize = plotSize;
         this.zipCode = zipCode;
         this.image = image;
-        this.toilet = toilet;
-        this.el = el;
-        this.Water = water;
+        this.toiletProperty = new SimpleBooleanProperty(toilet);
+        this.elProperty = new SimpleBooleanProperty(el);
+        this.waterProperty = new SimpleBooleanProperty(water);
         this.startDate = startDate;
         this.endDate = endDate;
         this.seasonName = seasonName;
@@ -128,32 +131,32 @@ public class Combine
 
     public boolean isToilet()
     {
-        return toilet;
+        return toiletProperty.get();
     }
 
     public void setToilet(boolean toilet)
     {
-        this.toilet = toilet;
+        this.toiletProperty.set(toilet);
     }
 
     public boolean isEl()
     {
-        return el;
+        return elProperty.get();
     }
 
     public void setEl(boolean el)
     {
-        this.el = el;
+        this.elProperty.set(el);
     }
 
     public boolean isWater()
     {
-        return Water;
+        return waterProperty.get();
     }
 
     public void setWater(boolean water)
     {
-        Water = water;
+        waterProperty.set(water);
     }
 
     public Date getStartDate()
@@ -214,5 +217,20 @@ public class Combine
     public void setHighSeasonPrice(float highSeasonPrice)
     {
         this.highSeasonPrice = highSeasonPrice;
+    }
+
+    public BooleanProperty toiletProperty()
+    {
+        return toiletProperty;
+    }
+
+    public BooleanProperty elProperty()
+    {
+        return elProperty;
+    }
+
+    public BooleanProperty waterProperty()
+    {
+        return waterProperty;
     }
 }

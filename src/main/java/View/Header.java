@@ -14,7 +14,6 @@ public abstract class Header
     public final Scene SCENE;
     public final AnchorPane ANCHOR_PANE;
 
-    private Label userLabel;
     private Button profileBtn;
     private Button homeBtn;
     private Button bookingsBtn;
@@ -51,11 +50,12 @@ public abstract class Header
         profileBtn.setLayoutY(20);
         profileBtn.setPrefSize(35,HEIGHT);
 
-        userLabel = new Label("Ingen bruger");
+        Label userLabel = new Label();
         AnchorPane.setRightAnchor(userLabel, AnchorPane.getRightAnchor(profileBtn) + profileBtn.getPrefWidth() + 15);
         userLabel.setLayoutY(profileBtn.getLayoutY());
         userLabel.setPrefSize(WIDTH, HEIGHT);
         userLabel.setAlignment(Pos.BASELINE_RIGHT);
+        userLabel.setText("Ingen bruger");
 
         homeBtn.setLayoutY(Y_LAYOUT);
         AnchorPane.setLeftAnchor(homeBtn, X_MARGIN);
@@ -88,55 +88,9 @@ public abstract class Header
         return Y_LAYOUT + HEIGHT;
     }
 
-    public Label getUserLabel()
-    {
-        return userLabel;
-    }
-
-    public void setUserLabel(Label userLabel)
-    {
-        this.userLabel = userLabel;
-    }
-
     public Button getProfileBtn()
     {
         return profileBtn;
     }
-
-    public void setProfileBtn(Button profileBtn)
-    {
-        this.profileBtn = profileBtn;
-    }
-
-    public Button getHomeBtn()
-    {
-        return homeBtn;
-    }
-
-    public void setHomeBtn(Button homeBtn)
-    {
-        this.homeBtn = homeBtn;
-    }
-
-    public Button getBookingsBtn()
-    {
-        return bookingsBtn;
-    }
-
-    public void setBookingsBtn(Button bookingsBtn)
-    {
-        this.bookingsBtn = bookingsBtn;
-    }
-
-    public Button getMyPlotBtn()
-    {
-        return myPlotBtn;
-    }
-
-    public void setMyPlotBtn(Button myPlotBtn)
-    {
-        this.myPlotBtn = myPlotBtn;
-    }
-
     //endregion
 }

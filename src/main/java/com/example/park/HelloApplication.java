@@ -1,7 +1,5 @@
 package com.example.park;
 
-import Model.DaoObject.*;
-import Model.Implements.*;
 import Model.Implements.DaoResevations;
 import View.Bookings;
 import View.BookingsUd;
@@ -35,15 +33,16 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        DaoResevations daoResevations = new DaoResevations();
+        Advertisement advertisement = new Advertisement();
 
         login.setUserPublisher(login); // Giveren
         login.subscribe(bookings); //tager
         login.subscribe(bookingsUd);
+        login.subscribe(advertisement);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
-        SCENE_MAP.put(SceneName.Advertisement, new Advertisement().SCENE);
+        SCENE_MAP.put(SceneName.Advertisement, advertisement.SCENE);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
@@ -53,7 +52,6 @@ public class HelloApplication extends Application
         Scene scene = SCENE_MAP.get(SceneName.Main);
 
         createScene(anchorPane);
-
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
