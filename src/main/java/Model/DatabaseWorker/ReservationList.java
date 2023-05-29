@@ -37,7 +37,9 @@ public final class ReservationList
     }
 
     public void CreateReservation(Resevations resevations)
-    {resevationsWorker.Create(resevations);}
+    {resevationsWorker.Create(resevations);
+    list.add(resevations);
+    }
     public void UpdateReservation(Resevations resevations, String fieldname, String value)
     {resevationsWorker.Update(resevations, fieldname, value);}
     public void DeleteReservation(Resevations resevations, int ID)

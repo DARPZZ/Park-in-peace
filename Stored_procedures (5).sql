@@ -125,17 +125,9 @@ GO
 CREATE PROCEDURE insertResevation (@fldStartDate date,@fldEndDate date,@fldUserID int,@fldPlotID int )
 as
 begin
-DECLARE @sql varchar(MAX)
-SET @sql = '
-INSERT INTO [dbo].[tblResevations]
-           ([fldStartDate]
-           ,[fldEndDate]
-           ,[fldUserID]
-           ,[fldPlotID])
-		 values(''' +CAST( @fldStartDate as varchar(max)) + ''' ,''' + CAST( @fldEndDate as varchar(max)) +''', ' + CAST( @fldUserID as varchar) + ', ' +
-		 CAST (@fldPlotID as varchar) +')'
-					print (@sql)
-					execute (@sql)
+SET NOCOUNT ON
+INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (@fldStartDate,@fldEndDate,@fldUserID,@fldPlotID);
+SELECT SCOPE_IDENTITY()
 end
 
 

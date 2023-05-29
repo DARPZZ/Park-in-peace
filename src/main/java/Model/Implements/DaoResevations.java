@@ -36,17 +36,17 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     public void Create(Resevations resevations)
     {
         createConnection();
-        try (Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call insertResevation(?,?,?,?)}")) {
+        try {
+             CallableStatement stmt = con.prepareCall("{call insertResevation(?,?,?,?)}");
             stmt.setString(1, String.valueOf(resevations.getStartDate()));
             stmt.setString(2, String.valueOf(resevations.getEndDate()));
             stmt.setInt(3, resevations.getUserID());
             stmt.setInt(4,resevations.getPlotID());
-
-
-            stmt.execute();
-
-        } catch (SQLException e) {
+            ResultSet resultSet = stmt.executeQuery();
+            resultSet.next();
+            resevations.setReservationID(resultSet.getInt(1));
+        } catch (SQLException e)
+        {
             System.out.println(e);
         }
     }
