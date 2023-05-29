@@ -246,6 +246,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                      {
                          if (servicesRS.next())
                              services[i] = true;
+                         System.out.println("mems");
                      }
                      CallableStatement price = con.prepareCall("{call getPlotPrices(?)}");
                      price.setInt(1,j);
@@ -253,6 +254,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
 
                      for (int i = 0; i <3 ; i++)
                      {
+                         if (priceRS.next())
                          prices[i] = priceRS.getFloat(i+1);
                      }
                 plotList.add(new Plot(

@@ -41,7 +41,8 @@ end
 */
 /*
 GO
-CREATE PROCEDURE insertUser (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword VARCHAR(max), @fldAddress varchar(MAX), @fldAcountNumber int, 
+go
+CREATE PROCEDURE insertUser (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword VARCHAR(max), @fldAddress varchar(MAX),
 	@fldEmail varchar(max), @fldZipcode int)
 as
 begin
@@ -51,10 +52,9 @@ insert into [dbo].[tblUser]
            ,[fldPhoneNumber]
            ,[fldPassword]
            ,[fldAddress]
-           ,[fldAcountNumber]
            ,[fldEmail]
            ,[fldZipcode])
-		   values(@fldName,@fldPhoneNumber,@fldPassword,@fldAddress,@fldAcountNumber,@fldEmail,@fldZipcode);
+		   values(@fldName,@fldPhoneNumber,@fldPassword,@fldAddress,@fldEmail,@fldZipcode);
 		   SELECT SCOPE_IDENTITY()
 end
 */

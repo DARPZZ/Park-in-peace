@@ -22,14 +22,13 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
         try (Connection conn = con)
         {
             int userid=0;
-            CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?,?)}");
+            CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?)}");
             stmt.setString(1,user.getName());
             stmt.setString(2, user.getPhoneNumber());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getAddress());
-            stmt.setInt(5, user.getAcounterNumber());
-            stmt.setString(6, user.getEmail());
-            stmt.setInt(7, user.getZipCode());
+            stmt.setString(5, user.getEmail());
+            stmt.setInt(6, user.getZipCode());
 
 
             ResultSet resultSet = stmt.executeQuery();
