@@ -53,9 +53,19 @@ public class Bookings extends Header implements UserSubscriber
 
     public void setScene()
     {
+
+        udLejerButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                System.out.println("h");
+            }
+        });
+
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
-        tableView.setPrefWidth(350);
+        tableView.setPrefWidth(400);
         youreResevations.setLayoutX(190);
         youreResevations.setLayoutY(225);
         lejerButton.setLayoutX(225);
@@ -65,15 +75,14 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
 
-        udLejerButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {HelloApplication.changeScene(SceneName.BookingsUd);}});
         ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
+
     }
     public void getData() {
 
-
+        tableView.getColumns().clear();
+        reservationList.clear();
+        ReservationList.getSingleton().setList();
         combineDataList.clear();
 
         List<Integer> reservedPlotIds = new ArrayList<>();
@@ -173,9 +182,7 @@ public class Bookings extends Header implements UserSubscriber
     {
         bookingsBtn.setOnAction(event ->
         {
-            tableView.getColumns().clear();
-            reservationList.clear();
-            ReservationList.getSingleton().setList();
+
             getData();
         });
         lejerButton.setOnAction(event ->
@@ -187,9 +194,7 @@ public class Bookings extends Header implements UserSubscriber
         });
         udLejerButton.setOnAction(event ->
         {
-            tableView.getColumns().clear();
-            reservationList.clear();
-            ReservationList.getSingleton().setList();
+            HelloApplication.changeScene(SceneName.BookingsUd);
             getData();
         });
     }

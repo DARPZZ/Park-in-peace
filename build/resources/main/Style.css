@@ -52,7 +52,6 @@
     -fx-border-color: #3c3c3c;
 }
 
-/* Additional CSS Styles */
 
 #labelError {
 
@@ -103,12 +102,14 @@
     -fx-font-size: 12px;
 }
 
-/* CSS Effect */
+/* Virker ikke lige pt
 @keyframes pulseAnimation {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+
+ */
 
 .login-button-animation {
     animation-name: pulseAnimation;
