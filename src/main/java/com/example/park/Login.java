@@ -97,28 +97,34 @@ public class Login implements UserPublisher
         tooltip.setShowDelay(Duration.ZERO);
         if (Objects.equals(name.getText(), "")) {
             name.setTooltip(tooltip);
+            name.setId("labelError");
             Error = true;
         }
         boolean isNumeric = PhoneNumber.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(PhoneNumber.getText(), "")|| !isNumeric) {
             PhoneNumber.setTooltip(tooltip);
+            PhoneNumber.setId("labelError");
             Error = true;
         }
         if (Objects.equals(password.getText(), "")) {
             password.setTooltip(tooltip);
+            password.setId("labelError");
             Error = true;
         }
         if (Objects.equals(adress.getText(), "")) {
             adress.setTooltip(tooltip);
+            adress.setId("labelError");
             Error = true;
         }
         if (Objects.equals(email.getText(), "")) {
             email.setTooltip(tooltip);
+            email.setId("labelError");
             Error = true;
         }
         isNumeric = zipCode.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
+            zipCode.setId("labelError");
             Error = true;
         }
         if (Error)

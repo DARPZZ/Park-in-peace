@@ -54,8 +54,9 @@
 
 /* Additional CSS Styles */
 
-.label.error {
-    -fx-text-fill: red;
+#labelError {
+
+    -fx-border-color: red;
 }
 
 .button.primary {
