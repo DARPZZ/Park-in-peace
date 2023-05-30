@@ -126,17 +126,19 @@ public class Bookings extends Header implements UserSubscriber
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
         addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        addressColumn.setEditable(false);
 
         TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> cellData.getValue().zipCodeProperty().asObject());
         zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        zipcodeColumn.setEditable(false);
 
         TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
 
         StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        //startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
