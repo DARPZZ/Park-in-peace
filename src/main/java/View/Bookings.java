@@ -53,7 +53,6 @@ public class Bookings extends Header implements UserSubscriber
 
     public void setScene()
     {
-
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
         tableView.setPrefWidth(350);
