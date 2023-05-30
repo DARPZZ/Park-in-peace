@@ -146,7 +146,7 @@ public class Bookings extends Header implements UserSubscriber
 
         endDateColumn.setOnEditCommit(table ->
         {
-            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+            //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String endDate = dtformat.format(table.getNewValue());
@@ -157,15 +157,25 @@ public class Bookings extends Header implements UserSubscriber
             resevations.setEndDate(localDate);
             updateEndDate(resevations);
         });
+
+        startDateColumn.setOnEditCommit(table ->
+        {
+            int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+            DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
+            String startDate = dtformat.format(table.getNewValue());
+            Resevations resevations = new Resevations();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(startDate, formatter);
+            resevations.setReservationID(resid);
+            resevations.setStartDate(localDate);
+            updateStartDate(resevations);
+        });
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         //}
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.setItems(data);
     }
-
-
-
 
     @Override
     public void onUserReceived(User user) {
@@ -178,6 +188,10 @@ public class Bookings extends Header implements UserSubscriber
     public void updateEndDate(Resevations resevations)
     {
         new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+    }
+    public void updateStartDate(Resevations resevations)
+    {
+        new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
     }
 
     public void updateTabels()
