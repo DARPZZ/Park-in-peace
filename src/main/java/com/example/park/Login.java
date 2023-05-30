@@ -1,11 +1,8 @@
 package com.example.park;
-import Model.DaoObject.Plot;
-import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
-import Model.Implements.DaoUser;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -149,10 +146,16 @@ public class Login implements UserPublisher
                 PlotList.getSingleton().setList();
                 System.out.println("set plotlist done"+System.currentTimeMillis());
                 ReservationList.getSingleton().setList();
+                System.out.println("meme");
                 //BlackList.getSingleton().setBlackList(user);
                 //Model.Implements.DaoUser daoUser = new DaoUser();
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 userPublisher.notifySubscribers(user);
+
+                HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
+                HelloApplication.plotPage.createPopUpUI();//
+                HelloApplication.plotPage.preparePlotHbox();//
+
                 HelloApplication.changeScene(SceneName.Main);
                 System.out.println("Login successful!");
 

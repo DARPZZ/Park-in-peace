@@ -1,9 +1,11 @@
 package View;
 
 import Model.DaoObject.Plot;
+import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
+import com.example.park.UserSubscriber;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -17,46 +19,63 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-public class PlotPage extends Header
+public class PlotPage extends Header implements UserSubscriber
 {
-    ArrayList<TextField> textFieldList = new ArrayList<>();
-    ArrayList<Label> labelList = new ArrayList<>();
-    ArrayList<CheckBox> checkBoxes =new ArrayList<>();
-    HBox plotview = new HBox();
-    String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
-    String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
-    private int userID = 0;
+    private User activeUser;
+    private ArrayList<TextField> textFieldList = new ArrayList<>();
+    private ArrayList<Label> labelList = new ArrayList<>();
+    private   ArrayList<CheckBox> checkBoxes =new ArrayList<>();
+    private HBox plotview = new HBox();
+    private String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
+    private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
+    private ArrayList<Plot> plotArrayList =new ArrayList<>();
+    private int plotIstart =0;
+    private int plotIend =3;
+    private int plotArrayEnd;
+
+
 
     public  PlotPage()  {
-
         Button next = new Button("next");
         next.setLayoutX(100);
         next.setLayoutY(200);
-        next.setOnMouseClicked(event -> plotview.getChildren().removeAll());
+        next.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                plotview.getChildren().clear();
+                if (plotArrayEnd >=plotIstart+4)
+                {
+                    plotIstart +=4;
+                }
+                else
+                { plotIstart = plotArrayEnd-plotIstart;}
+                if (plotArrayEnd >= plotIend+4)
+                {
+                    plotIend =+4;
+                }
+                else {
 
+                    plotIend = plotArrayEnd;
+                }
+                preparePlotHbox();
+            }
+        });
+        //preparePlotHbox();
 
         plotview.setAlignment(Pos.CENTER);
         plotview.setSpacing(40);
         plotview.setLayoutX(25);
         plotview.setLayoutY(300);
 
-        Image mem = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
-        Thumbnail meme = new Thumbnail(mem,"meme");
-        Thumbnail meme2 = new Thumbnail(mem,"meme");
-        Thumbnail meme3 = new Thumbnail(mem,"meme");
-        Thumbnail meme4 = new Thumbnail(mem,"meme");
 
-        plotview.getChildren().addAll(meme,meme2,meme3,meme4);
         ANCHOR_PANE.getChildren().add(plotview);
         ANCHOR_PANE.getChildren().add(next);
-        createPopUpUI();
+
 
     }
-    private void createPopUpUI()
+    public void createPopUpUI()
     {
         Stage dialog = new Stage();
         dialog.initOwner(HelloApplication.getStage());
@@ -155,7 +174,7 @@ public class PlotPage extends Header
             public void handle(MouseEvent event)
             {
                 Plot plotNew = new Plot //findID() , can find plot id
-                        (userID,textFieldList.get(0).getText(),
+                        (activeUser.getUserId(),textFieldList.get(0).getText(),
                         descriptionField.getText(),
                         "PLACEHOLDER",
                         textFieldList.get(2).getText(),
@@ -208,5 +227,36 @@ public class PlotPage extends Header
         }
         return id+1;
     }
+    public void preparePlotHbox()
+    {
+        for (int i = plotIstart; i <= plotIend ; i++)
+        {
+            Image mem = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
+            Thumbnail meme = new Thumbnail(mem,plotArrayList.get(i).getLocation());
+            plotview.getChildren().addAll(meme);
+        }
+    }
+public void initPlotPage()
+{
+    for (Plot p: PlotList.getSingleton().getList())
+    {
+     if (p.getPlotID() == activeUser.getUserId())
+     {
+         plotArrayList.add(p);
+     }
+     plotArrayEnd = plotArrayList.size()-1;
+     if (plotArrayEnd >=4)
+     {
+         plotIend =4;
+     }
+     else {plotIend = plotArrayEnd; }
+    }
+}
 
+    @Override
+    public void onUserReceived(User user)
+    {
+        System.out.println("");
+     activeUser = user;
+    }
 }

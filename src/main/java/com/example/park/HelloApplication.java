@@ -25,6 +25,7 @@ import java.util.List;
 public class HelloApplication extends Application
 {
     Login login = new Login();
+    public static PlotPage plotPage = new PlotPage();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Bookings bookings = new Bookings();
     //BookingsUd bookingsUd = new BookingsUd();
@@ -44,13 +45,14 @@ public class HelloApplication extends Application
         login.subscribe(bookings); //tager
         login.subscribe(profilePage);
         login.setUserPublisher(login); // Giveren
+        login.subscribe(plotPage);
         //login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
-        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
+        SCENE_MAP.put(SceneName.PlotPage,plotPage.SCENE);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
         //SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();

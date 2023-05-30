@@ -56,7 +56,10 @@ public abstract class Header
         bookingsBtn.setOnAction(event -> {
             HelloApplication.changeScene(SceneName.Bookings);
         });
-        myPlotBtn.setOnAction(event -> HelloApplication.changeScene(SceneName.PlotPage));
+        myPlotBtn.setOnAction(event -> {
+                HelloApplication.changeScene(SceneName.PlotPage);
+
+        });
 
         profileBtn.setOnAction(event -> {
             HelloApplication.changeScene(SceneName.ProfilePage);
