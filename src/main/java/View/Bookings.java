@@ -85,7 +85,6 @@ public class Bookings extends Header implements UserSubscriber
         combineDataList.clear();
 
         List<Integer> reservedPlotIds = new ArrayList<>();
-        System.out.println(ReservationList.getSingleton().getList() + " resevation list");
         for (Resevations res : reservationList) {
             int userID = res.getUserID();
             int reservationID = res.getReservationID();
