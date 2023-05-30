@@ -64,13 +64,15 @@ public class Login implements UserPublisher
             @Override
             public void handle(ActionEvent event)
             {
-                insertInformation();
-                toggleButton.setText("Login");
-                anchorPane.getChildren().clear();
-                toggleLabel.setText("Press here to create a new user:");
-                loginScene(anchorPane,loginButton);
-                loginButton.setText("login");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+                if(validateUser()) {
+                    insertInformation();
+                    toggleButton.setText("Login");
+                    anchorPane.getChildren().clear();
+                    toggleLabel.setText("Press here to create a new user:");
+                    loginScene(anchorPane, loginButton);
+                    loginButton.setText("login");
+                    anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+                }
             }
         });
         anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode);
