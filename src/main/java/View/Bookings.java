@@ -53,7 +53,6 @@ public class Bookings extends Header implements UserSubscriber
 
     public void setScene()
     {
-
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
         tableView.setPrefWidth(350);
@@ -66,13 +65,6 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
 
-/*
-        executorService = Executors.newSingleThreadScheduledExecutor();
-        Runnable getData = this::getData;
-
-        executorService.scheduleAtFixedRate(getData, 0, 4, TimeUnit.SECONDS);
-
- */
         udLejerButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -85,7 +77,6 @@ public class Bookings extends Header implements UserSubscriber
         combineDataList.clear();
 
         List<Integer> reservedPlotIds = new ArrayList<>();
-        System.out.println(ReservationList.getSingleton().getList() + " resevation list");
         for (Resevations res : reservationList) {
             int userID = res.getUserID();
             int reservationID = res.getReservationID();
@@ -117,9 +108,9 @@ public class Bookings extends Header implements UserSubscriber
 
     public void createTable() {
 
-        // if (tableView.getColumns().isEmpty()) {
 
         tableView.setEditable(true);
+        StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
         resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
         resevationsIdColumn.setVisible(false);
@@ -127,17 +118,19 @@ public class Bookings extends Header implements UserSubscriber
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
         addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        addressColumn.setEditable(false);
 
         TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> cellData.getValue().zipCodeProperty().asObject());
         zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        zipcodeColumn.setEditable(false);
 
         TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
-        StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+
+        //startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
@@ -145,7 +138,7 @@ public class Bookings extends Header implements UserSubscriber
 
         endDateColumn.setOnEditCommit(table ->
         {
-            table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
+            //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String endDate = dtformat.format(table.getNewValue());
@@ -156,6 +149,19 @@ public class Bookings extends Header implements UserSubscriber
             resevations.setEndDate(localDate);
             updateEndDate(resevations);
         });
+
+        startDateColumn.setOnEditCommit(table ->
+        {
+            int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+            DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
+            String startDate = dtformat.format(table.getNewValue());
+            Resevations resevations = new Resevations();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(startDate, formatter);
+            resevations.setReservationID(resid);
+            resevations.setStartDate(localDate);
+            updateStartDate(resevations);
+        });
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
         //}
@@ -163,31 +169,13 @@ public class Bookings extends Header implements UserSubscriber
         tableView.setItems(data);
     }
 
-
-
-
-    @Override
-    public void onUserReceived(User user) {
-        currentUserID = user.getUserId();
-        getData();
-
-    }
-
-
-    public void updateEndDate(Resevations resevations)
-    {
-        new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
-    }
-
     public void updateTabels()
     {
-
         bookingsBtn.setOnAction(event ->
         {
             tableView.getColumns().clear();
             reservationList.clear();
             ReservationList.getSingleton().setList();
-
             getData();
         });
         lejerButton.setOnAction(event ->
@@ -204,5 +192,19 @@ public class Bookings extends Header implements UserSubscriber
             ReservationList.getSingleton().setList();
             getData();
         });
+    }
+    @Override
+    public void onUserReceived(User user) {
+        currentUserID = user.getUserId();
+        getData();
+    }
+
+    public void updateEndDate(Resevations resevations)
+    {
+        new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+    }
+    public void updateStartDate(Resevations resevations)
+    {
+        new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
     }
 }
