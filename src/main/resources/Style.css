@@ -25,10 +25,12 @@
 .button:hover {
     -fx-background-color: #131313;
 }
+
 .label {
     -fx-font-size: 14px;
     -fx-font-weight: bolder;
 }
+
 .table-cell {
     -fx-font-weight: bolder;
 }
@@ -40,6 +42,7 @@
 .table-view .scroll-bar .thumb {
     -fx-background-color: #6f8d70;
 }
+
 .button:pressed {
     -fx-scale-x: 0.9;
     -fx-scale-y: 0.9;
@@ -47,4 +50,48 @@
     -fx-translate-x: 2px;
     -fx-background-color: #3c3c3c;
     -fx-border-color: #3c3c3c;
+}
+
+/* Additional CSS Styles */
+
+.label.error {
+    -fx-text-fill: red;
+}
+
+.button.primary {
+    -fx-background-color: #0066cc;
+}
+
+.button.secondary {
+    -fx-background-color: #cccccc;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f2f2f2;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.text-field {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3;
+    -fx-padding: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: #0066cc;
+}
+
+.text-area {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3;
+    -fx-padding: 5px;
+}
+
+.text-area:focused {
+    -fx-border-color: #0259b4;
 }
