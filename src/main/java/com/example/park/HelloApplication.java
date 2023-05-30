@@ -26,7 +26,7 @@ public class HelloApplication extends Application
 {
     Login login = new Login();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
-    //Bookings bookings = new Bookings();
+    Bookings bookings = new Bookings();
     //BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
@@ -40,12 +40,8 @@ public class HelloApplication extends Application
     public void start(Stage stage) throws IOException
     {
 
-
-
-
-
         login.setUserPublisher(login); // Giveren
-        //login.subscribe(bookings); //tager
+        login.subscribe(bookings); //tager
         login.subscribe(profilePage);
         login.setUserPublisher(login); // Giveren
         //login.subscribe(bookingsUd);
@@ -53,7 +49,7 @@ public class HelloApplication extends Application
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
-        //SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
+        SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
         //SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
