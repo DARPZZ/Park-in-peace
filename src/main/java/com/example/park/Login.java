@@ -6,6 +6,7 @@ import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
 import Model.Implements.DaoUser;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -64,6 +65,7 @@ public class Login implements UserPublisher
             @Override
             public void handle(ActionEvent event)
             {
+                loginButton.getStyleClass().add("login-button-animation");
                 if(validateUser()) {
                     insertInformation();
                     toggleButton.setText("Login");
@@ -103,27 +105,31 @@ public class Login implements UserPublisher
         boolean isNumeric = PhoneNumber.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(PhoneNumber.getText(), "")|| !isNumeric) {
             PhoneNumber.setTooltip(tooltip);
-            PhoneNumber.setId("labelError");
+            PhoneNumber.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(password.getText(), "")) {
             password.setTooltip(tooltip);
+            password.getStyleClass().add("warning-badge");
             password.setId("labelError");
             Error = true;
         }
         if (Objects.equals(adress.getText(), "")) {
             adress.setTooltip(tooltip);
             adress.setId("labelError");
+            adress.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(email.getText(), "")) {
             email.setTooltip(tooltip);
             email.setId("labelError");
+            email.getStyleClass().add("warning-badge");
             Error = true;
         }
         isNumeric = zipCode.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
+            zipCode.getStyleClass().add("warning-badge");
             zipCode.setId("labelError");
             Error = true;
         }
@@ -131,6 +137,7 @@ public class Login implements UserPublisher
         {
             return false;
         }else {
+
             return true;
 
         }

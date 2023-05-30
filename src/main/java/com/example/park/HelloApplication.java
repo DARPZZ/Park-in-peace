@@ -81,6 +81,7 @@ public class HelloApplication extends Application
     public void createScene(AnchorPane anchorPane)
     {
         Button loginButton = new Button("Login");
+
         ToggleButton toggleButton = new ToggleButton();
         toggleLabel.setLayoutX(600);
         toggleLabel.setLayoutY(20);
