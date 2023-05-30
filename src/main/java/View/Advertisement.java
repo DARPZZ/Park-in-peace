@@ -5,13 +5,13 @@ import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoResevations;
 import Service.CombinePublisher;
-import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -22,6 +22,7 @@ public class Advertisement extends Header implements UserSubscriber
 {
     private Combine advertisement;
     private ImageView imageView;
+    private Pane imageHolder;
     private Label pricePrDayLabel;
     private Label totalPriceLabel;
     private Label addressDataLabel;
@@ -29,10 +30,10 @@ public class Advertisement extends Header implements UserSubscriber
     private Label plotSizeDataLabel;
     private User user;
 
-    CheckBox haveWifi;
-    CheckBox haveToilets;
-    CheckBox haveWater;
-    CheckBox haveElectricity;
+    private CheckBox haveWifi;
+    private CheckBox toiletsCheckBox;
+    private CheckBox waterCheckBox;
+    private CheckBox electricityCheckBox;
 
     public Advertisement()
     {
@@ -76,8 +77,8 @@ public class Advertisement extends Header implements UserSubscriber
         GridPane gpDescription = new GridPane();
         gpDescription.setVgap(10);
         gpDescription.setHgap(10);
-        gpDescription.setLayoutX(imageView.getLayoutX() + imageView.getFitWidth() + 50);
-        gpDescription.setLayoutY(imageView.getLayoutY());
+        gpDescription.setLayoutX(imageHolder.getLayoutX() + imageHolder.getMaxWidth() + 50);
+        gpDescription.setLayoutY(imageHolder.getLayoutY());
         gpDescription.setMaxWidth(gpDateReserve.getLayoutX() - gpDescription.getLayoutY() - gpDateReserve.getPrefWidth() - 100);
 
         Label addressLabel = new Label("Adresse: ");
@@ -100,32 +101,36 @@ public class Advertisement extends Header implements UserSubscriber
         haveWifi.setStyle("-fx-opacity: 1");
         gpDescription.add(haveWifi, 0, 5);
 
-        haveElectricity = new CheckBox("⚡");
-        haveElectricity.setDisable(true);
-        haveElectricity.setStyle("-fx-opacity: 1");
-        gpDescription.add(haveElectricity, 2, 5);
+        electricityCheckBox = new CheckBox("⚡");
+        electricityCheckBox.setDisable(true);
+        electricityCheckBox.setStyle("-fx-opacity: 1");
+        gpDescription.add(electricityCheckBox, 2, 5);
 
-        haveWater = new CheckBox("\uD83D\uDCA7");
-        haveWater.setDisable(true);
-        haveWater.setStyle("-fx-opacity: 1");
-        gpDescription.add(haveWater, 0, 6);
+        waterCheckBox = new CheckBox("\uD83D\uDCA7");
+        waterCheckBox.setDisable(true);
+        waterCheckBox.setStyle("-fx-opacity: 1");
+        gpDescription.add(waterCheckBox, 0, 6);
 
-        haveToilets = new CheckBox("🚽");
-        haveToilets.setDisable(true);
-        haveToilets.setStyle("-fx-opacity: 1");
-        gpDescription.add(haveToilets, 2, 6);
+        toiletsCheckBox = new CheckBox("🚽");
+        toiletsCheckBox.setDisable(true);
+        toiletsCheckBox.setStyle("-fx-opacity: 1");
+        gpDescription.add(toiletsCheckBox, 2, 6);
 
-        this.ANCHOR_PANE.getChildren().addAll(gpDateReserve, imageView, gpDescription);
+        this.ANCHOR_PANE.getChildren().addAll(gpDateReserve, imageHolder, gpDescription);
     }
 
     private void setupImageView()
     {
         imageView = new ImageView();
-        imageView.setLayoutX(X_MARGIN);
-        imageView.setLayoutY(this.getYMargin() + 80);
+        imageHolder = new Pane(imageView);
+        imageHolder.setLayoutX(X_MARGIN);
+        imageHolder.setLayoutY(this.getYMargin() + 80);
+        imageHolder.setMaxHeight(SCENE.getHeight() - imageHolder.getLayoutY() - 50);
+        imageHolder.setMaxWidth(400);
+
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(600);
-        imageView.setFitWidth(400);
+        imageView.setFitHeight(imageHolder.getMaxHeight());
+        imageView.setFitWidth(imageHolder.getMaxWidth());
     }
 
     private void handleAdvertisementUpdate(Combine updatedAdvertisement)
@@ -140,9 +145,9 @@ public class Advertisement extends Header implements UserSubscriber
             plotSizeDataLabel.setText(advertisement.getPlotSize());
             descriptionDataTf.getChildren().clear();
             descriptionDataTf.getChildren().add(new Text(advertisement.getDescription()));
-            haveToilets.selectedProperty().bind(advertisement.toiletProperty());
-            haveWater.selectedProperty().bind(advertisement.waterProperty());
-            haveElectricity.selectedProperty().bind(advertisement.elProperty());
+            toiletsCheckBox.selectedProperty().bind(advertisement.toiletProperty());
+            waterCheckBox.selectedProperty().bind(advertisement.waterProperty());
+            electricityCheckBox.selectedProperty().bind(advertisement.elProperty());
         }
     }
 

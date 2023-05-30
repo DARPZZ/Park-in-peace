@@ -12,9 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +53,13 @@ public class MainPage extends Header
         searchField.setPrefSize((GAP * 3) - 15, HEIGHT);
         searchField.setLayoutX(60);
         searchField.setLayoutY(this.getYMargin() + 30);
+        searchFunction();
 
         Button filterBtn = new Button("▼");
         filterBtn.setPrefSize(40, HEIGHT);
         filterBtn.setLayoutX(searchField.getLayoutX() + searchField.getPrefWidth() + 20);
         filterBtn.setLayoutY(searchField.getLayoutY());
         filterBtn.setOnAction(event -> showPopUp());
-
         this.ANCHOR_PANE.getChildren().addAll(searchField, filterBtn);
     }
 
@@ -120,7 +119,6 @@ public class MainPage extends Header
         gp.setVgap(10);
         fillPopUpContent(gp);
         popUpContent.getChildren().add(gp);
-
         this.ANCHOR_PANE.getChildren().add(popUpContent);
     }
 
@@ -140,11 +138,10 @@ public class MainPage extends Header
         Label priceRangeLabel = new Label("Prisramme");
         gp.add(priceRangeLabel, 0, 0, 2, 1);
 
-        TextField minPriceTf = new TextField();
+        TextField minPriceTf = new NumberOnlyTextField();
         minPriceTf.setPromptText("Minimumspris");
         gp.add(minPriceTf, 0, 1);
         this.minPrice = new SimpleIntegerProperty();
-
         minPrice.bind(Bindings.createIntegerBinding(() ->
         {
             try
@@ -154,11 +151,10 @@ public class MainPage extends Header
             catch (NumberFormatException e)
             {
                 return 0;
-
             }
         }, minPriceTf.textProperty()));
 
-        TextField maxPriceTf = new TextField();
+        TextField maxPriceTf = new NumberOnlyTextField();
         maxPriceTf.setPromptText("Maksimumspris");
         gp.add(maxPriceTf, 2, 1);
         this.maxPrice = new SimpleIntegerProperty();
@@ -260,12 +256,6 @@ public class MainPage extends Header
         }
     }
 
-
-    private void sortAds()
-    {
-
-    }
-
     private void filterToilet(boolean isCheckboxSelected)
     {
         toiletFilter = isCheckboxSelected;
@@ -277,25 +267,25 @@ public class MainPage extends Header
     {
         waterFilter = isCheckboxSelected;
         applyFilters();
-        updateFilterButton(filterBtn);
     }
 
     private void filterEl(boolean isCheckboxSelected)
     {
         electricityFilter = isCheckboxSelected;
         applyFilters();
-        updateFilterButton(filterBtn);
     }
 
     private void filterWifi(boolean isCheckboxSelected)
     {
         wifiFilter = isCheckboxSelected;
         applyFilters();
-        updateFilterButton(filterBtn);
     }
 
     private void applyFilters()
     {
+        Predicate<Combine> filterMinMax = data -> minPrice.get() > data.getMidSeasonPrice() &&
+                maxPrice.get() < data.getMidSeasonPrice();
+
         Predicate<Combine> filterCondition = data ->
                 (!toiletFilter || data.isToilet()) &&
                         (!electricityFilter || data.isEl()) &&
@@ -304,6 +294,8 @@ public class MainPage extends Header
         filteredList = advertisementList.stream()
                 .filter(filterCondition)
                 .collect(Collectors.toList());
+
+        updateFilterButton(filterBtn);
     }
 
     private void updateFilterButton(Button filterBtn)
@@ -312,6 +304,28 @@ public class MainPage extends Header
         filterBtn.setText(String.format("%d match%s", numMatches, numMatches != 1 ? "es" : ""));
     }
 
+    private void searchFunction()
+    {
+        searchField.setOnKeyReleased(event ->
+        {
+            if (event.getText().equals(""))
+            {
+                resetFilter();
+                fillAds(filteredList);
+            }
+            else if (event.getCode() == KeyCode.ENTER)
+            {
+                resetFilter();
+                Predicate<Combine> filterCondition = data -> data.getLocation().contains(event.getText()) ||
+                        String.valueOf(data.getZipCode()).contains(event.getText());
+
+                filteredList = advertisementList.stream()
+                        .filter(filterCondition)
+                        .collect(Collectors.toList());
+                fillAds(filteredList);
+            }
+        });
+    }
     private void resetFilter()
     {
         filteredList = new ArrayList<>(advertisementList);
