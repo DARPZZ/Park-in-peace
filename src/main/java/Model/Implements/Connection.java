@@ -15,17 +15,11 @@ abstract public class Connection
     private boolean conClosed;
     void createConnection() {
         try {
-            conClosed = con.isClosed();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        if (conClosed == false) {
-            try {
-                con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
+            con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
             } catch (SQLException e) {
                 System.err.println("Database connection fail" + e.getMessage());
             }
         }
     }
 
-}
+

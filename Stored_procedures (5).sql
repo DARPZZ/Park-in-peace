@@ -250,14 +250,7 @@ end
 */
 
 /*
-GO
-CREATE PROCEDURE getAllPlots
-as
-begin
-SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fldZipcode from tblPlot
-LEFT JOIN
-tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
-end
+
 
 GO
 CREATE PROCEDURE getPlot (@fldPlotID int)
@@ -415,7 +408,15 @@ CREATE PROCEDURE insertSeasonServiceSize(
     as
 begin
 DECLARE @plotsizeID int
-INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldToiletID)  IF(@fldToiletID >0)
+IF @fldToiletID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldToiletID)
+ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
+
+IF @fldWaterID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)
+ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
+
+IF @fldElectricID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)
+ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
+
 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)  IF(@fldWaterID >0)
 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)  IF(@fldElectricID >0)
 INSERT INTO tblSeason (fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice, fldPlotID) VALUES (@fldLowSeasonPrice,@fldMediumSeasonPrice,@fldHighSeasonPrice,@fldPlotID);
@@ -470,4 +471,41 @@ CREATE PROCEDURE getBlackListedBy (@fldUserID int)
     as
 begin
 SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
+end
+
+GO
+CREATE PROCEDURE getAllPlots -- old
+    as
+begin
+SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fldZipcode from tblPlot
+LEFT JOIN
+    tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
+end
+
+GO
+CREATE PROCEDURE getAllPlots
+    as
+begin
+
+SELECT
+    tblService.fldServiceID,
+    tblplot.fldPlotID,
+    tblPlot.fldLocation,
+    tblPlot.fldDescription,
+    tblPlot.fldImage,
+    tlbPlot.fldUserID,
+    tblZipcodeCity.fldZipcode,
+    tblPlotSize.fldPlotSize,
+    tblSeason.fldLowSeasonPrice,
+    tblSeason.fldMediumSeasonPrice,
+    tblSeason.fldHighSeasonPrice
+
+
+FROM tblPlot
+         LEFT JOIN tblParkingService ON tblPlot.fldPlotID = tblParkingService.fldPlotID
+         LEFT JOIN tblService ON tblParkingService.fldServiceID = tblService.fldServiceID
+         LEFT JOIN tblPlotSize ON tblPlotSize.fldPlotSizeID = tblPlot.fldPlotSizeID
+         LEFT JOIN tblSeason ON tblSeason.fldPlotID = tblPlot.fldPlotID
+         LEFT JOIN tblZipcodeCity ON tblZipcodeCity.fldZipcode = tblPlot.fldZipcode
+
 end

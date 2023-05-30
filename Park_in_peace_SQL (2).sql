@@ -139,6 +139,7 @@ ALTER TABLE tblParkingService
 CONSTRAINT fk_PSplo foreign key (fldServiceID) references tblService(fldServiceID)
 
 --preload service types
+    INSERT INTO tblService (fldServiceType) VALUES ('NAN')
 INSERT INTO tblService (fldServiceType) VALUES ('Toilet')
 INSERT INTO tblService (fldServiceType) VALUES ('Water')
 INSERT INTO tblService (fldServiceType) VALUES ('Electric')

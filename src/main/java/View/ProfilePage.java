@@ -1,6 +1,7 @@
 package View;
 
 import Model.DaoObject.User;
+import Model.DatabaseWorker.BlackList;
 import com.example.park.UserPublisher;
 import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
@@ -81,6 +82,20 @@ public class ProfilePage extends Header implements UserSubscriber {
             }
 
             Button saveButton = new Button("Save");
+            saveButton.setOnMouseClicked(event -> {
+                    loggedIn.setName(nameField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldName",loggedIn.getName());
+                    loggedIn.setAddress(addressField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldAddress",loggedIn.getAddress());
+                    loggedIn.setPhoneNumber(phoneField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldPhoneNumber",loggedIn.getPhoneNumber());
+                    loggedIn.setEmail(emailField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldEmail",loggedIn.getEmail());
+                    loggedIn.setAcounterNumber(Integer.parseInt(accountField.getText()));
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldAcountNumber",String.valueOf(loggedIn.getAcounterNumber()));
+
+            });
+
 
             gridPane.add(saveButton, 0, 7, NUM_COLS, 1);
 
@@ -99,6 +114,7 @@ public class ProfilePage extends Header implements UserSubscriber {
         textFields.get(1).setText(loggedIn.getAddress());
         textFields.get(2).setText(loggedIn.getPhoneNumber());
         textFields.get(3).setText(loggedIn.getEmail());
-        textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));
+        if (loggedIn.getAcounterNumber() >=0)
+        {textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));}
     }
 }

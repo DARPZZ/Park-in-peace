@@ -7,9 +7,13 @@ import java.util.List;
 
 public class DaoPlot extends Connection implements DaoInterface<Plot>
 {
-    private int toiletID=1;
-    private int waterID=2;
-    private int electricID=3;
+    private int toiletID=2;
+    private int waterID=3;
+    private int electricID=4;
+
+    boolean toiletBool = false;
+    boolean waterBool= false;
+    boolean elBool= false;
 
     public DaoPlot()
     {
@@ -95,19 +99,19 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             case "fldToilet":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),1);
+                updateServices(toiletID, tblPlot.getPlotID(),2);
 
             }
             case "fldWater":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),2);
+                updateServices(toiletID, tblPlot.getPlotID(),3);
 
             }
             case "fldElectric":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),3);
+                updateServices(toiletID, tblPlot.getPlotID(),4);
 
             }
             case "fldLocation","fldDescription","fldImage","fldZipCode":
@@ -222,57 +226,44 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public ArrayList<Plot> GetAll()
     {
+
+        System.out.println("mem"+System.currentTimeMillis() );
         createConnection();
         ArrayList<Integer> plotIDs =new ArrayList<>();
         ArrayList<Plot> plotList = new ArrayList<Plot>();
-        boolean[] services = new boolean[3];
-        float[] prices = new float[3];
-        System.out.println("mem");
+
         try
              {
                  CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
-                 ResultSet rs2 = stmt.executeQuery();
-                 while (rs2.next())
+                 ResultSet resultSetPlots = stmt.executeQuery();
+                 //resultSetPlots.next();
+                 while(resultSetPlots.next())
                  {
-                    plotIDs.add(rs2.getInt(1)) ;
-                 }
-                 System.out.println("me2");
-                 for (Integer j:plotIDs)
-                 {
-                     createConnection();
-                     CallableStatement servicesCS = con.prepareCall("{call getPlotServices(?)}");
-                     servicesCS.setInt(1,j);
-                     ResultSet servicesRS = servicesCS.executeQuery();
-                     for (int i = 0; i <3 ; i++)
-                     {
-                         if (servicesRS.next())
-                             services[i] = true;
-                         System.out.println("mems");
-                     }
-                     CallableStatement price = con.prepareCall("{call getPlotPrices(?)}");
-                     price.setInt(1,j);
-                     ResultSet priceRS = price.executeQuery();
+                     toiletBool = false;
+                     waterBool = false;
+                     elBool = false;
+                     convertIDtoBool(resultSetPlots.getInt(1));
+                     resultSetPlots.next();
+                     convertIDtoBool(resultSetPlots.getInt(1));
+                     resultSetPlots.next();
+                     convertIDtoBool(resultSetPlots.getInt(1));
 
-                     for (int i = 0; i <3 ; i++)
-                     {
-                         if (priceRS.next())
-                         prices[i] = priceRS.getFloat(i+1);
-                     }
-                     System.out.println("e");
-                     ResultSet rs = stmt.executeQuery();
-                     rs.next();
-                plotList.add(new Plot(
-                        rs.getInt("fldUserID"),
-                        rs.getInt("fldPlotID"),
-                        rs.getString("fldLocation"),
-                        rs.getString("fldDescription"),
-                        rs.getString("fldImage"),
-                        rs.getString("fldPlotSize"),
-                        rs.getInt("fldZipcode"),
-                        services[0],services[1],services[2],
-                        prices[0],prices[1],prices[2]));
+                     plotList.add(new Plot(
+                             resultSetPlots.getInt("fldUserID"),
+                             resultSetPlots.getInt("fldPlotID"),
+                             resultSetPlots.getString("fldLocation"),
+                             resultSetPlots.getString("fldDescription"),
+                             resultSetPlots.getString("fldImage"),
+                             resultSetPlots.getString("fldPlotSize"),
+                             resultSetPlots.getInt("fldZipcode"),
+                             toiletBool,waterBool,elBool,
+                             resultSetPlots.getFloat("fldLowSeasonPrice"),
+                             resultSetPlots.getFloat("fldMediumSeasonPrice"),
+                             resultSetPlots.getFloat("fldHighSeasonPrice")));
+
                  }
-        } catch (SQLException e) {
+             }
+         catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
         return plotList;
@@ -311,5 +302,25 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         else {
             System.out.println("VALUE WRONG:"+ServiceID+"Should be 1 for true, 0 for false");
         }
+    }
+    private void convertIDtoBool(int id)
+    {
+        switch (id) {
+
+            case 2: {
+                toiletBool = true;
+                break;
+            }
+            case 3: {
+                waterBool = true;
+                break;
+            }
+            case 4: {
+                elBool = true;
+                break;
+            }
+
+        }
+
     }
 }
