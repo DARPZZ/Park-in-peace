@@ -1,20 +1,24 @@
 package View;
 
 import Model.DaoObject.Plot;
-import Model.Implements.DaoPlot;
 import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class PlotPage extends Header
@@ -22,15 +26,37 @@ public class PlotPage extends Header
     ArrayList<TextField> textFieldList = new ArrayList<>();
     ArrayList<Label> labelList = new ArrayList<>();
     ArrayList<CheckBox> checkBoxes =new ArrayList<>();
+    HBox plotview = new HBox();
     String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
     private int userID = 0;
 
-    public  PlotPage()
-    {
-        createUI();
+    public  PlotPage()  {
+
+        Button next = new Button("next");
+        next.setLayoutX(100);
+        next.setLayoutY(200);
+        next.setOnMouseClicked(event -> plotview.getChildren().removeAll());
+
+
+        plotview.setAlignment(Pos.CENTER);
+        plotview.setSpacing(40);
+        plotview.setLayoutX(25);
+        plotview.setLayoutY(300);
+
+        Image mem = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
+        Thumbnail meme = new Thumbnail(mem,"meme");
+        Thumbnail meme2 = new Thumbnail(mem,"meme");
+        Thumbnail meme3 = new Thumbnail(mem,"meme");
+        Thumbnail meme4 = new Thumbnail(mem,"meme");
+
+        plotview.getChildren().addAll(meme,meme2,meme3,meme4);
+        ANCHOR_PANE.getChildren().add(plotview);
+        ANCHOR_PANE.getChildren().add(next);
+        createPopUpUI();
+
     }
-    private void createUI()
+    private void createPopUpUI()
     {
         Stage dialog = new Stage();
         dialog.initOwner(HelloApplication.getStage());

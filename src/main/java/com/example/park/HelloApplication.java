@@ -58,7 +58,6 @@ public class HelloApplication extends Application
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         String css = this.getClass().getResource("/Style.css").toExternalForm();
         scene.getStylesheets().add(css);
-
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
         createScene(anchorPane);
