@@ -323,4 +323,23 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         }
 
     }
+    public ArrayList<String> getAllSizeTypes()
+    {
+        createConnection();
+        ArrayList<String> sizeTypes = new ArrayList<>();
+        try
+        {
+            CallableStatement sizeTypesCall = con.prepareCall("{CALL getAllSizeTypes}");
+            ResultSet sizeTypesReturn = sizeTypesCall.executeQuery();
+            while (sizeTypesReturn.next())
+            {
+                sizeTypes.add(sizeTypesReturn.getString(1));
+            }
+            return sizeTypes;
+        }catch (Exception e ){
+            System.out.println(e);
+        }
+        System.out.println("Result set issue");
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package View;
 
+import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
@@ -8,6 +9,7 @@ import com.example.park.HelloApplication;
 import com.example.park.UserSubscriber;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -44,8 +47,8 @@ public class PlotPage extends Header implements UserSubscriber
         plotview.setVgap(10);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setLayoutY(getYMargin()+200);
-        scrollPane.setLayoutX(500);
+        scrollPane.setLayoutY(getYMargin());
+        scrollPane.setLayoutX(1230);
         scrollPane.setPrefHeight(500);
         scrollPane.setPrefWidth(50);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -53,9 +56,17 @@ public class PlotPage extends Header implements UserSubscriber
         scrollPane.setPannable(false);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color:transparent;");
-        scrollPane.setContent(plotview);
 
+        TilePane tilePane = new TilePane(10, 10);
+        tilePane.setPadding(new Insets(10,0,10,0));
+        tilePane.setHgap(25);
+        tilePane.setVgap(25);
+        tilePane.setPrefRows(5);
+        tilePane.prefHeightProperty().bind(scrollPane.prefHeightProperty());
+        tilePane.prefWidthProperty().bind(scrollPane.prefWidthProperty());
+        scrollPane.setContent(tilePane);
 
+        scrollPane.setContent(tilePane);
         ANCHOR_PANE.getChildren().add(plotview);
         ANCHOR_PANE.getChildren().add(scrollPane);
 
@@ -116,6 +127,29 @@ public class PlotPage extends Header implements UserSubscriber
         }
         // lav ui for size
 
+        Label labelSize = new Label(labelNames[2]);
+        labelSize.setLayoutY(formStartY+ formOffSetY);
+        labelSize.setLayoutX(formStartX);
+        labelList.add(labelSize);
+
+        ComboBox<String> sizePicker= new ComboBox<>();
+        sizePicker.getItems().addAll(PlotList.getSingleton().getAllSizeTypes());
+        sizePicker.setLayoutX(labelSize.getLayoutX()+75);
+        sizePicker.setLayoutY(formStartY+formOffSetY-5);
+
+        Label labelCheckmark = new Label(servicesNames[2]);
+        labelCheckmark.setLayoutY(formStartY+ formOffSetY);
+        labelCheckmark.setLayoutX(formOffSetX+formOffSetX+200);
+        labelList.add(labelCheckmark);
+
+        CheckBox services = new CheckBox();
+        services.setLayoutY(formStartY+ formOffSetY);
+        services.setLayoutX(formOffSetX+formOffSetX+230);
+        checkBoxes.add(services);
+
+
+        formStartY+= formOffSetY;
+
 
         //region lav ui for beskrivelse label+textarea
         Label description = new Label("Beskrivelse");
@@ -159,10 +193,12 @@ public class PlotPage extends Header implements UserSubscriber
             @Override
             public void handle(MouseEvent event)
             {
-                Plot plotNew = new Plot //findID() , can find plot id
-                        (activeUser.getUserId(),textFieldList.get(0).getText(),
+                Plot plotNew = new Plot
+                        (activeUser.getUserId(),
+                                textFieldList.get(0).getText(),
                         descriptionField.getText(),
                         "PLACEHOLDER",
+                        sizePicker.getValue(),
                         textFieldList.get(2).getText(),
                         Integer.parseInt(textFieldList.get(1).getText()),
                         checkBoxes.get(0).isSelected(),
@@ -191,6 +227,7 @@ public class PlotPage extends Header implements UserSubscriber
                 popUp.getChildren().addAll(labelList);
                 popUp.getChildren().addAll(descriptionField,imagePlaceholder,confirmForm);
                 popUp.getChildren().addAll(checkBoxes);
+                popUp.getChildren().add(sizePicker);
                 Scene dialogScene = new Scene(popUp, 800, 600);
 
                 dialog.setScene(dialogScene);

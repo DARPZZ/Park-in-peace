@@ -509,3 +509,9 @@ FROM tblPlot
          LEFT JOIN tblZipcodeCity ON tblZipcodeCity.fldZipcode = tblPlot.fldZipcode
 
 end
+GO
+CREATE PROCEDURE getAllSizeTypes
+    as
+begin
+SELECT fldPlotSize FROM tblPlotSize
+end

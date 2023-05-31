@@ -49,4 +49,8 @@ public final class PlotList
     }
     public void Delete(Plot tblPlot, int ID)
     {plotWorker.Delete(tblPlot, ID);}
+    public ArrayList<String> getAllSizeTypes()
+    {
+        return plotWorker.getAllSizeTypes();
+    }
 }
