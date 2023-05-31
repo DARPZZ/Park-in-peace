@@ -45,6 +45,19 @@ public class User
         this.zipCode = new SimpleIntegerProperty(zipCode);
         this.acounterNumber = new SimpleIntegerProperty(0);
     }
+    public User(int ID,String name, String phoneNumber, String password, String address, String email, int zipCode)
+    {
+        this.userId = new SimpleIntegerProperty(ID);
+        this.name = new SimpleStringProperty(name);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        Password = new SimpleStringProperty(password);
+        this.address = new SimpleStringProperty(address);
+        this.email = new SimpleStringProperty(email);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.blackList = blackList;
+    }
+    public User(int id)
+    {this.userId = new SimpleIntegerProperty(id);}
 
     public int getUserId()
     {

@@ -59,7 +59,7 @@ public class PlotPage extends Header
         int formOffSetY = 60;
 
 
-        for (int i = 0; i <labelNames.length-3 ; i++) // Lav UI for Adresse, zip og size
+        for (int i = 0; i <labelNames.length-4 ; i++) // Lav UI for Adresse, zip
         {
             Label label = new Label(labelNames[i]);
             label.setLayoutY(formStartY+ formOffSetY);
@@ -83,6 +83,8 @@ public class PlotPage extends Header
             textFieldList.add(textField);
             formStartY +=formOffSetY ;
         }
+        // lav ui for size
+
 
         //region lav ui for beskrivelse label+textarea
         Label description = new Label("Beskrivelse");
