@@ -61,7 +61,7 @@ public class HelloApplication extends Application
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
-        createScene(anchorPane);
+        createScene(anchorPane,scene);
         stage.show();
     }
 
@@ -79,10 +79,9 @@ public class HelloApplication extends Application
         }
     }
 
-    public void createScene(AnchorPane anchorPane)
+    public void createScene(AnchorPane anchorPane, Scene scene)
     {
         Button loginButton = new Button("Login");
-
         ToggleButton toggleButton = new ToggleButton();
         toggleLabel.setLayoutX(600);
         toggleLabel.setLayoutY(20);
@@ -94,7 +93,9 @@ public class HelloApplication extends Application
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
-
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        toggleButton.getStyleClass().add("button");
         toggleButton.setOnAction(event ->
         {
             if (toggleButton.isSelected()) {
