@@ -65,7 +65,6 @@ public class BookingsUd extends Header implements UserSubscriber
     }
     public void getData()
     {
-        System.out.println("KOOOOOOOOOOO");
         plotOwnerList = daoPlotOwner.GetAll();
         for (PlotOwner plo : plotOwnerList) {
             int plotID = plo.getPlotID();

@@ -40,7 +40,7 @@ public class Bookings extends Header implements UserSubscriber
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
-    //Resevations resevations = new Resevations();
+    Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
     List<Resevations> reservationList = ReservationList.getSingleton().getList();
     public Bookings()
@@ -144,7 +144,7 @@ public class Bookings extends Header implements UserSubscriber
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String endDate = dtformat.format(table.getNewValue());
-           Resevations resevations = new Resevations();
+          // Resevations resevations = new Resevations();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(endDate, formatter);
             resevations.setReservationID(resid);
@@ -157,7 +157,7 @@ public class Bookings extends Header implements UserSubscriber
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String startDate = dtformat.format(table.getNewValue());
-            Resevations resevations = new Resevations();
+            //Resevations resevations = new Resevations();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(startDate, formatter);
             resevations.setReservationID(resid);
@@ -180,9 +180,6 @@ public class Bookings extends Header implements UserSubscriber
         });
         lejerButton.setOnAction(event ->
         {
-            tableView.getColumns().clear();
-            reservationList.clear();
-            ReservationList.getSingleton().setList();
             getData();
         });
         udLejerButton.setOnAction(event ->
@@ -209,11 +206,10 @@ public class Bookings extends Header implements UserSubscriber
     public void deleteResevations()
     {
         int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
-        System.out.println(resid);
         Resevations resevations = new Resevations();
         tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
         new DaoResevations().Delete(resevations,resid);
-        System.out.println(resevations.getReservationID() + " res ID");
+
     }
 
 }
