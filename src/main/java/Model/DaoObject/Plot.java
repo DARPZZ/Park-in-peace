@@ -39,6 +39,7 @@ public class Plot
     public Plot(int userID,String location, String description,String img, String plotSize, int zipCode,  boolean toilet, boolean water, boolean electric, float low,float mid, float high)
     {
         this.userID = new SimpleIntegerProperty(userID);
+        this.plotID =new SimpleIntegerProperty(0);
         this.location =new SimpleStringProperty( location);
         this.description =new SimpleStringProperty( description);
         this.imagePath = img;

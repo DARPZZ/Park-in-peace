@@ -194,22 +194,29 @@ public class PlotPage extends Header implements UserSubscriber
             public void handle(MouseEvent event)
             {
                 Plot plotNew = new Plot
-                        (activeUser.getUserId(),
-                                textFieldList.get(0).getText(),
-                        descriptionField.getText(),
-                        "PLACEHOLDER",
-                        sizePicker.getValue(),
-                        textFieldList.get(2).getText(),
-                        Integer.parseInt(textFieldList.get(1).getText()),
-                        checkBoxes.get(0).isSelected(),
-                                checkBoxes.get(1).isSelected(),
-                                checkBoxes.get(2).isSelected(),
-                        Float.parseFloat(textFieldList.get(3).getText()),
-                        Float.parseFloat(textFieldList.get(4).getText()),
-                        Float.parseFloat(textFieldList.get(5).getText()));
+                        (activeUser.getUserId(), // userid
+                                textFieldList.get(0).getText(),//location
+                        descriptionField.getText(),// description
+                        "PLACEHOLDER", //imagepth
+                        sizePicker.getValue(),//size
+                        Integer.parseInt(textFieldList.get(1).getText()), //zip
+                        checkBoxes.get(0).isSelected(), //toilet
+                                checkBoxes.get(1).isSelected(), // water
+                                checkBoxes.get(2).isSelected(), //el
+                        Float.parseFloat(textFieldList.get(2).getText()), //priceLow
+                        Float.parseFloat(textFieldList.get(3).getText()),// priceMed
+                        Float.parseFloat(textFieldList.get(4).getText())); //priceHigh
                         PlotList.getSingleton().CreatePlot(plotNew);
                 // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
-
+                for (TextField t:textFieldList)
+                {
+                        t.clear();
+                }
+                plotArrayList.add(plotNew);
+                preparePlotGrid();
+                dialog.close();
+                backGround.setVisible(false);
+                backGround.setDisable(true);
 
             }
         });

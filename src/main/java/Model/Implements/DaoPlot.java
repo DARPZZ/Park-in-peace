@@ -1,6 +1,8 @@
 package Model.Implements;
 
 import Model.DaoObject.Plot;
+import Model.DatabaseWorker.PlotList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             plotid = resultSet.getInt(1);
             System.out.println("rawdone");
 
+
             CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?,?)}");
             if(tblPlot.isToilet() == true)
             {firstPassInsert.setInt(1,toiletID);}
@@ -66,7 +69,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             resultSet.next();
 
             tblPlot.setPlotID(plotid);
-
+            PlotList.getSingleton().addToList(tblPlot);
             System.out.println("Done done");
 
 
