@@ -40,7 +40,7 @@ public class Bookings extends Header implements UserSubscriber
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
-    Resevations resevations = new Resevations();
+    //Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
     List<Resevations> reservationList = ReservationList.getSingleton().getList();
     public Bookings()
@@ -52,16 +52,6 @@ public class Bookings extends Header implements UserSubscriber
     }
     public void setScene()
     {
-
-        udLejerButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                System.out.println("h");
-            }
-        });
-
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
         tableView.setPrefWidth(400);
@@ -112,7 +102,6 @@ public class Bookings extends Header implements UserSubscriber
 
     public void createTable() {
 
-
         tableView.setEditable(true);
         StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
@@ -140,15 +129,22 @@ public class Bookings extends Header implements UserSubscriber
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
+        removeResevationButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                deleteResevations();
+            }
+        });
 
-        delteFromTabel();
         endDateColumn.setOnEditCommit(table ->
         {
             //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String endDate = dtformat.format(table.getNewValue());
-           // Resevations resevations = new Resevations();
+           Resevations resevations = new Resevations();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(endDate, formatter);
             resevations.setReservationID(resid);
@@ -161,7 +157,7 @@ public class Bookings extends Header implements UserSubscriber
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
             DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
             String startDate = dtformat.format(table.getNewValue());
-            //Resevations resevations = new Resevations();
+            Resevations resevations = new Resevations();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(startDate, formatter);
             resevations.setReservationID(resid);
@@ -210,25 +206,14 @@ public class Bookings extends Header implements UserSubscriber
     {
         new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
     }
-
-
-    public void delteFromTabel()
+    public void deleteResevations()
     {
-       removeResevationButton.setOnAction(new EventHandler<ActionEvent>()
-       {
-           @Override
-           public void handle(ActionEvent event)
-           {
-           tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
-           delteResevation();
-           }
-       });
-
+        int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
+        System.out.println(resid);
+        Resevations resevations = new Resevations();
+        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+        new DaoResevations().Delete(resevations,resid);
+        System.out.println(resevations.getReservationID() + " res ID");
     }
-    public void delteResevation()
-    {
-        new DaoResevations().Delete(resevations,resevations.getReservationID());
-    }
-
 
 }
