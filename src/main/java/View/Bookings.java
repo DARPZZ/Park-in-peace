@@ -48,7 +48,6 @@ public class Bookings extends Header implements UserSubscriber
         currentUserID = 0;
         setScene();
         updateTabels();
-
     }
     public void setScene()
     {
@@ -85,7 +84,6 @@ public class Bookings extends Header implements UserSubscriber
             int zipCode =0;
 
             for (Plot plot : plotList) {
-
                 if (res.getPlotID() == plot.getPlotID()) {
                     location = plot.getLocation();
                     zipCode = plot.getZipCode();
@@ -166,7 +164,7 @@ public class Bookings extends Header implements UserSubscriber
         });
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
-        //}
+
         ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
         tableView.setItems(data);
     }
