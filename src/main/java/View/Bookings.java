@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 public class Bookings extends Header implements UserSubscriber
 {
+    Button removeResevationButton = new Button("Remove resevations");
     Button lejerButton = new Button("Lejer");
     Button udLejerButton = new Button("Udlejer");
     Label youreResevations = new Label("Youre resevations");
@@ -74,8 +75,10 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setPrefWidth(lejerButton.getPrefWidth());
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
+        removeResevationButton.setLayoutX(160);
+        removeResevationButton.setLayoutY(660);
 
-        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
+        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton,removeResevationButton);
 
     }
     public void getData() {

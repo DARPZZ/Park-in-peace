@@ -47,7 +47,7 @@ public class BookingsUd extends Header implements UserSubscriber
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
-        tableView.setPrefWidth(350);
+        tableView.setPrefWidth(400);
         lejerButton.setLayoutX(225);
         lejerButton.setPrefWidth(150);
         lejerButton.setLayoutY(125);
