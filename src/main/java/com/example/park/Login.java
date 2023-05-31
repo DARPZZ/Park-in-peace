@@ -141,7 +141,7 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 System.out.println("before checklogin done"+System.currentTimeMillis());
-                user = BlackList.getSingleton().checkLogin(username,kodeord);
+                user = BlackList.getSingleton().checkLogin(username,kodeord);  // wrong password
                 System.out.println("checklogin done"+System.currentTimeMillis());
                 PlotList.getSingleton().setList();
                 System.out.println("set plotlist done"+System.currentTimeMillis());

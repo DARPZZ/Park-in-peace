@@ -33,6 +33,7 @@ public final class PlotList
         {
             plotList.add(p);
         }
+        System.out.println("");
     }
     public void addToList(Plot plot)
     {plotList.add(plot);}
