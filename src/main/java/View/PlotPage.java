@@ -164,7 +164,7 @@ public class PlotPage extends Header
 
             }
         });
-        ANCHOR_PANE.getChildren().addAll(createPlot,backGround);
+        anchorPane.getChildren().addAll(createPlot,backGround);
     }
 
     private void createAnnonce()

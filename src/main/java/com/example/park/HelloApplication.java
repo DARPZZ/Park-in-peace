@@ -1,6 +1,5 @@
 package com.example.park;
 
-import Model.Implements.DaoResevations;
 import View.Bookings;
 import View.BookingsUd;
 import View.Advertisement;
@@ -42,11 +41,11 @@ public class HelloApplication extends Application
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
-        SCENE_MAP.put(SceneName.Advertisement, advertisement.SCENE);
-        SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
-        SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
-        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
-        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
+        SCENE_MAP.put(SceneName.Advertisement, advertisement.scene);
+        SCENE_MAP.put(SceneName.Main,new MainPage().scene);
+        SCENE_MAP.put(SceneName.Bookings,bookings.scene);
+        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().scene);
+        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.scene);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         Scene scene = SCENE_MAP.get(SceneName.Main);

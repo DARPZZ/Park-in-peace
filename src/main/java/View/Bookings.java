@@ -1,10 +1,8 @@
 package View;
 
 import Model.DaoObject.Combine;
-import Model.DaoObject.PlotOwner;
 import Model.DaoObject.User;
 import Model.Implements.DaoCombine;
-import Model.Implements.DaoOwner;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
@@ -63,7 +61,7 @@ public class Bookings extends Header implements UserSubscriber
         {
             @Override
             public void handle(ActionEvent event) {HelloApplication.changeScene(SceneName.BookingsUd);}});
-        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
+        anchorPane.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
     }
 
     public void getData()

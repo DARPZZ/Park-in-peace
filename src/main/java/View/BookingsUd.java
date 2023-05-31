@@ -11,8 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -21,7 +19,6 @@ import javafx.scene.control.TableView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 
 public class BookingsUd extends Header implements UserSubscriber
 {
@@ -39,7 +36,7 @@ public class BookingsUd extends Header implements UserSubscriber
         currentUserID=0;
         plotOwnerList = daoOwner.GetAll();
         setScene();
-     ANCHOR_PANE.getChildren().addAll(udLejerButton,lejerButton,tableView,yourePlots);
+     anchorPane.getChildren().addAll(udLejerButton,lejerButton,tableView,yourePlots);
     }
     public void  setScene()
     {
