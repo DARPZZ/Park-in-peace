@@ -52,7 +52,7 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
-        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
+       // SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);

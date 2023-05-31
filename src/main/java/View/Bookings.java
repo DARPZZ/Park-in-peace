@@ -1,16 +1,10 @@
 package View;
 
-import Model.DaoObject.Plot;
+import Model.DaoObject.*;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
 import com.example.park.UserSubscriber;
-import Model.DaoObject.Combine;
-import Model.DaoObject.Resevations;
-import Model.DaoObject.User;
 import Model.Implements.DaoResevations;
-import com.example.park.HelloApplication;
-import com.example.park.SceneName;
-import com.example.park.UserSubscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,10 +30,12 @@ public class Bookings extends Header implements UserSubscriber
     Button removeResevationButton = new Button("Remove resevations");
     Button lejerButton = new Button("Lejer");
     Button udLejerButton = new Button("Udlejer");
-    Label youreResevations = new Label("Youre resevations");
+    Label infoLabel = new Label();
     private int currentUserID;
     private TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
+    List<Combine> combineDataListUd = new ArrayList<Combine>();
+
     Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
     List<Resevations> reservationList = ReservationList.getSingleton().getList();
@@ -47,15 +43,16 @@ public class Bookings extends Header implements UserSubscriber
     {
         currentUserID = 0;
         setScene();
-        updateTabels();
+        infoLabel.setText("Youre resevations");
+
     }
     public void setScene()
     {
         tableView.setLayoutX(50);
         tableView.setLayoutY(250);
         tableView.setPrefWidth(400);
-        youreResevations.setLayoutX(190);
-        youreResevations.setLayoutY(225);
+        infoLabel.setLayoutX(190);
+        infoLabel.setLayoutY(225);
         lejerButton.setLayoutX(225);
         lejerButton.setPrefWidth(150);
         lejerButton.setLayoutY(125);
@@ -64,14 +61,16 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
         removeResevationButton.setLayoutX(160);
         removeResevationButton.setLayoutY(660);
-        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton,removeResevationButton);
+        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
     public void getData() {
+        updateTabels();
         tableView.getColumns().clear();
         reservationList.clear();
         ReservationList.getSingleton().setList();
         combineDataList.clear();
-
+        combineDataListUd.clear();
+        List<Integer> plotOwnerDataList = new ArrayList<>();
         List<Integer> reservedPlotIds = new ArrayList<>();
         for (Resevations res : reservationList) {
             int userID = res.getUserID();
@@ -80,11 +79,15 @@ public class Bookings extends Header implements UserSubscriber
             LocalDate localEndDate = res.getEndDate();
             Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+
             String location ="";
             int zipCode =0;
+            int plotOwner = 0;
 
             for (Plot plot : plotList) {
                 if (res.getPlotID() == plot.getPlotID()) {
+                    plotOwner = plot.getUserID();
                     location = plot.getLocation();
                     zipCode = plot.getZipCode();
                 }
@@ -92,15 +95,23 @@ public class Bookings extends Header implements UserSubscriber
             if (currentUserID == userID) {
                 reservedPlotIds.add(res.getPlotID());
                 Combine combine = new Combine(userID, reservationID, location, zipCode, startDate, endDate);
+
                 combineDataList.add(combine);
             }
+            if (plotOwner == currentUserID) {
+
+                Combine combine = new Combine(userID, reservationID, location, zipCode, startDate, endDate);
+
+                combineDataListUd.add(combine);
+            }
         }
-        createTable();
+        createTable(combineDataList);
+
     }
 
-    public void createTable() {
+    public void createTable(List arrayList) {
 
-        tableView.setEditable(true);
+
         StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
         resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
@@ -165,7 +176,7 @@ public class Bookings extends Header implements UserSubscriber
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
 
-        ObservableList<Combine> data = FXCollections.observableArrayList(combineDataList);
+        ObservableList<Combine> data = FXCollections.observableArrayList(arrayList);
         tableView.setItems(data);
     }
 
@@ -173,23 +184,34 @@ public class Bookings extends Header implements UserSubscriber
     {
         bookingsBtn.setOnAction(event ->
         {
-
+            infoLabel.setText("Youre resevations");
+            tableView.setEditable(true);
             getData();
+          tableView.getColumns().clear();
+            createTable(combineDataList);
         });
         lejerButton.setOnAction(event ->
         {
+            infoLabel.setText("Youre resevations");
+            tableView.setEditable(true);
             getData();
+            tableView.getColumns().clear();
+            createTable(combineDataList);
         });
         udLejerButton.setOnAction(event ->
         {
-            HelloApplication.changeScene(SceneName.BookingsUd);
+            infoLabel.setText("Youre plots");
+            tableView.setEditable(false);
             getData();
+            tableView.getColumns().clear();
+            createTable(combineDataListUd);
         });
     }
     //region Subcriber
     @Override
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
+
         getData();
     }
     //endregion
