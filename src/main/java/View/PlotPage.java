@@ -37,19 +37,27 @@ public class PlotPage extends Header implements UserSubscriber
     public  PlotPage()  {
 
 
-        Button next = new Button("next");
-        next.setLayoutX(100);
-        next.setLayoutY(200);
-
         plotview.setAlignment(Pos.CENTER);
         plotview.setLayoutX(25);
         plotview.setLayoutY(300);
         plotview.setHgap(10);
         plotview.setVgap(10);
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setLayoutY(getYMargin()+200);
+        scrollPane.setLayoutX(500);
+        scrollPane.setPrefHeight(500);
+        scrollPane.setPrefWidth(50);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPannable(false);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color:transparent;");
+        scrollPane.setContent(plotview);
+
 
         ANCHOR_PANE.getChildren().add(plotview);
-        ANCHOR_PANE.getChildren().add(next);
+        ANCHOR_PANE.getChildren().add(scrollPane);
 
 
     }
