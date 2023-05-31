@@ -154,7 +154,7 @@ public class Login implements UserPublisher
 
                 HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
                 HelloApplication.plotPage.createPopUpUI();//
-                HelloApplication.plotPage.preparePlotHbox();//
+                HelloApplication.plotPage.preparePlotGrid();//
 
                 HelloApplication.changeScene(SceneName.Main);
                 System.out.println("Login successful!");

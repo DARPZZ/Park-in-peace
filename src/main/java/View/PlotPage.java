@@ -14,7 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -27,47 +27,25 @@ public class PlotPage extends Header implements UserSubscriber
     private ArrayList<TextField> textFieldList = new ArrayList<>();
     private ArrayList<Label> labelList = new ArrayList<>();
     private   ArrayList<CheckBox> checkBoxes =new ArrayList<>();
-    private HBox plotview = new HBox();
+    private GridPane plotview = new GridPane();
     private String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
     private ArrayList<Plot> plotArrayList =new ArrayList<>();
-    private int plotIstart =0;
-    private int plotIend =3;
-    private int plotArrayEnd;
 
 
 
     public  PlotPage()  {
+
+
         Button next = new Button("next");
         next.setLayoutX(100);
         next.setLayoutY(200);
-        next.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                plotview.getChildren().clear();
-                if (plotArrayEnd >=plotIstart+4)
-                {
-                    plotIstart +=4;
-                }
-                else
-                { plotIstart = plotArrayEnd-plotIstart;}
-                if (plotArrayEnd >= plotIend+4)
-                {
-                    plotIend =+4;
-                }
-                else {
-
-                    plotIend = plotArrayEnd;
-                }
-                preparePlotHbox();
-            }
-        });
-        //preparePlotHbox();
 
         plotview.setAlignment(Pos.CENTER);
-        plotview.setSpacing(40);
         plotview.setLayoutX(25);
         plotview.setLayoutY(300);
+        plotview.setHgap(10);
+        plotview.setVgap(10);
 
 
         ANCHOR_PANE.getChildren().add(plotview);
@@ -217,41 +195,34 @@ public class PlotPage extends Header implements UserSubscriber
         ANCHOR_PANE.getChildren().addAll(createPlot,backGround);
     }
 
-    private int findID()
+    public void preparePlotGrid()
     {
-        int id =0;
-        for (Plot p :PlotList.getSingleton().getList())
+        int columnCount =0;
+        int rowCount =0;
+        for (int i = 0; i < plotArrayList.size() ; i++)
         {
-            if (p.getPlotID() >= id);
-            {id= p.getPlotID();}
+
+            Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
+            Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plotArrayList.get(i).getLocation());
+            plotview.add(plotThumbnail,columnCount,rowCount);
+            rowCount++;
+            if (4%1 ==0)
+            {
+                columnCount++;
+                rowCount=0;
+            }
         }
-        return id+1;
     }
-    public void preparePlotHbox()
-    {
-        for (int i = plotIstart; i <= plotIend ; i++)
+    public void initPlotPage()
         {
-            Image mem = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
-            Thumbnail meme = new Thumbnail(mem,plotArrayList.get(i).getLocation());
-            plotview.getChildren().addAll(meme);
+          for (Plot p: PlotList.getSingleton().getList())
+            {
+           if (p.getUserID() == activeUser.getUserId())
+            {
+                 plotArrayList.add(p);
+             }
+                }
         }
-    }
-public void initPlotPage()
-{
-    for (Plot p: PlotList.getSingleton().getList())
-    {
-     if (p.getPlotID() == activeUser.getUserId())
-     {
-         plotArrayList.add(p);
-     }
-     plotArrayEnd = plotArrayList.size()-1;
-     if (plotArrayEnd >=4)
-     {
-         plotIend =4;
-     }
-     else {plotIend = plotArrayEnd; }
-    }
-}
 
     @Override
     public void onUserReceived(User user)
