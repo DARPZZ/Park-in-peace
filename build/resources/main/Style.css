@@ -52,10 +52,11 @@
     -fx-border-color: #3c3c3c;
 }
 
-/* Additional CSS Styles */
 
-.label.error {
-    -fx-text-fill: red;
+#labelError {
+
+    -fx-border-color: red;
+    -fx-border-width: 2px;
 }
 
 .button.primary {
@@ -93,5 +94,26 @@
 }
 
 .text-area:focused {
-    -fx-border-color: #0066cc;
+    -fx-border-color: #0259b4;
 }
+.warning-badge {
+    -fx-border-color: red;
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+}
+
+/* Virker ikke lige pt
+@keyframes pulseAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+ */
+
+.login-button-animation {
+    animation-name: pulseAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+

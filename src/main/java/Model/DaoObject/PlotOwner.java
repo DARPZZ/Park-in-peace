@@ -1,9 +1,6 @@
 package Model.DaoObject;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 import java.util.Date;
 
@@ -12,28 +9,18 @@ public class PlotOwner
     private IntegerProperty plotID;
     private StringProperty location;
     private IntegerProperty zipCode;
-    private int userID;
-    private Date startDate;
-    private Date slutDate;
+    private IntegerProperty userID;
+    private ObjectProperty startDate;
+    private ObjectProperty slutDate;
 
     public PlotOwner(int plotID, String location, int zipCode, int userID, Date startDate, Date slutDate)
     {
         this.plotID = new SimpleIntegerProperty(plotID);
         this.location = new SimpleStringProperty(location);
         this.zipCode = new SimpleIntegerProperty(zipCode);
-        this.userID = userID;
-        this.startDate = startDate;
-        this.slutDate = slutDate;
-    }
-
-    public int getUserID()
-    {
-        return userID;
-    }
-
-    public void setUserID(int userID)
-    {
-        this.userID = userID;
+        this.userID = new SimpleIntegerProperty(userID);
+        this.startDate = new SimpleObjectProperty(startDate) ;
+        this.slutDate = new SimpleObjectProperty(slutDate);
     }
 
     public int getPlotID()
@@ -81,23 +68,48 @@ public class PlotOwner
         this.zipCode.set(zipCode);
     }
 
-    public Date getStartDate()
+    public int getUserID()
+    {
+        return userID.get();
+    }
+
+    public IntegerProperty userIDProperty()
+    {
+        return userID;
+    }
+
+    public void setUserID(int userID)
+    {
+        this.userID.set(userID);
+    }
+
+    public Object getStartDate()
+    {
+        return startDate.get();
+    }
+
+    public ObjectProperty startDateProperty()
     {
         return startDate;
     }
 
-    public void setStartDate(Date startDate)
+    public void setStartDate(Object startDate)
     {
-        this.startDate = startDate;
+        this.startDate.set(startDate);
     }
 
-    public Date getSlutDate()
+    public Object getSlutDate()
+    {
+        return slutDate.get();
+    }
+
+    public ObjectProperty slutDateProperty()
     {
         return slutDate;
     }
 
-    public void setSlutDate(Date slutDate)
+    public void setSlutDate(Object slutDate)
     {
-        this.slutDate = slutDate;
+        this.slutDate.set(slutDate);
     }
 }
