@@ -1,5 +1,10 @@
 package com.example.park;
 
+import Model.DaoObject.*;
+import Model.DatabaseWorker.PlotList;
+import Model.Implements.*;
+import View.*;
+//import View.BookingsUd;
 import View.Bookings;
 import View.BookingsUd;
 import View.Advertisement;
@@ -19,8 +24,9 @@ import java.util.HashMap;
 public class HelloApplication extends Application
 {
     Login login = new Login();
-   Bookings bookings = new Bookings();
-   BookingsUd bookingsUd = new BookingsUd();
+    public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
+    Bookings bookings = new Bookings();
+    BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -36,6 +42,8 @@ public class HelloApplication extends Application
 
         login.setUserPublisher(login); // Giveren
         login.subscribe(bookings); //tager
+        login.subscribe(profilePage);
+        login.setUserPublisher(login); // Giveren
         login.subscribe(bookingsUd);
         login.subscribe(advertisement);
 
@@ -46,14 +54,24 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Bookings,bookings.scene);
         SCENE_MAP.put(SceneName.PlotPage, new PlotPage().scene);
         SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.scene);
+        SCENE_MAP.put(SceneName.Main,new MainPage().SCENE);
+        SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
+        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().SCENE);
+        SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
+        SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
         Scene scene = SCENE_MAP.get(SceneName.Main);
 
         createScene(anchorPane);
 
+        Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
+        createScene(anchorPane);
         stage.show();
     }
 
@@ -75,6 +93,7 @@ public class HelloApplication extends Application
     public void createScene(AnchorPane anchorPane)
     {
         Button loginButton = new Button("Login");
+
         ToggleButton toggleButton = new ToggleButton();
         toggleLabel.setLayoutX(600);
         toggleLabel.setLayoutY(20);
@@ -110,5 +129,4 @@ public class HelloApplication extends Application
         anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
 
     }
-
-}
+    }

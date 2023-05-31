@@ -1,163 +1,170 @@
 package Model.DaoObject;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.image.Image;
+import javafx.beans.property.*;
+import javafx.scene.control.TextField;
 
 public class Plot
 {
+    private IntegerProperty userID;
     private IntegerProperty plotID;
     private StringProperty location;
     private StringProperty description;
+    private String imagePath;
     private StringProperty plotSize;
     private IntegerProperty zipCode;
 
+    private FloatProperty lowPrice;
+    private FloatProperty midPrice;
+    private FloatProperty highPrice;
 
-    private StringProperty currentSeason;
-    private IntegerProperty lowPrice;
-    private IntegerProperty midPrice;
-    private IntegerProperty highPrice;
-
-    private Image image;
     private boolean toilet;
     private boolean water;
     private boolean electric;
 
-    public Plot(String location, String description, String plotSize, int zipCode, int low,int mid, int high, boolean toilet, boolean water, boolean electric)
+    public Plot(int userID ,int plotID, String location, String description,String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low,float mid, float high) {
+        this.userID = new SimpleIntegerProperty(userID);
+        this.plotID = new SimpleIntegerProperty(plotID);
+        this.location = new SimpleStringProperty(location);
+        this.description = new SimpleStringProperty(description);
+        this.imagePath = img;
+        this.plotSize = new SimpleStringProperty(plotSize);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
+        this.lowPrice = new SimpleFloatProperty(low);
+        this.midPrice = new SimpleFloatProperty(mid);
+        this.highPrice = new SimpleFloatProperty(high);
+        this.toilet = toilet;
+        this.water = water;
+        this.electric = electric;
+    }
+    public Plot(int userID,String location, String description,String img, String plotSize, int zipCode,  boolean toilet, boolean water, boolean electric, float low,float mid, float high)
     {
-        //this.plotID = new SimpleIntegerProperty(plotID) ;
+        this.userID = new SimpleIntegerProperty(userID);
         this.location =new SimpleStringProperty( location);
         this.description =new SimpleStringProperty( description);
+        this.imagePath = img;
         this.plotSize =new SimpleStringProperty( plotSize);
         this.zipCode =new SimpleIntegerProperty( zipCode);
-        this.lowPrice = new SimpleIntegerProperty(low);
-        this.midPrice = new SimpleIntegerProperty(mid);
-        this.highPrice =new SimpleIntegerProperty(high);
+        this.lowPrice = new SimpleFloatProperty(low);
+        this.midPrice = new SimpleFloatProperty(mid);
+        this.highPrice =new SimpleFloatProperty(high);
         this.toilet = toilet;
         this.water  = water;
         this.electric = electric;
     }
 
-    public int getPlotID()
-    {
+    public int getUserID() {
+        return userID.get();
+    }
+
+    public IntegerProperty userIDProperty() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID.set(userID);
+    }
+
+    public int getPlotID() {
         return plotID.get();
     }
 
-    public IntegerProperty plotIDProperty()
-    {
+    public IntegerProperty plotIDProperty() {
         return plotID;
     }
 
-    public void setPlotID(int plotID)
-    {
+    public void setPlotID(int plotID) {
         this.plotID.set(plotID);
     }
 
-    public String getLocation()
-    {
+    public String getLocation() {
         return location.get();
     }
 
-    public StringProperty locationProperty()
-    {
+    public StringProperty locationProperty() {
         return location;
     }
 
-    public void setLocation(String location)
-    {
+    public void setLocation(String location) {
         this.location.set(location);
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description.get();
     }
 
-    public StringProperty descriptionProperty()
-    {
+    public StringProperty descriptionProperty() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description.set(description);
     }
 
-    public Image getImage()
-    {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(Image image)
-    {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public String getPlotSize()
-    {
+    public String getPlotSize() {
         return plotSize.get();
     }
 
-    public StringProperty plotSizeProperty()
-    {
+    public StringProperty plotSizeProperty() {
         return plotSize;
     }
 
-    public void setPlotSize(String plotSize)
-    {
+    public void setPlotSize(String plotSize) {
         this.plotSize.set(plotSize);
     }
 
-    public int getZipCode()
-    {
+    public int getZipCode() {
         return zipCode.get();
     }
 
-    public IntegerProperty zipCodeProperty()
-    {
+    public IntegerProperty zipCodeProperty() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode)
-    {
+    public void setZipCode(int zipCode) {
         this.zipCode.set(zipCode);
     }
 
-    public int getLowPrice() {
+    public float getLowPrice() {
         return lowPrice.get();
     }
 
-    public IntegerProperty lowPriceProperty() {
+    public FloatProperty lowPriceProperty() {
         return lowPrice;
     }
 
-    public void setLowPrice(int lowPrice) {
+    public void setLowPrice(float lowPrice) {
         this.lowPrice.set(lowPrice);
     }
 
-    public int getMidPrice() {
+    public float getMidPrice() {
         return midPrice.get();
     }
 
-    public IntegerProperty midPriceProperty() {
+    public FloatProperty midPriceProperty() {
         return midPrice;
     }
 
-    public void setMidPrice(int midPrice) {
+    public void setMidPrice(float midPrice) {
         this.midPrice.set(midPrice);
     }
 
-    public int getHighPrice() {
+    public float getHighPrice() {
         return highPrice.get();
     }
 
-    public IntegerProperty highPriceProperty() {
+    public FloatProperty highPriceProperty() {
         return highPrice;
     }
 
-    public void setHighPrice(int highPrice) {
+    public void setHighPrice(float highPrice) {
         this.highPrice.set(highPrice);
     }
 

@@ -1,22 +1,15 @@
 package Model.Implements;
 
 import Model.DaoObject.PlotOwner;
-import Model.DaoObject.User;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoOwner extends Connection implements DaoInterface<PlotOwner>
+public class DaoPlotOwner extends Connection implements DaoInterface<PlotOwner>
 {
-    public DaoOwner()
-    {
-        try {
-            con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);
-        } catch (SQLException e) {
-            System.err.println("Database connection fail" + e.getMessage());
-        }
-    }
 
     @Override
     public void Create(PlotOwner plotOwner)
@@ -39,7 +32,6 @@ public class DaoOwner extends Connection implements DaoInterface<PlotOwner>
     @Override
     public PlotOwner Get(int ID)
     {
-
         return null;
     }
 
@@ -47,13 +39,9 @@ public class DaoOwner extends Connection implements DaoInterface<PlotOwner>
     public List<PlotOwner> GetAll()
     {
         List<PlotOwner> plotOwnerList = new ArrayList<>();
-        try (
-             CallableStatement stmt =con.prepareCall("{call getOwner()}")) {
-
-            // Execute the stored procedure
+        try {
+                CallableStatement stmt =con.prepareCall("{call getOwner()}");
             ResultSet rs = stmt.executeQuery();
-
-            // Process the result set
             while (rs.next()) {
                 plotOwnerList.add(new PlotOwner(rs.getInt("fldPlotID"),
                         rs.getString("fldLocation"),
@@ -68,6 +56,4 @@ public class DaoOwner extends Connection implements DaoInterface<PlotOwner>
         }
         return plotOwnerList;
     }
-
 }
-

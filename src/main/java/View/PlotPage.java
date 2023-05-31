@@ -1,6 +1,8 @@
 package View;
 
 import Model.DaoObject.Plot;
+import Model.Implements.DaoPlot;
+import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
 import javafx.event.ActionEvent;
@@ -22,6 +24,7 @@ public class PlotPage extends Header
     ArrayList<CheckBox> checkBoxes =new ArrayList<>();
     String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
+    private int userID = 0;
 
     public  PlotPage()
     {
@@ -56,7 +59,7 @@ public class PlotPage extends Header
         int formOffSetY = 60;
 
 
-        for (int i = 0; i <labelNames.length-3 ; i++) // Lav UI for Adresse, zip og size
+        for (int i = 0; i <labelNames.length-4 ; i++) // Lav UI for Adresse, zip
         {
             Label label = new Label(labelNames[i]);
             label.setLayoutY(formStartY+ formOffSetY);
@@ -80,6 +83,8 @@ public class PlotPage extends Header
             textFieldList.add(textField);
             formStartY +=formOffSetY ;
         }
+        // lav ui for size
+
 
         //region lav ui for beskrivelse label+textarea
         Label description = new Label("Beskrivelse");
@@ -123,19 +128,19 @@ public class PlotPage extends Header
             @Override
             public void handle(MouseEvent event)
             {
-
-                Plot plotNew = new Plot(textFieldList.get(0).getText(),
-                        textFieldList.get(3).getText(),
+                Plot plotNew = new Plot //findID() , can find plot id
+                        (userID,textFieldList.get(0).getText(),
+                        descriptionField.getText(),
+                        "PLACEHOLDER",
                         textFieldList.get(2).getText(),
-                        Integer.parseInt( textFieldList.get(1).getText()),
-                        Integer.parseInt(textFieldList.get(4).getText()),
-                        Integer.parseInt(textFieldList.get(5).getText()),
-                        Integer.parseInt(textFieldList.get(6).getText()),
+                        Integer.parseInt(textFieldList.get(1).getText()),
                         checkBoxes.get(0).isSelected(),
-                        checkBoxes.get(1).isSelected(),
-                        checkBoxes.get(2).isSelected());
-                //HelloApplication.plotMap.put(1,plotNew);
-
+                                checkBoxes.get(1).isSelected(),
+                                checkBoxes.get(2).isSelected(),
+                        Float.parseFloat(textFieldList.get(3).getText()),
+                        Float.parseFloat(textFieldList.get(4).getText()),
+                        Float.parseFloat(textFieldList.get(5).getText()));
+                        PlotList.getSingleton().CreatePlot(plotNew);
                 // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
 
 
@@ -167,9 +172,15 @@ public class PlotPage extends Header
         anchorPane.getChildren().addAll(createPlot,backGround);
     }
 
-    private void createAnnonce()
+    private int findID()
     {
-
+        int id =0;
+        for (Plot p :PlotList.getSingleton().getList())
+        {
+            if (p.getPlotID() >= id);
+            {id= p.getPlotID();}
+        }
+        return id+1;
     }
 
 }
