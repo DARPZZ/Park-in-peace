@@ -42,22 +42,27 @@ end
 /*
 GO
 go
-CREATE PROCEDURE insertUser (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword VARCHAR(max), @fldAddress varchar(MAX),
-	@fldEmail varchar(max), @fldZipcode int)
+Create PROCEDURE [dbo].[insertUser] (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword VARCHAR(max), @fldAddress varchar(MAX), @fldAcountNumber int,
+    @fldEmail varchar(max), @fldZipcode int)
 as
 begin
-SET NOCOUNT ON
-insert into [dbo].[tblUser]
+DECLARE @sql varchar(MAX)
+SET @sql = 'insert into [dbo].[tblUser]
            ([fldName]
            ,[fldPhoneNumber]
            ,[fldPassword]
            ,[fldAddress]
+           ,[fldAcountNumber]
            ,[fldEmail]
            ,[fldZipcode])
-		   values(@fldName,@fldPhoneNumber,@fldPassword,@fldAddress,@fldEmail,@fldZipcode);
-		   SELECT SCOPE_IDENTITY()
+           values(''' + @fldName + ''' ,''' + @fldPhoneNumber + ''' , ''' + @fldPassword + ''' , ''' + @fldAddress +''', ' + CAST( @fldAcountNumber as varchar) +
+                ', ''' + @fldEmail + ''' , ' + CAST(@fldZipcode as varchar) +')'
+                    print (@sql)
+                    execute (@sql)
 end
+
 */
+
 
 /*
 GO
