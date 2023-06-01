@@ -364,10 +364,6 @@ public class MainPage extends Header
         }
     }
 
-    @Override
-    public void onUserReceived(User user) {
-
-    }
 
     public enum FilterTypes
     {

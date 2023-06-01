@@ -205,7 +205,7 @@ public class Bookings extends Header implements UserSubscriber
         {
             removeResevationButton.setVisible(true);
             removeResevationButton.setDisable(false);
-            infoLabel.setText("Youre resevations");
+            infoLabel.setText("Dine Resevations");
             tableView.setEditable(true);
             getData();
             tableView.getColumns().clear();
@@ -213,7 +213,7 @@ public class Bookings extends Header implements UserSubscriber
         });
         udLejerButton.setOnAction(event ->
         {
-            infoLabel.setText("Youre plots");
+            infoLabel.setText("Dine Pladser");
             tableView.setEditable(false);
             getData();
             tableView.getColumns().clear();

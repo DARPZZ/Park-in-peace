@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
-public abstract class Header implements UserSubscriber
+public abstract class Header
 {
      User currentUser;
     public final Scene scene;
@@ -126,9 +126,5 @@ public abstract class Header implements UserSubscriber
     {
         return bookingsButton;
     }
-    public void onUserReceived(User user)
-    {currentUser =user;}
-
-
     //endregion
 }
