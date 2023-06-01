@@ -1,23 +1,24 @@
 package Service;
 
 import Model.DaoObject.Combine;
+import Model.DaoObject.Plot;
 import com.example.park.SceneName;
 import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class CombinePublisher implements Publisher<Combine>
+public class CombinePublisher implements Publisher<Plot>
 {
     private static CombinePublisher combinePublisher;
-    private final List<Pair<SceneName, Consumer<Combine>>> listSubscriber = new ArrayList<>();
+    private final List<Pair<SceneName, Consumer<Plot>>> listSubscriber = new ArrayList<>();
 
     private CombinePublisher(){};
 
     @Override
-    public void publish(SceneName sceneName, Combine composite)
+    public void publish(SceneName sceneName, Plot composite)
     {
-        for (Pair<SceneName, Consumer<Combine>> data : listSubscriber)
+        for (Pair<SceneName, Consumer<Plot>> data : listSubscriber)
         {
             if (data.getKey() == sceneName)
             {
@@ -27,13 +28,13 @@ public class CombinePublisher implements Publisher<Combine>
     }
 
     @Override
-    public void subscribe(SceneName sceneName, Consumer<Combine> consumer)
+    public void subscribe(SceneName sceneName, Consumer<Plot> consumer)
     {
         listSubscriber.add(new Pair<>(sceneName, consumer));
     }
 
     @Override
-    public void unsubscribe(SceneName sceneName, Consumer<Combine> consumer)
+    public void unsubscribe(SceneName sceneName, Consumer<Plot> consumer)
     {
         listSubscriber.removeIf(subscriber -> subscriber.getKey() == sceneName && subscriber.getValue() == consumer);
     }

@@ -25,13 +25,12 @@ public class Combine
     private boolean toilet;
     private boolean el;
     private boolean Water;
-    private ObjectProperty startDate;
-    private ObjectProperty endDate;
+    private ObjectProperty startDateProperty;
+    private ObjectProperty endDateProperty;
     private String seasonName;
     private float lowSeasonPrice;
     private float midSeasonPrice;
     private float highSeasonPrice;
-
 
     public Combine(int userID,int resevationsID,String location, int zipCode, Date startDate, Date endDate)
     {
@@ -39,8 +38,8 @@ public class Combine
         this.resevationsID = new SimpleIntegerProperty(resevationsID) ;
         this.location = new SimpleStringProperty(location) ;
         this.zipCode = new SimpleIntegerProperty(zipCode) ;
-        this.startDate = new SimpleObjectProperty(startDate) ;
-        this.endDate = new SimpleObjectProperty(endDate)  ;
+        this.startDateProperty = new SimpleObjectProperty(startDate) ;
+        this.endDateProperty = new SimpleObjectProperty(endDate)  ;
     }
 
     public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
@@ -56,8 +55,8 @@ public class Combine
         this.toilet = toilet;
         this.el = el;
         this.Water = water;
-        this.startDate = new SimpleObjectProperty(startDate) ;
-        this.endDate = new SimpleObjectProperty(endDate)  ;
+        this.startDateProperty = new SimpleObjectProperty(startDate) ;
+        this.endDateProperty = new SimpleObjectProperty(endDate)  ;
         this.toiletProperty = new SimpleBooleanProperty(toilet);
         this.elProperty = new SimpleBooleanProperty(el);
         this.waterProperty = new SimpleBooleanProperty(water);
@@ -211,32 +210,32 @@ public class Combine
 
     public Object getStartDate()
     {
-        return startDate.get();
+        return startDateProperty.get();
     }
 
     public ObjectProperty startDateProperty()
     {
-        return startDate;
+        return startDateProperty;
     }
 
     public void setStartDate(Object startDate)
     {
-        this.startDate.set(startDate);
+        this.startDateProperty.set(startDate);
     }
 
     public Object getEndDate()
     {
-        return endDate.get();
+        return endDateProperty.get();
     }
 
     public ObjectProperty endDateProperty()
     {
-        return endDate;
+        return endDateProperty;
     }
 
     public void setEndDate(Object endDate)
     {
-        this.endDate.set(endDate);
+        this.endDateProperty.set(endDate);
     }
 
     public String getSeasonName()

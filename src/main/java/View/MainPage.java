@@ -1,7 +1,7 @@
 package View;
 
-import Model.DaoObject.Combine;
-import Model.Implements.DaoCombine;
+import Model.DaoObject.Plot;
+import Model.DatabaseWorker.PlotList;
 import Service.CombinePublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 public class MainPage extends Header
 {
-    private final List<Combine> advertisementList;
-    private List<Combine> filteredList;
+    private final List<Plot> advertisementList;
+    private List<Plot> filteredList;
     private TilePane tilePane;
     private Pane popUpBackground;
     private AnchorPane popUpContent;
@@ -48,7 +48,8 @@ public class MainPage extends Header
     {
         setupFilterControlsLayout();
         setupScrollPaneLayout();
-        advertisementList = new DaoCombine().GetAll();
+        PlotList.getSingleton().setList();
+        advertisementList = PlotList.getSingleton().getList();
         populateWithAds(advertisementList);
         setupPopUpBackground();
     }
@@ -233,14 +234,14 @@ public class MainPage extends Header
 
     private void applyFilters()
     {
-        Predicate<Combine> filterMinMax = data ->
-                (minPrice.get() == 0 || minPrice.get() < data.getMidSeasonPrice()) &&
-                (maxPrice.get() == 0 || maxPrice.get() > data.getMidSeasonPrice());
+        Predicate<Plot> filterMinMax = data ->
+                (minPrice.get() == 0 || minPrice.get() < data.getMidPrice()) &&
+                (maxPrice.get() == 0 || maxPrice.get() > data.getMidPrice());
 
-        Predicate<Combine> filterCondition = data ->
-                (!toiletFilter || data.isToilet()) &&
-                (!electricityFilter || data.isEl()) &&
-                (!waterFilter || data.isWater());
+        Predicate<Plot> filterCondition = data ->
+                (!toiletFilter || data.getToiletProperty().get()) &&
+                (!electricityFilter || data.getElectricProperty().get()) &&
+                (!waterFilter || data.getWaterProperty().get());
 
         filteredList = advertisementList.stream()
                 .filter(filterCondition.and(filterMinMax))
@@ -268,7 +269,7 @@ public class MainPage extends Header
                     populateWithAds(filteredList);
                 }
                 resetFilter();
-                Predicate<Combine> filterCondition = data ->
+                Predicate<Plot> filterCondition = data ->
                         data.getLocation().toLowerCase().contains(searchTextField.getText().toLowerCase()) ||
                         String.valueOf(data.getZipCode()).toLowerCase().contains(searchTextField.getText());
 
@@ -333,19 +334,19 @@ public class MainPage extends Header
         filteredList = new ArrayList<>(advertisementList);
     }
 
-    private void populateWithAds(List<Combine> list)
+    private void populateWithAds(List<Plot> list)
     {
         tilePane.getChildren().clear();
         CombinePublisher publish = CombinePublisher.getInstance();
-        for (Combine ad : list)
+        for (Plot ad : list)
         {
             if(ad != null)
             {
                 try
                 {
-                    Thumbnail thumbnail = new Thumbnail(new Image(ad.getImage()),
+                    Thumbnail thumbnail = new Thumbnail(new Image(ad.getImagePath()),
                             ad.getLocation() + ", " + ad.getZipCode(),
-                            String.format("%.0f kr", ad.getMidSeasonPrice()));
+                            String.format("%.0f kr", ad.getMidPrice()));
                     thumbnail.setOnMouseReleased(event ->
                     {
                         publish.publish(SceneName.Main, ad);

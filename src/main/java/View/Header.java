@@ -105,5 +105,11 @@ public abstract class Header
     {
         return Y_LAYOUT + HEIGHT;
     }
+
+    public Button getBookingsButton()
+    {
+        return bookingsButton;
+    }
+
     //endregion
 }

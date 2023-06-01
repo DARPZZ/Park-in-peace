@@ -1,6 +1,7 @@
 package View;
 
 import Model.DaoObject.Combine;
+import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoResevations;
@@ -20,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 
 public class Advertisement extends Header implements UserSubscriber
 {
-    private Combine advertisement;
+    private Plot advertisement;
     private ImageView imageView;
     private Pane imageHolder;
     private GridPane reserveDateGridPane;
@@ -148,21 +149,21 @@ public class Advertisement extends Header implements UserSubscriber
     }
 
 
-    private void handleAdvertisementUpdate(Combine updatedAdvertisement)
+    private void handleAdvertisementUpdate(Plot updatedAdvertisement)
     {
         advertisement = updatedAdvertisement;
         if (advertisement != null)
         {
-            imageView.setImage(new Image(advertisement.getImage()));
+            imageView.setImage(new Image(advertisement.getImagePath()));
             setLabelValues();
             String address = String.format("%s, %s", advertisement.getLocation(), advertisement.getZipCode());
             addressDataLabel.setText(address);
             plotSizeDataLabel.setText(advertisement.getPlotSize());
             descriptionDataTextField.getChildren().clear();
             descriptionDataTextField.getChildren().add(new Text(advertisement.getDescription()));
-            toiletsCheckBox.selectedProperty().bind(advertisement.toiletProperty());
-            waterCheckBox.selectedProperty().bind(advertisement.waterProperty());
-            electricityCheckBox.selectedProperty().bind(advertisement.elProperty());
+            toiletsCheckBox.selectedProperty().bind(advertisement.getToiletProperty());
+            waterCheckBox.selectedProperty().bind(advertisement.getWaterProperty());
+            electricityCheckBox.selectedProperty().bind(advertisement.getElectricProperty());
         }
     }
 
@@ -256,7 +257,7 @@ public class Advertisement extends Header implements UserSubscriber
     {
         try
         {
-            String standardPrice = String.format("%.0f kr",advertisement.getMidSeasonPrice());
+            String standardPrice = String.format("%.0f kr",advertisement.getMidPrice());
             pricePrDayLabel.setText(standardPrice);
         }
         catch (Exception e)

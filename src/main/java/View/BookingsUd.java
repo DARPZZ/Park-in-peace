@@ -40,7 +40,7 @@ public class BookingsUd extends Header implements UserSubscriber
         currentUserID=0;
 
         setScene();
-        ANCHOR_PANE.getChildren().addAll(udLejerButton,lejerButton,tableView,yourePlots);
+        anchorPane.getChildren().addAll(udLejerButton,lejerButton,tableView,yourePlots);
     }
     public void  setScene()
     {

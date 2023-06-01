@@ -1,7 +1,6 @@
 package Model.DaoObject;
 
 import javafx.beans.property.*;
-import javafx.scene.control.TextField;
 
 public class Plot
 {
@@ -17,9 +16,9 @@ public class Plot
     private FloatProperty midPrice;
     private FloatProperty highPrice;
 
-    private boolean toilet;
-    private boolean water;
-    private boolean electric;
+    private BooleanProperty toiletProperty;
+    private BooleanProperty waterProperty;
+    private BooleanProperty electricProperty;
 
     public Plot(int userID ,int plotID, String location, String description,String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low,float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
@@ -32,9 +31,9 @@ public class Plot
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
         this.highPrice = new SimpleFloatProperty(high);
-        this.toilet = toilet;
-        this.water = water;
-        this.electric = electric;
+        this.toiletProperty = new SimpleBooleanProperty();
+        this.waterProperty = new SimpleBooleanProperty();
+        this.electricProperty = new SimpleBooleanProperty();
     }
     public Plot(int userID,String location, String description,String img, String plotSize, int zipCode,  boolean toilet, boolean water, boolean electric, float low,float mid, float high)
     {
@@ -47,9 +46,9 @@ public class Plot
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
         this.highPrice =new SimpleFloatProperty(high);
-        this.toilet = toilet;
-        this.water  = water;
-        this.electric = electric;
+        this.toiletProperty = new SimpleBooleanProperty();
+        this.waterProperty = new SimpleBooleanProperty();
+        this.electricProperty = new SimpleBooleanProperty();
     }
 
     public int getUserID() {
@@ -168,27 +167,42 @@ public class Plot
         this.highPrice.set(highPrice);
     }
 
-    public boolean isToilet() {
-        return toilet;
+    public boolean getToilet() {
+        return toiletProperty.get();
     }
 
-    public void setToilet(boolean toilet) {
-        this.toilet = toilet;
+    public void setToiletProperty(boolean toiletProperty) {
+        this.toiletProperty.set(toiletProperty);
     }
 
-    public boolean isWater() {
-        return water;
+    public boolean getWater() {
+        return waterProperty.get();
     }
 
-    public void setWater(boolean water) {
-        this.water = water;
+    public void setWaterProperty(boolean waterProperty) {
+        this.waterProperty.set(waterProperty);
     }
 
-    public boolean isElectric() {
-        return electric;
+    public boolean getElectric() {
+        return electricProperty.get();
     }
 
-    public void setElectric(boolean electric) {
-        this.electric = electric;
+    public void setElectricProperty(boolean electricProperty) {
+        this.electricProperty.set(electricProperty);
+    }
+
+    public BooleanProperty getToiletProperty()
+    {
+        return this.toiletProperty;
+    }
+
+    public BooleanProperty getWaterProperty()
+    {
+        return this.waterProperty;
+    }
+
+    public BooleanProperty getElectricProperty()
+    {
+        return this.electricProperty;
     }
 }

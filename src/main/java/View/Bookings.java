@@ -75,7 +75,7 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
 
-        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
+        anchorPane.getChildren().addAll(tableView,udLejerButton,youreResevations,lejerButton);
 
     }
     public void getData() {
@@ -180,9 +180,8 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
-        bookingsBtn.setOnAction(event ->
+        this.getBookingsButton().setOnAction(event ->
         {
-
             getData();
         });
         lejerButton.setOnAction(event ->

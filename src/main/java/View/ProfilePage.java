@@ -84,7 +84,7 @@ public class ProfilePage extends Header implements UserSubscriber {
 
             gridPane.add(saveButton, 0, 7, NUM_COLS, 1);
 
-            this.ANCHOR_PANE.getChildren().addAll(gridPane,profilePic);
+            this.anchorPane.getChildren().addAll(gridPane,profilePic);
     }
 
     private TextField createLabel(String labelText) {

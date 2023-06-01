@@ -1,12 +1,8 @@
 package com.example.park;
-import Model.DaoObject.Plot;
-import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
-import Model.Implements.DaoUser;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -40,7 +36,6 @@ public class Login implements UserPublisher
 
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
-
         name.setPromptText("Enter name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
@@ -193,7 +188,6 @@ public class Login implements UserPublisher
 
                  */
             }
-
         });
         anchorPane.getChildren().addAll(name,password);
     }
