@@ -70,6 +70,7 @@ public class Bookings extends Header implements UserSubscriber
         ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
     public void getData() {
+
         updateTabels();
         tableView.getColumns().clear();
         reservationList.clear();
@@ -117,6 +118,8 @@ public class Bookings extends Header implements UserSubscriber
     }
 
     public void createTable(List arrayList) {
+
+        tableView.setEditable(true);
         DateTimeFormatter converter;
          converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -187,14 +190,18 @@ public class Bookings extends Header implements UserSubscriber
     {
         bookingsBtn.setOnAction(event ->
         {
+            removeResevationButton.setVisible(true);
+            removeResevationButton.setDisable(false);
             infoLabel.setText("Youre resevations");
             tableView.setEditable(true);
             getData();
-          tableView.getColumns().clear();
+            tableView.getColumns().clear();
             createTable(combineDataList);
         });
         lejerButton.setOnAction(event ->
         {
+            removeResevationButton.setVisible(true);
+            removeResevationButton.setDisable(false);
             infoLabel.setText("Youre resevations");
             tableView.setEditable(true);
             getData();
@@ -207,6 +214,8 @@ public class Bookings extends Header implements UserSubscriber
             tableView.setEditable(false);
             getData();
             tableView.getColumns().clear();
+            removeResevationButton.setVisible(false);
+            removeResevationButton.setDisable(true);
             createTable(combineDataListUd);
         });
     }
