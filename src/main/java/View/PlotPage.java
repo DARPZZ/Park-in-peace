@@ -1,6 +1,5 @@
 package View;
 
-import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
@@ -26,10 +25,11 @@ import java.util.ArrayList;
 
 public class PlotPage extends Header implements UserSubscriber
 {
+    TilePane tilePane = new TilePane();
     private User activeUser;
     private ArrayList<TextField> textFieldList = new ArrayList<>();
     private ArrayList<Label> labelList = new ArrayList<>();
-    private   ArrayList<CheckBox> checkBoxes =new ArrayList<>();
+    private ArrayList<CheckBox> checkBoxes =new ArrayList<>();
     private GridPane plotview = new GridPane();
     private String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
@@ -47,17 +47,17 @@ public class PlotPage extends Header implements UserSubscriber
         plotview.setVgap(10);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setLayoutY(getYMargin());
-        scrollPane.setLayoutX(1230);
-        scrollPane.setPrefHeight(500);
-        scrollPane.setPrefWidth(50);
+        scrollPane.setLayoutY(getYMargin()+50);
+        scrollPane.setLayoutX(10);
+        scrollPane.setPrefHeight(700);
+        scrollPane.setPrefWidth(1265);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setPannable(false);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color:transparent;");
 
-        TilePane tilePane = new TilePane(10, 10);
+        tilePane = new TilePane(10, 10);
         tilePane.setPadding(new Insets(10,0,10,0));
         tilePane.setHgap(25);
         tilePane.setVgap(25);
@@ -72,7 +72,7 @@ public class PlotPage extends Header implements UserSubscriber
 
 
     }
-    public void createPopUpUI()
+    public void createPopUpCreatePlot()
     {
         Stage dialog = new Stage();
         dialog.initOwner(HelloApplication.getStage());
@@ -83,7 +83,7 @@ public class PlotPage extends Header implements UserSubscriber
         createPlot.setLayoutX(60);
         //region background back button
         Rectangle backGround = new Rectangle(1280,768);
-        backGround.setStyle("-fx-background-color: BLACK;-fx-opacity: 0.8");
+        backGround.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
         backGround.setVisible(false);
         backGround.setDisable(true);
         backGround.setOnMouseClicked(event -> {
@@ -213,6 +213,7 @@ public class PlotPage extends Header implements UserSubscriber
                         t.clear();
                 }
                 plotArrayList.add(plotNew);
+                tilePane.getChildren().clear();
                 preparePlotGrid();
                 dialog.close();
                 backGround.setVisible(false);
@@ -247,22 +248,43 @@ public class PlotPage extends Header implements UserSubscriber
         ANCHOR_PANE.getChildren().addAll(createPlot,backGround);
     }
 
+    public void createPopUpPlotInfo(Plot plot)
+    {
+        Stage dialogBox = new Stage();
+        dialogBox.initOwner(HelloApplication.getStage());
+        dialogBox.initStyle(StageStyle.TRANSPARENT);
+        //region background back button
+        Rectangle backGroundBox = new Rectangle(1280,768);
+        backGroundBox.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
+        backGroundBox.setVisible(false);
+        backGroundBox.setDisable(true);
+        backGroundBox.setOnMouseClicked(event -> {
+            dialogBox.close();
+            backGroundBox.setVisible(false);
+            backGroundBox.setDisable(true);
+        });
+        int formStartX = 10;
+        int formStartY = 110;
+        int formOffSetX = 30;
+        int formOffSetY = 60;
+
+
+
+
+
+    }
+
     public void preparePlotGrid()
     {
-        int columnCount =0;
-        int rowCount =0;
-        for (int i = 0; i < plotArrayList.size() ; i++)
+        for (Plot plot: plotArrayList)
         {
-
             Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
-            Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plotArrayList.get(i).getLocation());
-            plotview.add(plotThumbnail,columnCount,rowCount);
-            rowCount++;
-            if (4%1 ==0)
-            {
-                columnCount++;
-                rowCount=0;
-            }
+            Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
+            //plotview.add(plotThumbnail,columnCount,rowCount);
+            tilePane.getChildren().add(plotThumbnail);
+            tilePane.setOnMouseClicked(event -> {
+                createPopUpPlotInfo(plot);
+            });
         }
     }
     public void initPlotPage()

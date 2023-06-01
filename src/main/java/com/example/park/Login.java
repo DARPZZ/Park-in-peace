@@ -153,7 +153,7 @@ public class Login implements UserPublisher
                 userPublisher.notifySubscribers(user);
 
                 HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
-                HelloApplication.plotPage.createPopUpUI();//
+                HelloApplication.plotPage.createPopUpCreatePlot();//
                 HelloApplication.plotPage.preparePlotGrid();//
 
                 HelloApplication.changeScene(SceneName.Main);
