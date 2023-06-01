@@ -16,6 +16,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     boolean toiletBool = false;
     boolean waterBool= false;
     boolean elBool= false;
+    ArrayList<String>plotsizes =new ArrayList<>();
 
     public DaoPlot()
     {
@@ -25,7 +26,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         } catch (SQLException e) {
             System.err.println("Database connection fail" + e.getMessage());
         }
-
+        plotsizes = getAllSizeTypes();
     }
     @Override
     public void Create(Plot tblPlot)
@@ -85,7 +86,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     {
         createConnection();
         switch (fieldname) {
-            case "fldLowSeasonPrice","fldMidSeasonPrice","HighSeasonPrice":
+            case "fldLowSeasonPrice","fldMidSeasonPrice","fldHighSeasonPrice":
             {
                 try
                 {
@@ -164,6 +165,55 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             }
                 break;}
         }
+    }
+
+    public void UpdateFull(Plot plot)
+    {
+        int sizeI=0;
+        for (String s:plotsizes)
+        {
+            if (plot.getPlotSize().equals(s)) {
+                sizeI++;
+                break;
+            }
+
+            sizeI++;
+        }
+        createConnection();
+        System.out.println(sizeI);
+        System.out.println(plot.getZipCode());
+        try {
+            CallableStatement fullUpdate = con.prepareCall("{CALL updatePlotFuLL(?,?,?,?,?,?,?,?,?,?,?,?)}");
+            if (plot.isToilet() == true)
+                fullUpdate.setInt(1,toiletID);
+            else
+                fullUpdate.setInt(1,1);
+            if (plot.isWater() == true)
+                fullUpdate.setInt(2,waterID);
+            else
+                fullUpdate.setInt(2,1);
+            if (plot.isElectric() == true)
+                fullUpdate.setInt(3,electricID);
+            else
+                fullUpdate.setInt(3,1);
+
+            fullUpdate.setFloat(4,plot.getLowPrice());
+            fullUpdate.setFloat(5,plot.getMidPrice());
+            fullUpdate.setFloat(6,plot.getHighPrice());
+            fullUpdate.setInt(7,sizeI);
+            fullUpdate.setInt(8,plot.getPlotID());
+            fullUpdate.setInt(9,plot.getZipCode());
+            fullUpdate.setString(10,plot.getLocation());
+            fullUpdate.setString(11,plot.getDescription());
+            fullUpdate.setString(12,plot.getImagePath());
+            fullUpdate.executeUpdate();
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+
     }
 
     @Override

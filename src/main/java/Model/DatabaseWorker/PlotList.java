@@ -43,9 +43,9 @@ public final class PlotList
         plotList.add(tblPlot);
     }
 
-    public void UpdatePlot(Plot tblPlot, String fieldname, String value)
+    public void UpdatePlot(Plot tblPlot)
     {
-        plotWorker.Update(tblPlot, fieldname, value);
+        plotWorker.UpdateFull(tblPlot);
     }
     public void Delete(Plot tblPlot, int ID)
     {plotWorker.Delete(tblPlot, ID);}

@@ -359,6 +359,33 @@ exec sp_executesql @SQL
 end
 
 GO
+CREATE PROCEDURE updatePlotFuLL(
+    @fldToiletID int, @fldElectricID int , @fldWaterID int, @fldLowSeasonPrice float,@fldMediumSeasonPrice float,@fldHighSeasonPrice float,
+    @fldPlotSizeID int,@fldPlotID int,@fldZip int, @fldLocation VARCHAR(MAX), @fldDescription VARCHAR(MAX),@fldImage VARCHAR(MAX))
+    as
+begin
+DECLARE @toiletCheck int =0
+DECLARE @waterCheck int =0
+DECLARE @elCheck int =0
+SET @toiletCheck = 1 IF exists(SELECT fldServiceID from tblParkingService WHERE fldPlotID = @fldPlotID AND fldServiceID = 2)
+SET @waterCheck = 1 IF exists(SELECT fldServiceID from tblParkingService WHERE fldPlotID = @fldPlotID AND fldServiceID = 3)
+SET @elCheck = 1 IF exists(SELECT fldServiceID from tblParkingService WHERE fldPlotID = @fldPlotID AND fldServiceID = 4)
+
+UPDATE tblPlot SET fldLocation = @fldLocation,fldDescription = @fldDescription,fldImage = @fldImage,fldPlotSizeID = @fldPlotSizeID,fldZipcode= @fldZip WHERE fldPlotID = @fldPlotID
+UPDATE tblSeason SET fldLowSeasonPrice = @fldLowSeasonPrice, fldMediumSeasonPrice = @fldMediumSeasonPrice, fldHighSeasonPrice = @fldHighSeasonPrice WHERE fldPlotID = @fldPlotID
+
+    IF @toiletCheck = 1
+Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =2
+    else Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+    IF @waterCheck = 1
+UPDATE tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =3
+    else Update tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+    IF @elCheck = 1
+UPDATE tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =4
+    else Update tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+end
+
+GO
 CREATE PROCEDURE insertServicePlot ( @ID int, @value int)
     as
 begin

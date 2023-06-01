@@ -6,6 +6,9 @@ import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
 import com.example.park.UserSubscriber;
+import javafx.beans.binding.FloatBinding;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,6 +25,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
+import java.util.regex.PatternSyntaxException;
+import java.util.zip.DeflaterInputStream;
 
 public class PlotPage extends Header implements UserSubscriber
 {
@@ -253,7 +258,10 @@ public class PlotPage extends Header implements UserSubscriber
         Stage dialogBox = new Stage();
         dialogBox.initOwner(HelloApplication.getStage());
         dialogBox.initStyle(StageStyle.TRANSPARENT);
-        //region background back button
+
+        AnchorPane popup = new AnchorPane();
+        popup.setPrefSize(800 ,600);
+
         Rectangle backGroundBox = new Rectangle(1280,768);
         backGroundBox.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
         backGroundBox.setVisible(false);
@@ -263,10 +271,215 @@ public class PlotPage extends Header implements UserSubscriber
             backGroundBox.setVisible(false);
             backGroundBox.setDisable(true);
         });
+        ANCHOR_PANE.getChildren().add(backGroundBox);
         int formStartX = 10;
-        int formStartY = 110;
-        int formOffSetX = 30;
+        int formStartY = 170;
+        int formOffSetX = 60;
         int formOffSetY = 60;
+
+        Label adressLabel = new Label("Adresse:");
+        adressLabel.setLayoutX(formStartX);
+        adressLabel.setLayoutY(formStartY);
+        popup.getChildren().add(adressLabel);
+
+        TextField adresse = new TextField(plot.getLocation());
+        adresse.setLayoutX(adressLabel.getLayoutX()+formOffSetX);
+        adresse.setLayoutY(adressLabel.getLayoutY());
+        adresse.setEditable(false);
+        adresse.textProperty().bindBidirectional(plot.locationProperty());
+        popup.getChildren().add(adresse);
+
+        Label postNrLabel = new Label("Post Nr:");
+        postNrLabel.setLayoutX(formStartX);
+        postNrLabel.setLayoutY(adresse.getLayoutY()+formOffSetY);
+        popup.getChildren().add(postNrLabel);
+
+
+        TextField postNr = new TextField(String.valueOf(plot.getZipCode()));
+        postNr.setLayoutX(postNrLabel.getLayoutX()+formOffSetX);
+        postNr.setLayoutY(postNrLabel.getLayoutY());
+        postNr.setEditable(false);
+        //postNr.textProperty().bindBidirectional(plot.zipCodeProperty());
+        popup.getChildren().add(postNr);
+
+        Label sizeLabel = new Label("Størrelse:");
+        sizeLabel.setLayoutX(postNrLabel.getLayoutX());
+        sizeLabel.setLayoutY(postNr.getLayoutY()+formOffSetY);
+        popup.getChildren().add(sizeLabel);
+
+        ComboBox<String> sizePicker= new ComboBox<>();
+        sizePicker.getItems().addAll(PlotList.getSingleton().getAllSizeTypes());
+        sizePicker.setLayoutX(sizeLabel.getLayoutX()+formOffSetX);
+        sizePicker.setLayoutY(sizeLabel.getLayoutY());
+        sizePicker.setEditable(false);
+        sizePicker.valueProperty().bindBidirectional(plot.plotSizeProperty());
+        sizePicker.getSelectionModel().select(plot.getPlotSize());
+        sizePicker.setDisable(true);
+        popup.getChildren().add(sizePicker);
+
+        Label desriptionLabel = new Label("Beskrivelse:");
+        desriptionLabel.setLayoutX(sizeLabel.getLayoutX());
+        desriptionLabel.setLayoutY(sizePicker.getLayoutY()+formOffSetY);
+        popup.getChildren().add(desriptionLabel);
+
+        TextArea description = new TextArea();
+        description.prefHeight(200);
+        description.prefWidth(300);
+        description.setLayoutX(desriptionLabel.getLayoutX());
+        description.setLayoutY(desriptionLabel.getLayoutY()+30);
+        description.textProperty().bindBidirectional(plot.descriptionProperty());
+        popup.getChildren().add(description);
+
+        Label toiletLabel = new Label(servicesNames[0]);
+        toiletLabel.setLayoutY(adresse.getLayoutY());
+        toiletLabel.setLayoutX(adresse.getLayoutX()+formOffSetX*3);
+        System.out.println(adresse.getLayoutX()+formOffSetX);
+        popup.getChildren().add(toiletLabel);
+
+        CheckBox toiletBox = new CheckBox();
+        toiletBox.setLayoutY(toiletLabel.getLayoutY());
+        toiletBox.setLayoutX(toiletLabel.getLayoutX()+20);
+        System.out.println(toiletLabel.getLayoutX()+20);
+        toiletBox.selectedProperty().bindBidirectional(plot.toiletProperty());
+        //toiletBox.selectedProperty().set(plot.isToilet());
+        popup.getChildren().add(toiletBox);
+
+        Label waterLabel = new Label(servicesNames[1]);
+        waterLabel.setLayoutY(postNr.getLayoutY());
+        waterLabel.setLayoutX(postNr.getLayoutX()+formOffSetX*3);
+        popup.getChildren().add(waterLabel);
+
+        CheckBox waterBox = new CheckBox();
+        waterBox.setLayoutY(waterLabel.getLayoutY());
+        waterBox.setLayoutX(waterLabel.getLayoutX()+20);
+        waterBox.selectedProperty().bindBidirectional(plot.waterProperty());
+        //waterBox.selectedProperty().set(plot.isWater());
+        popup.getChildren().add(waterBox);
+
+        Label electricLabel = new Label(servicesNames[2]);
+        electricLabel.setLayoutY(sizeLabel.getLayoutY());
+        electricLabel.setLayoutX(waterLabel.getLayoutX());
+        popup.getChildren().add(electricLabel);
+
+        CheckBox electricBox = new CheckBox();
+        electricBox.setLayoutY(electricLabel.getLayoutY());
+        electricBox.setLayoutX(electricLabel.getLayoutX()+20);
+        electricBox.selectedProperty().bindBidirectional(plot.electricProperty());
+        //electricBox.selectedProperty().set(plot.isElectric());
+        popup.getChildren().add(electricBox);
+
+        Label lowLabel = new Label("Lav Sæson:");
+        lowLabel.setLayoutX(500);
+        lowLabel.setLayoutY(description.getLayoutY());
+        popup.getChildren().add(lowLabel);
+
+        TextField lowPrice = new TextField();
+        lowPrice.setLayoutX(lowLabel.getLayoutX()+formOffSetX+10);
+        lowPrice.setLayoutY(lowLabel.getLayoutY());
+        lowPrice.setText(String.valueOf(plot.getLowPrice()));
+        lowPrice.editableProperty().set(false);
+        popup.getChildren().add(lowPrice);
+
+        Label medLabel = new Label("Alm. Sæson:");
+        medLabel.setLayoutX(lowLabel.getLayoutX());
+        medLabel.setLayoutY(lowLabel.getLayoutY()+formOffSetY);
+        popup.getChildren().add(medLabel);
+
+        TextField medPrice = new TextField();
+        medPrice.setLayoutX(medLabel.getLayoutX()+formOffSetX+10);
+        medPrice.setLayoutY(medLabel.getLayoutY());
+        medPrice.setText(String.valueOf(plot.getMidPrice()));
+        medPrice.setEditable(false);
+        popup.getChildren().add(medPrice);
+
+        Label highLabel = new Label("Høj Sæson:");
+        highLabel.setLayoutX(medLabel.getLayoutX());
+        highLabel.setLayoutY(medLabel.getLayoutY()+formOffSetY);
+        popup.getChildren().add(highLabel);
+
+        TextField highPrice = new TextField();
+        highPrice.setLayoutX(highLabel.getLayoutX()+formOffSetX+10);
+        highPrice.setLayoutY(highLabel.getLayoutY());
+        highPrice.setText(String.valueOf(plot.getMidPrice()));
+        highPrice.setEditable(false);
+        popup.getChildren().add(highPrice);
+
+        Button edit = new Button("🔧");
+        edit.setLayoutX(650);
+        edit.setLayoutY(50);
+
+
+        Button exitEdit = new Button("❌");
+        exitEdit.setLayoutX(650);
+        exitEdit.setLayoutY(50);
+        exitEdit.setVisible(false);
+        exitEdit.setDisable(true);
+
+
+        Button comfirm = new Button("Bekræft");
+        comfirm.setLayoutX(350);
+        comfirm.setLayoutY(565);
+        comfirm.setDisable(true);
+
+        edit.setOnMouseClicked(event -> {
+            comfirm.setDisable(false);
+            exitEdit.setDisable(false);
+
+            highPrice.setEditable(true);
+            medPrice.setEditable(true);
+            lowPrice.setEditable(true);
+            sizePicker.setDisable(false);
+
+            description.setEditable(true);
+            sizePicker.setEditable(true);
+            postNr.setEditable(true);
+            adresse.setEditable(true);
+
+            edit.setDisable(true);
+            edit.setVisible(false);
+            exitEdit.setVisible(true);
+
+        });
+        exitEdit.setOnMouseClicked(event -> {
+            comfirm.setDisable(true);
+            exitEdit.setDisable(true);
+
+            highPrice.setEditable(false);
+            medPrice.setEditable(false);
+            lowPrice.setEditable(false);
+            sizePicker.setDisable(true);
+
+            description.setEditable(false);
+            sizePicker.setEditable(false);
+            postNr.setEditable(false);
+            adresse.setEditable(false);
+            edit.setDisable(false);
+            edit.setVisible(true);
+            exitEdit.setVisible(false);
+        });
+        comfirm.setOnMouseClicked(event -> {
+            plot.setLowPrice(Float.parseFloat(lowPrice.getText()));
+            plot.setMidPrice(Float.parseFloat(medPrice.getText()));
+            plot.setHighPrice(Float.parseFloat(highPrice.getText()));
+            plot.setImagePath("PLACEHOLDER IMAGE");
+            PlotList.getSingleton().UpdatePlot(plot);
+        });
+
+        popup.getChildren().add(comfirm);
+        popup.getChildren().add(exitEdit);
+        popup.getChildren().add(edit);
+
+        backGroundBox.setVisible(true);
+        backGroundBox.setDisable(false);
+        Scene dialogboxscene = new Scene(popup,800,600);
+        dialogBox.setScene(dialogboxscene);
+        dialogBox.show();
+
+
+
+
+
+
 
 
 
@@ -281,10 +494,11 @@ public class PlotPage extends Header implements UserSubscriber
             Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
             //plotview.add(plotThumbnail,columnCount,rowCount);
-            tilePane.getChildren().add(plotThumbnail);
-            tilePane.setOnMouseClicked(event -> {
+            plotThumbnail.setOnMouseClicked(event -> {
+                System.out.println("meme");
                 createPopUpPlotInfo(plot);
             });
+            tilePane.getChildren().add(plotThumbnail);
         }
     }
     public void initPlotPage()
