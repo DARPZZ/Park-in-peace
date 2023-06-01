@@ -14,8 +14,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +28,6 @@ public class HelloApplication extends Application
     Login login = new Login();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Bookings bookings = new Bookings();
-    BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -59,14 +60,12 @@ public class HelloApplication extends Application
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = SCENE_MAP.get(SceneName.Main);
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-
-        createScene(anchorPane);
-
         String css = this.getClass().getResource("/Style.css").toExternalForm();
         scene.getStylesheets().add(css);
 
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
+        createScene(anchorPane,scene);
         stage.show();
     }
 
@@ -88,10 +87,9 @@ public class HelloApplication extends Application
         }
     }
 
-    public void createScene(AnchorPane anchorPane)
+    public void createScene(AnchorPane anchorPane, Scene scene)
     {
         Button loginButton = new Button("Login");
-
         ToggleButton toggleButton = new ToggleButton();
         toggleLabel.setLayoutX(600);
         toggleLabel.setLayoutY(20);
@@ -103,7 +101,9 @@ public class HelloApplication extends Application
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
-
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        toggleButton.getStyleClass().add("button");
         toggleButton.setOnAction(event ->
         {
             if (toggleButton.isSelected())

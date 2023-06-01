@@ -1,11 +1,10 @@
 package Model.DaoObject;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
 import javafx.beans.property.*;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 public class Combine
 {
@@ -17,32 +16,28 @@ public class Combine
     private String plotSize;
     private IntegerProperty zipCode;
     private String image;
-    private BooleanProperty toiletProperty;
-    private BooleanProperty elProperty;
-    private BooleanProperty waterProperty;
-    private Date startDate;
-    private Date endDate;
     private boolean toilet;
     private boolean el;
     private boolean Water;
-    private ObjectProperty startDateProperty;
-    private ObjectProperty endDateProperty;
+    private ObjectProperty startDate;
+    private ObjectProperty endDate;
     private String seasonName;
     private float lowSeasonPrice;
     private float midSeasonPrice;
     private float highSeasonPrice;
 
-    public Combine(int userID,int resevationsID,String location, int zipCode, Date startDate, Date endDate)
+
+    public Combine(int userID, int resevationsID, String location, int zipCode, LocalDate startDate, LocalDate endDate)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.resevationsID = new SimpleIntegerProperty(resevationsID) ;
         this.location = new SimpleStringProperty(location) ;
         this.zipCode = new SimpleIntegerProperty(zipCode) ;
-        this.startDateProperty = new SimpleObjectProperty(startDate) ;
-        this.endDateProperty = new SimpleObjectProperty(endDate)  ;
+        this.startDate = new SimpleObjectProperty(startDate) ;
+        this.endDate = new SimpleObjectProperty(endDate)  ;
     }
 
-    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, LocalDate startDate, LocalDate endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.plotID = new SimpleIntegerProperty(plotID) ;
@@ -55,13 +50,8 @@ public class Combine
         this.toilet = toilet;
         this.el = el;
         this.Water = water;
-        this.startDateProperty = new SimpleObjectProperty(startDate) ;
-        this.endDateProperty = new SimpleObjectProperty(endDate)  ;
-        this.toiletProperty = new SimpleBooleanProperty(toilet);
-        this.elProperty = new SimpleBooleanProperty(el);
-        this.waterProperty = new SimpleBooleanProperty(water);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = new SimpleObjectProperty(startDate) ;
+        this.endDate = new SimpleObjectProperty(endDate)  ;
         this.seasonName = seasonName;
         this.lowSeasonPrice = lowSeasonPrice;
         this.midSeasonPrice = midSeasonPrice;
@@ -180,62 +170,62 @@ public class Combine
 
     public boolean isToilet()
     {
-        return toiletProperty.get();
+        return toilet;
     }
 
     public void setToilet(boolean toilet)
     {
-        this.toiletProperty.set(toilet);
+        this.toilet = toilet;
     }
 
     public boolean isEl()
     {
-        return elProperty.get();
+        return el;
     }
 
     public void setEl(boolean el)
     {
-        this.elProperty.set(el);
+        this.el = el;
     }
 
     public boolean isWater()
     {
-        return waterProperty.get();
+        return Water;
     }
 
     public void setWater(boolean water)
     {
-        waterProperty.set(water);
+        Water = water;
     }
 
     public Object getStartDate()
     {
-        return startDateProperty.get();
+        return startDate.get();
     }
 
     public ObjectProperty startDateProperty()
     {
-        return startDateProperty;
+        return startDate;
     }
 
     public void setStartDate(Object startDate)
     {
-        this.startDateProperty.set(startDate);
+        this.startDate.set(startDate);
     }
 
     public Object getEndDate()
     {
-        return endDateProperty.get();
+        return endDate.get();
     }
 
     public ObjectProperty endDateProperty()
     {
-        return endDateProperty;
+        return endDate;
     }
 
     public void setEndDate(Object endDate)
     {
-        this.endDateProperty.set(endDate);
+        this.endDate.set(endDate);
     }
 
     public String getSeasonName()
@@ -276,20 +266,5 @@ public class Combine
     public void setHighSeasonPrice(float highSeasonPrice)
     {
         this.highSeasonPrice = highSeasonPrice;
-    }
-
-    public BooleanProperty toiletProperty()
-    {
-        return toiletProperty;
-    }
-
-    public BooleanProperty elProperty()
-    {
-        return elProperty;
-    }
-
-    public BooleanProperty waterProperty()
-    {
-        return waterProperty;
     }
 }

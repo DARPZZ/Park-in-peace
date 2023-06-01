@@ -161,6 +161,8 @@ public class Login implements UserPublisher
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 userPublisher.notifySubscribers(user);
                 HelloApplication.changeScene(SceneName.Main);
+
+
                 System.out.println("Login successful!");
 
                 /*

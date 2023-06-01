@@ -5,7 +5,7 @@
 .table-view .column-header-background {
     -fx-background-color: #e0e0e0;
 }
-
+/*
 .table-view .table-row-cell {
     -fx-background-color: #ffffff;
 }
@@ -13,6 +13,8 @@
 .table-view .table-row-cell:selected {
     -fx-background-color: #c0c0c0;
 }
+
+ */
 
 .button {
     -fx-background-color: #788378;
@@ -66,7 +68,7 @@
 .button.secondary {
     -fx-background-color: #cccccc;
 }
-
+/*
 .table-view .table-row-cell:odd {
     -fx-background-color: #f2f2f2;
 }
@@ -74,6 +76,8 @@
 .table-view .table-row-cell:hover {
     -fx-background-color: #e0e0e0;
 }
+
+ */
 
 .text-field {
     -fx-background-color: #f8f8f8;
