@@ -1,7 +1,6 @@
 package Model.DaoObject;
 
 import javafx.beans.property.*;
-import javafx.scene.control.TextField;
 
 public class Plot {
     private IntegerProperty userID;

@@ -250,7 +250,7 @@ public class PlotPage extends Header implements UserSubscriber
 
             }
         });
-        ANCHOR_PANE.getChildren().addAll(createPlot,backGround);
+        anchorPane.getChildren().addAll(createPlot,backGround);
     }
 
     public void createPopUpPlotInfo(Plot plot)

@@ -5,7 +5,6 @@ import Model.DatabaseWorker.PlotList;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DaoPlot extends Connection implements DaoInterface<Plot>
 {
@@ -48,15 +47,15 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
 
 
             CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?,?)}");
-            if(tblPlot.isToilet() == true)
+            if(tblPlot.getToilet())
             {firstPassInsert.setInt(1,toiletID);}
             else
             {firstPassInsert.setInt(1,0);}
-            if(tblPlot.isElectric()==true)
+            if(tblPlot.getElectric())
             {firstPassInsert.setInt(2,electricID);}
             else
             {firstPassInsert.setInt(2,0);}
-            if (tblPlot.isWater()==true)
+            if (tblPlot.getWater())
             {firstPassInsert.setInt(3,waterID);}
             else
             {firstPassInsert.setInt(3,0);}
