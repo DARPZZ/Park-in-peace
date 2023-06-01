@@ -3,6 +3,8 @@ import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
+import Model.Implements.DaoUser;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -61,13 +63,16 @@ public class Login implements UserPublisher
             @Override
             public void handle(ActionEvent event)
             {
-                insertInformation();
-                toggleButton.setText("Login");
-                anchorPane.getChildren().clear();
-                toggleLabel.setText("Press here to create a new user:");
-                loginScene(anchorPane,loginButton);
-                loginButton.setText("login");
-                anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+                loginButton.getStyleClass().add("login-button-animation");
+                if(validateUser()) {
+                    insertInformation();
+                    toggleButton.setText("Login");
+                    anchorPane.getChildren().clear();
+                    toggleLabel.setText("Press here to create a new user:");
+                    loginScene(anchorPane, loginButton);
+                    loginButton.setText("login");
+                    anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
+                }
             }
         });
         anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode);
@@ -92,34 +97,45 @@ public class Login implements UserPublisher
         tooltip.setShowDelay(Duration.ZERO);
         if (Objects.equals(name.getText(), "")) {
             name.setTooltip(tooltip);
+            name.setId("labelError");
             Error = true;
         }
         boolean isNumeric = PhoneNumber.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(PhoneNumber.getText(), "")|| !isNumeric) {
             PhoneNumber.setTooltip(tooltip);
+            PhoneNumber.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(password.getText(), "")) {
             password.setTooltip(tooltip);
+            password.getStyleClass().add("warning-badge");
+            password.setId("labelError");
             Error = true;
         }
         if (Objects.equals(adress.getText(), "")) {
             adress.setTooltip(tooltip);
+
+            adress.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(email.getText(), "")) {
             email.setTooltip(tooltip);
+
+            email.getStyleClass().add("warning-badge");
             Error = true;
         }
         isNumeric = zipCode.getText().chars().allMatch( Character::isDigit );
         if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
+            zipCode.getStyleClass().add("warning-badge");
+
             Error = true;
         }
         if (Error)
         {
             return false;
         }else {
+
             return true;
 
         }
@@ -140,13 +156,9 @@ public class Login implements UserPublisher
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
-                System.out.println("before checklogin done"+System.currentTimeMillis());
-                user = BlackList.getSingleton().checkLogin(username,kodeord);  // wrong password
-                System.out.println("checklogin done"+System.currentTimeMillis());
+                user = BlackList.getSingleton().checkLogin(username,kodeord);
                 PlotList.getSingleton().setList();
-                System.out.println("set plotlist done"+System.currentTimeMillis());
                 ReservationList.getSingleton().setList();
-                System.out.println("meme");
                 BlackList.getSingleton().setBlackList(user);
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 userPublisher.notifySubscribers(user);
@@ -156,6 +168,8 @@ public class Login implements UserPublisher
                 HelloApplication.plotPage.preparePlotGrid();//
 
                 HelloApplication.changeScene(SceneName.Main);
+
+
                 System.out.println("Login successful!");
 
                 /*

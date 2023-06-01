@@ -28,7 +28,6 @@ public class HelloApplication extends Application
     public static PlotPage plotPage = new PlotPage();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Bookings bookings = new Bookings();
-    //BookingsUd bookingsUd = new BookingsUd();
     Label toggleLabel = new Label("Press here to create user:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
@@ -54,7 +53,6 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Bookings,bookings.SCENE);
         SCENE_MAP.put(SceneName.PlotPage,plotPage.SCENE);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.SCENE);
-        //SCENE_MAP.put(SceneName.BookingsUd,bookingsUd.SCENE);
         AnchorPane anchorPane = new AnchorPane();
 
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
@@ -62,7 +60,7 @@ public class HelloApplication extends Application
         scene.getStylesheets().add(css);
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
-        createScene(anchorPane);
+        createScene(anchorPane,scene);
         stage.show();
     }
 
@@ -80,7 +78,7 @@ public class HelloApplication extends Application
         }
     }
 
-    public void createScene(AnchorPane anchorPane)
+    public void createScene(AnchorPane anchorPane, Scene scene)
     {
         Button loginButton = new Button("Login");
         ToggleButton toggleButton = new ToggleButton();
@@ -94,7 +92,9 @@ public class HelloApplication extends Application
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
-
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        toggleButton.getStyleClass().add("button");
         toggleButton.setOnAction(event ->
         {
             if (toggleButton.isSelected()) {

@@ -19,18 +19,19 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public void Create(User user)
     {
         createConnection();
-        try (Connection conn = con)
-        {
-            int userid=0;
-            CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?)}");
+        try (
+             CallableStatement stmt = con.prepareCall("{call insertUser(?, ?,?,?,?,?,?)}")) {
             stmt.setString(1,user.getName());
             stmt.setString(2, user.getPhoneNumber());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getAddress());
-            stmt.setString(5, user.getEmail());
-            stmt.setInt(6, user.getZipCode());
+            stmt.setInt(5, user.getAcounterNumber());
+            stmt.setString(6, user.getEmail());
+            stmt.setInt(7, user.getZipCode());
 
 
+            stmt.execute();
+/*
             ResultSet resultSet = stmt.executeQuery();
             resultSet.next();
             userid =resultSet.getInt(1);
@@ -40,6 +41,8 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
                 blackListInsert.setInt(2,userid);
 
             user.setUserId(userid);
+
+ */
 
 
         } catch (SQLException e) {
