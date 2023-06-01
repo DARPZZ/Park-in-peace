@@ -328,6 +328,7 @@ public class PlotPage extends Header implements UserSubscriber
         description.setLayoutX(desriptionLabel.getLayoutX());
         description.setLayoutY(desriptionLabel.getLayoutY()+30);
         description.textProperty().bindBidirectional(plot.descriptionProperty());
+        description.setEditable(false);
         popup.getChildren().add(description);
 
         Label toiletLabel = new Label(servicesNames[0]);
@@ -462,6 +463,7 @@ public class PlotPage extends Header implements UserSubscriber
             plot.setMidPrice(Float.parseFloat(medPrice.getText()));
             plot.setHighPrice(Float.parseFloat(highPrice.getText()));
             plot.setImagePath("PLACEHOLDER IMAGE");
+            plot.setZipCode(Integer.valueOf(postNr.getText()));
             PlotList.getSingleton().UpdatePlot(plot);
         });
 
