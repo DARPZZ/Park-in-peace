@@ -35,12 +35,10 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             resultSet.next();
             userid =resultSet.getInt(1);
 
-            for (Integer i: user.getBlackList()) // could be better with samlet string storedprocedure
-            {
                 CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
-                blackListInsert.setInt(1,i);
+                blackListInsert.setInt(1,0);
                 blackListInsert.setInt(2,userid);
-            }
+
             user.setUserId(userid);
 
 

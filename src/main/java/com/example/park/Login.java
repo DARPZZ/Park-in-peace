@@ -147,8 +147,7 @@ public class Login implements UserPublisher
                 System.out.println("set plotlist done"+System.currentTimeMillis());
                 ReservationList.getSingleton().setList();
                 System.out.println("meme");
-                //BlackList.getSingleton().setBlackList(user);
-                //Model.Implements.DaoUser daoUser = new DaoUser();
+                BlackList.getSingleton().setBlackList(user);
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 userPublisher.notifySubscribers(user);
 

@@ -30,7 +30,7 @@ import java.util.zip.DeflaterInputStream;
 
 public class PlotPage extends Header implements UserSubscriber
 {
-    TilePane tilePane = new TilePane();
+    TilePane tilePane;
     private User activeUser;
     private ArrayList<TextField> textFieldList = new ArrayList<>();
     private ArrayList<Label> labelList = new ArrayList<>();

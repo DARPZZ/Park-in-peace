@@ -2,16 +2,22 @@ package View;
 
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
+import com.example.park.HelloApplication;
 import com.example.park.UserPublisher;
 import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.sql.*;
 import java.text.BreakIterator;
@@ -23,8 +29,8 @@ public class ProfilePage extends Header implements UserSubscriber {
 
     private ArrayList<TextField> textFields = new ArrayList<>();
     private User loggedIn;
-    Pane popUpBackground = new Pane();
-    AnchorPane popUpContent = new AnchorPane();
+    private Stage dialogBox;
+    private Rectangle popUpBackground = new Rectangle(1280,768);
 
     public void onUserReceived(User user){
 
@@ -103,7 +109,6 @@ public class ProfilePage extends Header implements UserSubscriber {
 
             this.ANCHOR_PANE.getChildren().addAll(gridPane,profilePic);
 
-           setupPopUpBackground();
     }
 
     private TextField createLabel(String labelText)
@@ -123,33 +128,30 @@ public class ProfilePage extends Header implements UserSubscriber {
         {textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));}
     }
 
-    private void setupPopUpBackground()
+    public void setupPopUpBackground()
     {
-        // Dark background which hides the popUp when clicked
-        popUpBackground = new Pane();
-        popUpBackground.setLayoutX(768);
-        popUpBackground.setLayoutY(1080);
-        popUpBackground.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+        dialogBox = new Stage();
+        dialogBox.initOwner(HelloApplication.getStage());
+        dialogBox.initStyle(StageStyle.TRANSPARENT);
+
+        AnchorPane popup = new AnchorPane();
+        popup.setPrefSize(200 ,150);
+
+
+        popUpBackground.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
         popUpBackground.setVisible(false);
-        popUpBackground.setOnMouseClicked(event -> hidePopUp());
-        this.ANCHOR_PANE.getChildren().add(popUpBackground);
+        popUpBackground.setDisable(true);
+        popUpBackground.setOnMouseClicked(event -> {
+                    dialogBox.close();
+                    popUpBackground.setVisible(false);
+                    popUpBackground.setDisable(true);
+                });
 
-        // PopUp which contains filter controls
-        popUpContent = new AnchorPane();
-        popUpContent.setStyle("-fx-background-color: white; -fx-padding: 20;");
-        popUpContent.setVisible(false);
-        //popUpContent.setPrefSize(150,100);
-        popUpContent.setLayoutX(525);
-        popUpContent.setLayoutY(50);
-        //popUpContent.setLayoutX(525);
-        //popUpContent.setLayoutY(150);
-
-        // GridPane to act as layout manager for the filter controls
         GridPane contentGridPane = new GridPane();
-        contentGridPane.setPrefSize(popUpContent.getPrefWidth(), popUpContent.getPrefHeight());
+        contentGridPane.setPrefSize(popup.getPrefWidth(), popup.getPrefHeight());
         contentGridPane.setAlignment(Pos.CENTER);
-        contentGridPane.setLayoutX(25);
-        contentGridPane.setLayoutY(150);
+        //contentGridPane.setLayoutX(25);
+        //contentGridPane.setLayoutY(150);
         contentGridPane.setHgap(10);
         contentGridPane.setVgap(10);
         Label confirmationLabel = new Label("Opdatering Fuldført");
@@ -158,19 +160,25 @@ public class ProfilePage extends Header implements UserSubscriber {
         contentGridPane.add(confirmationLabel,0,0);
         contentGridPane.add(ok,0,1);
 
-        popUpContent.getChildren().add(contentGridPane);
-        this.ANCHOR_PANE.getChildren().add(popUpContent);
+        popup.getChildren().add(contentGridPane);
+        this.ANCHOR_PANE.getChildren().add(popUpBackground);
+        Scene dialogboxscene = new Scene(popup,200,150);
+        dialogBox.setScene(dialogboxscene);
+
     }
     private void showPopUp()
     {
         popUpBackground.setVisible(true);
-        popUpContent.setVisible(true);
+        popUpBackground.setDisable(false);
+        dialogBox.show();
+
     }
 
     private void hidePopUp()
     {
         popUpBackground.setVisible(false);
-        popUpContent.setVisible(false);
+        popUpBackground.setDisable(true);
+        dialogBox.close();
     }
 
 
