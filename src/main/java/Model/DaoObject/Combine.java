@@ -2,7 +2,9 @@ package Model.DaoObject;
 
 import javafx.beans.property.*;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 public class Combine
 {
@@ -25,7 +27,7 @@ public class Combine
     private float highSeasonPrice;
 
 
-    public Combine(int userID,int resevationsID,String location, int zipCode, Date startDate, Date endDate)
+    public Combine(int userID, int resevationsID, String location, int zipCode, LocalDate startDate, LocalDate endDate)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.resevationsID = new SimpleIntegerProperty(resevationsID) ;
@@ -35,7 +37,7 @@ public class Combine
         this.endDate = new SimpleObjectProperty(endDate)  ;
     }
 
-    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, LocalDate startDate, LocalDate endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.plotID = new SimpleIntegerProperty(plotID) ;

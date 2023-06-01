@@ -17,14 +17,20 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 public class Bookings extends Header implements UserSubscriber
 {
     Button removeResevationButton = new Button("Remove resevations");
@@ -79,7 +85,8 @@ public class Bookings extends Header implements UserSubscriber
             LocalDate localEndDate = res.getEndDate();
             Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
+            LocalDate localStartDate2 = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate localEndDate2 = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             String location ="";
             int zipCode =0;
@@ -94,13 +101,13 @@ public class Bookings extends Header implements UserSubscriber
             }
             if (currentUserID == userID) {
                 reservedPlotIds.add(res.getPlotID());
-                Combine combine = new Combine(userID, reservationID, location, zipCode, startDate, endDate);
+                Combine combine = new Combine(userID, reservationID, location, zipCode, localStartDate2, localEndDate2);
 
                 combineDataList.add(combine);
             }
             if (plotOwner == currentUserID) {
 
-                Combine combine = new Combine(userID, reservationID, location, zipCode, startDate, endDate);
+                Combine combine = new Combine(userID, reservationID, location, zipCode, localStartDate2, localEndDate2);
 
                 combineDataListUd.add(combine);
             }
@@ -110,9 +117,9 @@ public class Bookings extends Header implements UserSubscriber
     }
 
     public void createTable(List arrayList) {
+        DateTimeFormatter converter;
+         converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-
-        StringConverter<Date> converter = new DateStringConverter("yyyy-MM-dd");
         TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
         resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
         resevationsIdColumn.setVisible(false);
@@ -127,16 +134,18 @@ public class Bookings extends Header implements UserSubscriber
         zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         zipcodeColumn.setEditable(false);
 
-        TableColumn<Combine, Date> startDateColumn = new TableColumn<>("Start Date");
+
+        TableColumn<Combine, LocalDate> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
-        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
 
 
         //startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
-        TableColumn<Combine, Date> endDateColumn = new TableColumn<>("End Date");
+        TableColumn<Combine, LocalDate> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
-        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
+        endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
+
 
         removeResevationButton.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -146,33 +155,27 @@ public class Bookings extends Header implements UserSubscriber
                 deleteResevations();
             }
         });
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         endDateColumn.setOnEditCommit(table ->
         {
-            //table.getTableView().getItems().get(table.getTablePosition().getRow()).setLocation(String.valueOf(table.getNewValue()));
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
-            DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
-            String endDate = dtformat.format(table.getNewValue());
-          // Resevations resevations = new Resevations();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String endDate = String.valueOf(table.getNewValue());
             LocalDate localDate = LocalDate.parse(endDate, formatter);
             resevations.setReservationID(resid);
             resevations.setEndDate(localDate);
             updateEndDate(resevations);
         });
 
-        startDateColumn.setOnEditCommit(table ->
-        {
+        startDateColumn.setOnEditCommit(table -> {
             int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
-            DateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd");
-            String startDate = dtformat.format(table.getNewValue());
-            //Resevations resevations = new Resevations();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String startDate = String.valueOf(table.getNewValue());
             LocalDate localDate = LocalDate.parse(startDate, formatter);
             resevations.setReservationID(resid);
             resevations.setStartDate(localDate);
             updateStartDate(resevations);
         });
+
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
 
