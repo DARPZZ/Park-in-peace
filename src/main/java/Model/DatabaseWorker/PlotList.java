@@ -28,7 +28,6 @@ public final class PlotList
     }
     public void setList()
     {
-
         for (Plot p:plotWorker.GetAll())
         {
             plotList.add(p);

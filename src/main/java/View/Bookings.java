@@ -67,7 +67,7 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
         removeResevationButton.setLayoutX(160);
         removeResevationButton.setLayoutY(660);
-        ANCHOR_PANE.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
+        anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
     public void getData() {
 
@@ -188,6 +188,7 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
+        /*
         bookingsBtn.setOnAction(event ->
         {
             removeResevationButton.setVisible(true);
@@ -198,6 +199,8 @@ public class Bookings extends Header implements UserSubscriber
             tableView.getColumns().clear();
             createTable(combineDataList);
         });
+
+         */
         lejerButton.setOnAction(event ->
         {
             removeResevationButton.setVisible(true);

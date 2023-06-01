@@ -6,7 +6,6 @@ import Model.Implements.*;
 import View.*;
 //import View.BookingsUd;
 import View.Bookings;
-import View.BookingsUd;
 import View.Advertisement;
 import View.MainPage;
 import View.PlotPage;
@@ -54,13 +53,12 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.Advertisement, advertisement.scene);
         SCENE_MAP.put(SceneName.Main, new MainPage().scene);
         SCENE_MAP.put(SceneName.Bookings, bookings.scene);
-        SCENE_MAP.put(SceneName.PlotPage, plotPage.SCENE);
+        SCENE_MAP.put(SceneName.PlotPage, plotPage.scene);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.scene);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = SCENE_MAP.get(SceneName.Main);
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-
-        createScene(anchorPane);
+        
 
         String css = this.getClass().getResource("/Style.css").toExternalForm();
         scene.getStylesheets().add(css);

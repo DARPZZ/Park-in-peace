@@ -107,7 +107,7 @@ public class ProfilePage extends Header implements UserSubscriber {
 
             gridPane.add(saveButton, 0, 7, NUM_COLS, 1);
 
-            this.ANCHOR_PANE.getChildren().addAll(gridPane,profilePic);
+            this.anchorPane.getChildren().addAll(gridPane,profilePic);
 
     }
 
@@ -161,7 +161,7 @@ public class ProfilePage extends Header implements UserSubscriber {
         contentGridPane.add(ok,0,1);
 
         popup.getChildren().add(contentGridPane);
-        this.ANCHOR_PANE.getChildren().add(popUpBackground);
+        this.anchorPane.getChildren().add(popUpBackground);
         Scene dialogboxscene = new Scene(popup,200,150);
         dialogBox.setScene(dialogboxscene);
 

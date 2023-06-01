@@ -45,7 +45,7 @@ public class Combine
         this.endDateProperty = new SimpleObjectProperty(endDate)  ;
     }
 
-    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, LocalDate startDate, LocalDate endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.plotID = new SimpleIntegerProperty(plotID) ;
@@ -213,7 +213,7 @@ public class Combine
 
     public Object getStartDate()
     {
-        return startDate.get();
+        return startDate.getDate();
     }
 
     public ObjectProperty startDateProperty()

@@ -72,8 +72,8 @@ public class PlotPage extends Header implements UserSubscriber
         scrollPane.setContent(tilePane);
 
         scrollPane.setContent(tilePane);
-        ANCHOR_PANE.getChildren().add(plotview);
-        ANCHOR_PANE.getChildren().add(scrollPane);
+        anchorPane.getChildren().add(plotview);
+        anchorPane.getChildren().add(scrollPane);
 
 
     }
@@ -271,7 +271,7 @@ public class PlotPage extends Header implements UserSubscriber
             backGroundBox.setVisible(false);
             backGroundBox.setDisable(true);
         });
-        ANCHOR_PANE.getChildren().add(backGroundBox);
+        anchorPane.getChildren().add(backGroundBox);
         int formStartX = 10;
         int formStartY = 170;
         int formOffSetX = 60;
@@ -502,6 +502,7 @@ public class PlotPage extends Header implements UserSubscriber
             });
             tilePane.getChildren().add(plotThumbnail);
         }
+        System.out.println("");
     }
     public void initPlotPage()
         {
@@ -512,6 +513,7 @@ public class PlotPage extends Header implements UserSubscriber
                  plotArrayList.add(p);
              }
                 }
+            System.out.println("");
         }
 
     @Override

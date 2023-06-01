@@ -47,15 +47,15 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
 
 
             CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?,?)}");
-            if(tblPlot.getToilet())
+            if(tblPlot.isToilet())
             {firstPassInsert.setInt(1,toiletID);}
             else
             {firstPassInsert.setInt(1,0);}
-            if(tblPlot.getElectric())
+            if(tblPlot.isElectric())
             {firstPassInsert.setInt(2,electricID);}
             else
             {firstPassInsert.setInt(2,0);}
-            if (tblPlot.getWater())
+            if (tblPlot.isWater())
             {firstPassInsert.setInt(3,waterID);}
             else
             {firstPassInsert.setInt(3,0);}
