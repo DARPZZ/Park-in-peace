@@ -89,11 +89,11 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             {
                 try
                 {
-                 CallableStatement updatePricing = con.prepareCall("{CALL updatePlotPricing(?,?,?)}");
-                 updatePricing.setString(1,fieldname);
-                 updatePricing.setFloat(2,Float.parseFloat(value));
-                 updatePricing.setInt(3,tblPlot.getPlotID());
-                 updatePricing.executeUpdate();
+                    CallableStatement updatePricing = con.prepareCall("{CALL updatePlotPricing(?,?,?)}");
+                    updatePricing.setString(1,fieldname);
+                    updatePricing.setFloat(2,Float.parseFloat(value));
+                    updatePricing.setInt(3,tblPlot.getPlotID());
+                    updatePricing.executeUpdate();
 
                 }catch (Exception e){
                     System.out.println(e);
@@ -149,19 +149,19 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             {
                 try
                 {
-                CallableStatement getPlotSizeID = con.prepareCall("{CALL getPlotSizeIDFromPlotID(?)}");
-                getPlotSizeID.setInt(1, tblPlot.getPlotID());
-                ResultSet resultSet = getPlotSizeID.executeQuery();
-                resultSet.next();
-                CallableStatement updatePlotSize = con.prepareCall("CALL updatePlotSize(?,?)");
+                    CallableStatement getPlotSizeID = con.prepareCall("{CALL getPlotSizeIDFromPlotID(?)}");
+                    getPlotSizeID.setInt(1, tblPlot.getPlotID());
+                    ResultSet resultSet = getPlotSizeID.executeQuery();
+                    resultSet.next();
+                    CallableStatement updatePlotSize = con.prepareCall("CALL updatePlotSize(?,?)");
 
-                updatePlotSize.setInt(2, resultSet.getInt("fldPlotSizeID"));
-                updatePlotSize.executeUpdate();
+                    updatePlotSize.setInt(2, resultSet.getInt("fldPlotSizeID"));
+                    updatePlotSize.executeUpdate();
 
-            } catch (Exception e)
-            {
-                System.out.println(e);
-            }
+                } catch (Exception e)
+                {
+                    System.out.println(e);
+                }
                 break;}
         }
     }
@@ -246,7 +246,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             for (int i = 0; i <3 ; i++)
             {
                 if (servicesRS.next())
-                services[i] = true;
+                    services[i] = true;
             }
             CallableStatement price = con.prepareCall("{call getPlotPrices(?)}");
             price.setInt(1,plotid);
@@ -257,17 +257,17 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             {
                 prices[i] = priceRS.getFloat(i+1);
             }
-                Plot plot = new Plot(
-                        rs.getInt("fldUserID"),
-                        rs.getInt("fldPlotID"),
-                        rs.getString("fldLocation"),
-                        rs.getString("fldDescription"),
-                        rs.getString("fldImage"),
-                        rs.getString("fldPlotSize"),
-                        rs.getInt("fldZipcode"),
-                        services[0],services[1],services[2],
-                        prices[0],prices[1],prices[2]);
-                return plot;
+            Plot plot = new Plot(
+                    rs.getInt("fldUserID"),
+                    rs.getInt("fldPlotID"),
+                    rs.getString("fldLocation"),
+                    rs.getString("fldDescription"),
+                    rs.getString("fldImage"),
+                    rs.getString("fldPlotSize"),
+                    rs.getInt("fldZipcode"),
+                    services[0],services[1],services[2],
+                    prices[0],prices[1],prices[2]);
+            return plot;
 
         }catch (Exception e) {
 
@@ -285,37 +285,37 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         ArrayList<Plot> plotList = new ArrayList<Plot>();
 
         try
-             {
-                 CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
-                 ResultSet resultSetPlots = stmt.executeQuery();
-                 //resultSetPlots.next();
-                 while(resultSetPlots.next())
-                 {
-                     toiletBool = false;
-                     waterBool = false;
-                     elBool = false;
-                     convertIDtoBool(resultSetPlots.getInt(1));
-                     resultSetPlots.next();
-                     convertIDtoBool(resultSetPlots.getInt(1));
-                     resultSetPlots.next();
-                     convertIDtoBool(resultSetPlots.getInt(1));
+        {
+            CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
+            ResultSet resultSetPlots = stmt.executeQuery();
+            //resultSetPlots.next();
+            while(resultSetPlots.next())
+            {
+                toiletBool = false;
+                waterBool = false;
+                elBool = false;
+                convertIDtoBool(resultSetPlots.getInt(1));
+                resultSetPlots.next();
+                convertIDtoBool(resultSetPlots.getInt(1));
+                resultSetPlots.next();
+                convertIDtoBool(resultSetPlots.getInt(1));
 
-                     plotList.add(new Plot(
-                             resultSetPlots.getInt("fldUserID"),
-                             resultSetPlots.getInt("fldPlotID"),
-                             resultSetPlots.getString("fldLocation"),
-                             resultSetPlots.getString("fldDescription"),
-                             resultSetPlots.getString("fldImage"),
-                             resultSetPlots.getString("fldPlotSize"),
-                             resultSetPlots.getInt("fldZipcode"),
-                             toiletBool,waterBool,elBool,
-                             resultSetPlots.getFloat("fldLowSeasonPrice"),
-                             resultSetPlots.getFloat("fldMediumSeasonPrice"),
-                             resultSetPlots.getFloat("fldHighSeasonPrice")));
+                plotList.add(new Plot(
+                        resultSetPlots.getInt("fldUserID"),
+                        resultSetPlots.getInt("fldPlotID"),
+                        resultSetPlots.getString("fldLocation"),
+                        resultSetPlots.getString("fldDescription"),
+                        resultSetPlots.getString("fldImage"),
+                        resultSetPlots.getString("fldPlotSize"),
+                        resultSetPlots.getInt("fldZipcode"),
+                        toiletBool,waterBool,elBool,
+                        resultSetPlots.getFloat("fldLowSeasonPrice"),
+                        resultSetPlots.getFloat("fldMediumSeasonPrice"),
+                        resultSetPlots.getFloat("fldHighSeasonPrice")));
 
-                 }
-             }
-         catch (SQLException e) {
+            }
+        }
+        catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
         return plotList;
