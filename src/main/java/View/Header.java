@@ -34,6 +34,7 @@ public abstract class Header
         anchorPane.setOnMousePressed(event -> anchorPane.requestFocus());
         scene = new Scene(anchorPane, 1280, 720);
 
+
         setupLayout();
     }
 

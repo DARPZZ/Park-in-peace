@@ -493,6 +493,7 @@ public class PlotPage extends Header implements UserSubscriber
     {
         for (Plot plot: plotArrayList)
         {
+            /*
             Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
             //plotview.add(plotThumbnail,columnCount,rowCount);
@@ -501,6 +502,8 @@ public class PlotPage extends Header implements UserSubscriber
                 createPopUpPlotInfo(plot);
             });
             tilePane.getChildren().add(plotThumbnail);
+
+             */
         }
         System.out.println("");
     }

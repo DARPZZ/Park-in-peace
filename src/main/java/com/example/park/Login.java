@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -275,12 +277,15 @@ public class Login implements UserPublisher
     {
         if (strengthPercentage<0.25)
         {
+         passwordStrengthBar.setStyle("-fx-accent: red;");
              str.setText("Password strenght: " + "BAD");
         }else if (strengthPercentage<=0.5)
         {
+            passwordStrengthBar.setStyle("-fx-accent: yellow;");
             str.setText("Password strenght:" + "OKAY");
         }else if (strengthPercentage<0.7)
         {
+            passwordStrengthBar.setStyle("-fx-accent: green;");
             str.setText("Password strenght:" + "GOOD");
         }
     }
