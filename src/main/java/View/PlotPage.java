@@ -21,12 +21,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.regex.PatternSyntaxException;
 import java.util.zip.DeflaterInputStream;
+
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 public class PlotPage extends Header implements UserSubscriber
 {
@@ -39,11 +45,21 @@ public class PlotPage extends Header implements UserSubscriber
     private String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
     private ArrayList<Plot> plotArrayList =new ArrayList<>();
+    private File defaultDir = new File("Billeder").getAbsoluteFile();
 
 
 
     public  PlotPage()  {
 
+        Button meme = new Button("mem");
+        meme.setOnMouseClicked(event -> {
+            try {
+                choosePic();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        anchorPane.getChildren().add(meme);
 
         plotview.setAlignment(Pos.CENTER);
         plotview.setLayoutX(25);
@@ -198,31 +214,61 @@ public class PlotPage extends Header implements UserSubscriber
             @Override
             public void handle(MouseEvent event)
             {
-                Plot plotNew = new Plot
-                        (activeUser.getUserId(), // userid
-                                textFieldList.get(0).getText(),//location
-                        descriptionField.getText(),// description
-                        "PLACEHOLDER", //imagepth
-                        sizePicker.getValue(),//size
-                        Integer.parseInt(textFieldList.get(1).getText()), //zip
-                        checkBoxes.get(0).isSelected(), //toilet
-                                checkBoxes.get(1).isSelected(), // water
-                                checkBoxes.get(2).isSelected(), //el
-                        Float.parseFloat(textFieldList.get(2).getText()), //priceLow
-                        Float.parseFloat(textFieldList.get(3).getText()),// priceMed
-                        Float.parseFloat(textFieldList.get(4).getText())); //priceHigh
-                        PlotList.getSingleton().CreatePlot(plotNew);
-                // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
-                for (TextField t:textFieldList)
+                int allGood=0;
+                for (TextField tf:textFieldList)
                 {
-                        t.clear();
+                    if (tf.getText().equals(""))
+                    {
+                     tf.setStyle(" -fx-background-color: red");
+                     allGood -=1;
+                    }
+                    else
+                    {
+                        allGood++;
+                    }
                 }
-                plotArrayList.add(plotNew);
-                tilePane.getChildren().clear();
-                preparePlotGrid();
-                dialog.close();
-                backGround.setVisible(false);
-                backGround.setDisable(true);
+                if (sizePicker.getSelectionModel().isEmpty())
+                {
+                    allGood-=1;
+                    sizePicker.setStyle(" -fx-background-color: red");
+                }
+                if (descriptionField.getText().equals(""))
+                {
+                    allGood-=1;
+                    descriptionField.setStyle(" -fx-background-color: red");
+                }
+                if (allGood == 7)
+                {
+                    Plot plotNew = new Plot
+                            (activeUser.getUserId(), // userid
+                                    textFieldList.get(0).getText(),//location
+                                    descriptionField.getText(),// description
+                                    "PLACEHOLDER", //imagepth
+                                    sizePicker.getValue(),//size
+                                    Integer.parseInt(textFieldList.get(1).getText()), //zip
+                                    checkBoxes.get(0).isSelected(), //toilet
+                                    checkBoxes.get(1).isSelected(), // water
+                                    checkBoxes.get(2).isSelected(), //el
+                                    Float.parseFloat(textFieldList.get(2).getText()), //priceLow
+                                    Float.parseFloat(textFieldList.get(3).getText()),// priceMed
+                                    Float.parseFloat(textFieldList.get(4).getText())); //priceHigh
+                    PlotList.getSingleton().CreatePlot(plotNew);
+                    // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
+                    plotArrayList.add(plotNew);
+                    tilePane.getChildren().clear();
+                    preparePlotGrid();
+                    for (TextField t:textFieldList)
+                    {
+                        t.clear();
+                    }
+                    dialog.close();
+                    backGround.setVisible(false);
+                    backGround.setDisable(true);
+                }
+
+
+
+
 
             }
         });
@@ -494,6 +540,7 @@ public class PlotPage extends Header implements UserSubscriber
         for (Plot plot: plotArrayList)
         {
             Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
+            //Image thumbnailImage = new Image(plot.getImageRealPath());
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
             //plotview.add(plotThumbnail,columnCount,rowCount);
             plotThumbnail.setOnMouseClicked(event -> {
@@ -516,6 +563,28 @@ public class PlotPage extends Header implements UserSubscriber
             System.out.println("");
         }
 
+        private void choosePic() throws IOException {
+
+            FileChooser mem = new FileChooser();
+            mem.setInitialDirectory(defaultDir);
+            File chosenImage = mem.showOpenDialog(HelloApplication.getStage());
+            String fileNameDB = getFileName(chosenImage);
+            File newImageDestination = new File(defaultDir+fileNameDB);
+            Files.copy(chosenImage.toPath(),newImageDestination.toPath(),NOFOLLOW_LINKS);
+
+            try {
+                OutputStream mewm = new FileOutputStream(chosenImage);
+            }catch (Exception e ){
+                System.out.println(e+"file save");
+            }
+
+        }
+        private String getFileName(File file)
+    {
+        StringBuilder stringWorker = new StringBuilder("\\");
+        stringWorker.append(file.getName());
+        return stringWorker.toString();
+    }
     @Override
     public void onUserReceived(User user)
     {

@@ -31,18 +31,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
 
 
             stmt.execute();
-/*
-            ResultSet resultSet = stmt.executeQuery();
-            resultSet.next();
-            userid =resultSet.getInt(1);
 
-                CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
-                blackListInsert.setInt(1,0);
-                blackListInsert.setInt(2,userid);
-
-            user.setUserId(userid);
-
- */
 
 
         } catch (SQLException e) {

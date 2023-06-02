@@ -47,6 +47,7 @@ Create PROCEDURE [dbo].[insertUser] (@fldName varchar(MAX), @fldPhoneNumber varc
 as
 begin
 DECLARE @sql varchar(MAX)
+DECLARE @userID INT
 SET @sql = 'insert into [dbo].[tblUser]
            ([fldName]
            ,[fldPhoneNumber]
@@ -59,6 +60,9 @@ SET @sql = 'insert into [dbo].[tblUser]
                 ', ''' + @fldEmail + ''' , ' + CAST(@fldZipcode as varchar) +')'
                     print (@sql)
                     execute (@sql)
+					SET @userID = SCOPE_IDENTITY()
+INSERT INTO tblBlackList(fldBlackList, fldUserID) VALUES (0,@userID)
+
 end
 
 */
@@ -500,7 +504,7 @@ CREATE PROCEDURE getBlackListedBy (@fldUserID int)
 begin
 SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
 end
-
+/*
 GO
 CREATE PROCEDURE getAllPlots -- old
     as
@@ -509,6 +513,8 @@ SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fld
 LEFT JOIN
     tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
 end
+
+ */
 
 GO
 CREATE PROCEDURE getAllPlots

@@ -154,7 +154,7 @@ public class Advertisement extends Header implements UserSubscriber
         advertisement = updatedAdvertisement;
         if (advertisement != null)
         {
-            imageView.setImage(new Image(advertisement.getImagePath()));
+            imageView.setImage(new Image(advertisement.getImageRealPath()));
             setLabelValues();
             String address = String.format("%s, %s", advertisement.getLocation(), advertisement.getZipCode());
             addressDataLabel.setText(address);
