@@ -121,7 +121,7 @@ public class Bookings extends Header implements UserSubscriber
 
         tableView.setEditable(true);
         DateTimeFormatter converter;
-         converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
         resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
@@ -188,7 +188,6 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
-
         getBookingsButton().setOnAction(event ->
         {
             removeResevationButton.setVisible(true);
@@ -199,13 +198,11 @@ public class Bookings extends Header implements UserSubscriber
             tableView.getColumns().clear();
             createTable(combineDataList);
         });
-
-
         lejerButton.setOnAction(event ->
         {
             removeResevationButton.setVisible(true);
             removeResevationButton.setDisable(false);
-            infoLabel.setText("Dine Resevations");
+            infoLabel.setText("Youre resevations");
             tableView.setEditable(true);
             getData();
             tableView.getColumns().clear();
@@ -213,7 +210,7 @@ public class Bookings extends Header implements UserSubscriber
         });
         udLejerButton.setOnAction(event ->
         {
-            infoLabel.setText("Dine Pladser");
+            infoLabel.setText("Youre plots");
             tableView.setEditable(false);
             getData();
             tableView.getColumns().clear();
