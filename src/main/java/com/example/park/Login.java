@@ -1,12 +1,8 @@
 package com.example.park;
-import Model.DaoObject.Plot;
-import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
-import Model.Implements.DaoUser;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -18,6 +14,8 @@ import java.util.List;
 import java.util.Objects;
 public class Login implements UserPublisher
 {
+    double strengthPercentage = 0;
+    Label str = new Label("Password strenght");
     private List<UserSubscriber> subscribers = new ArrayList<>();
     public String getLoginName()
     {
@@ -37,7 +35,8 @@ public class Login implements UserPublisher
     TextField email = new TextField();
     TextField zipCode = new TextField();
     private final int LAYOUT_x = 600;
-
+    private ProgressBar passwordStrengthBar;
+    private ProgressIndicator indicator;
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
 
@@ -60,6 +59,7 @@ public class Login implements UserPublisher
         zipCode.setLayoutX(LAYOUT_x);
         zipCode.setLayoutY(350);
 
+
         loginButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -77,7 +77,11 @@ public class Login implements UserPublisher
                 }
             }
         });
-        anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode);
+      passwordStrenghts();
+        password.textProperty().addListener((observable, oldValue, newValue) -> updatePasswordStrength(newValue));
+
+
+        anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode,passwordStrengthBar,str);
     }
 
     public void insertInformation()
@@ -221,9 +225,62 @@ public class Login implements UserPublisher
             subscriber.onUserReceived(user);
         }
     }
+    public void passwordStrenghts()
+    {
+        passwordStrengthBar = new ProgressBar(0);
+        passwordStrengthBar.setLayoutX(LAYOUT_x);
+        passwordStrengthBar.setLayoutY(425);
+        passwordStrengthBar.setPrefWidth(150);
+        str.setLayoutX(passwordStrengthBar.getLayoutX());
+        str.setLayoutY(passwordStrengthBar.getLayoutY()-25);
 
+        indicator = new ProgressIndicator(0);
+        indicator.setLayoutX(LAYOUT_x + 220);
+        indicator.setLayoutY(400);
+        indicator.setPrefSize(30, 30);
+
+    }
+    public void updatePasswordStrength(String password) {
+        int passwordStrength = caclStrenght(password);
+         strengthPercentage = (double) passwordStrength / 100.0;
+        passwordStrengthBar.setProgress(strengthPercentage);
+        indicator.setProgress(strengthPercentage);
+        setStr();
+      // str.setText("Password strenght: " + passwordStrength + "%");
+    }
+
+    private int caclStrenght(String password) {
+        int strength = 0;
+        int length = password.length();
+        boolean hasNumbers = password.matches(".*\\d+.*");
+        boolean hasSpecialChars = !password.matches("[A-Za-z0-9 ]*");
+
+        strength += length * 4;
+        if (hasNumbers) {
+            strength += 10;
+        }
+        if (hasSpecialChars) {
+            strength += 10;
+        }
+
+        return Math.min(strength, 100);
+    }
 
     public void setUserPublisher(UserPublisher userPublisher) {
         this.userPublisher = userPublisher;
+    }
+
+    public void setStr()
+    {
+        if (strengthPercentage<0.25)
+        {
+             str.setText("Password strenght: " + "BAD");
+        }else if (strengthPercentage<=0.5)
+        {
+            str.setText("Password strenght:" + "OKAY");
+        }else if (strengthPercentage<0.7)
+        {
+            str.setText("Password strenght:" + "GOOD");
+        }
     }
 }
