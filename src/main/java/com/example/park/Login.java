@@ -246,7 +246,6 @@ public class Login implements UserPublisher
         passwordStrengthBar.setProgress(strengthPercentage);
         indicator.setProgress(strengthPercentage);
         setStr();
-      // str.setText("Password strenght: " + passwordStrength + "%");
     }
 
     private int caclStrenght(String password) {
