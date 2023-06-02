@@ -188,8 +188,8 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
-        /*
-        bookingsBtn.setOnAction(event ->
+
+        getBookingsButton().setOnAction(event ->
         {
             removeResevationButton.setVisible(true);
             removeResevationButton.setDisable(false);
@@ -200,7 +200,7 @@ public class Bookings extends Header implements UserSubscriber
             createTable(combineDataList);
         });
 
-         */
+
         lejerButton.setOnAction(event ->
         {
             removeResevationButton.setVisible(true);

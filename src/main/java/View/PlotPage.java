@@ -491,6 +491,7 @@ public class PlotPage extends Header implements UserSubscriber
 
     public void preparePlotGrid()
     {
+        /*
         for (Plot plot: plotArrayList)
         {
             Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
@@ -503,6 +504,8 @@ public class PlotPage extends Header implements UserSubscriber
             tilePane.getChildren().add(plotThumbnail);
         }
         System.out.println("");
+
+         */
     }
     public void initPlotPage()
         {
