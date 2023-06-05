@@ -472,8 +472,33 @@ public class PlotPage extends Header implements UserSubscriber
         highPrice.setEditable(false);
         popup.getChildren().add(highPrice);
 
+        ImageView imageHolder = new ImageView();
+        imageHolder.setLayoutX(400);
+        imageHolder.setLayoutY(100);
+        imageHolder.maxWidth(300);
+        imageHolder.maxHeight(200);
+        chosenFileName = "\\bgpic.png";
+        Image defaultImage = new Image(defaultDir+"\\bgpic.png",300,200,false,false);
+
+        imageHolder.setImage(defaultImage);
+
+        Button fileChooser = new Button("\uD83D\uDD27");
+        fileChooser.setLayoutX(700);
+        fileChooser.setLayoutY(100);
+        fileChooser.setVisible(false);
+        fileChooser.setDisable(true);
+        fileChooser.setOnMouseClicked(event -> {
+            try {
+                choosePic();
+                Image picked = new Image(defaultDir+chosenFileName,300,200,false,false);
+                imageHolder.setImage(picked);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         Button edit = new Button("🔧");
-        edit.setLayoutX(650);
+        edit.setLayoutX(50);
         edit.setLayoutY(50);
 
 
@@ -507,8 +532,14 @@ public class PlotPage extends Header implements UserSubscriber
             edit.setVisible(false);
             exitEdit.setVisible(true);
 
+            fileChooser.setVisible(true);
+            fileChooser.setDisable(false);
+
         });
         exitEdit.setOnMouseClicked(event -> {
+            fileChooser.setVisible(false);
+            fileChooser.setDisable(true);
+
             comfirm.setDisable(true);
             exitEdit.setDisable(true);
 
@@ -529,14 +560,17 @@ public class PlotPage extends Header implements UserSubscriber
             plot.setLowPrice(Float.parseFloat(lowPrice.getText()));
             plot.setMidPrice(Float.parseFloat(medPrice.getText()));
             plot.setHighPrice(Float.parseFloat(highPrice.getText()));
-            plot.setImagePath("PLACEHOLDER IMAGE");
+            plot.setImagePath(chosenFileName);
             plot.setZipCode(Integer.valueOf(postNr.getText()));
             PlotList.getSingleton().UpdatePlot(plot);
+            chosenFileName ="";
         });
 
         popup.getChildren().add(comfirm);
         popup.getChildren().add(exitEdit);
         popup.getChildren().add(edit);
+        popup.getChildren().add(fileChooser);
+        popup.getChildren().add(imageHolder);
 
         backGroundBox.setVisible(true);
         backGroundBox.setDisable(false);
