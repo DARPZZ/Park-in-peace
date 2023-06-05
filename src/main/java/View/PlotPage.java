@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -46,20 +47,13 @@ public class PlotPage extends Header implements UserSubscriber
     private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
     private ArrayList<Plot> plotArrayList =new ArrayList<>();
     private File defaultDir = new File("Billeder").getAbsoluteFile();
+    private String chosenFileName;
 
 
 
     public  PlotPage()  {
 
-        Button meme = new Button("mem");
-        meme.setOnMouseClicked(event -> {
-            try {
-                choosePic();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        anchorPane.getChildren().add(meme);
+
 
         plotview.setAlignment(Pos.CENTER);
         plotview.setLayoutX(25);
@@ -108,6 +102,10 @@ public class PlotPage extends Header implements UserSubscriber
         backGround.setVisible(false);
         backGround.setDisable(true);
         backGround.setOnMouseClicked(event -> {
+            for (TextField t:textFieldList)
+            {
+                t.clear();
+            }
             dialog.close();
             backGround.setVisible(false);
             backGround.setDisable(true);
@@ -203,8 +201,28 @@ public class PlotPage extends Header implements UserSubscriber
         }
 
         //region placeholder for image indsæt
-        Rectangle imagePlaceholder = new Rectangle(400,100,300,200);
-        imagePlaceholder.setStyle("-fx-background-color: GREY");
+        ImageView imageHolder = new ImageView();
+        imageHolder.setLayoutX(400);
+        imageHolder.setLayoutY(100);
+        imageHolder.maxWidth(300);
+        imageHolder.maxHeight(200);
+        chosenFileName = "\\bgpic.png";
+        Image defaultImage = new Image(defaultDir+"\\bgpic.png",300,200,false,false);
+
+        imageHolder.setImage(defaultImage);
+
+        Button fileChooser = new Button("\uD83D\uDD27");
+        fileChooser.setLayoutX(700);
+        fileChooser.setLayoutY(100);
+        fileChooser.setOnMouseClicked(event -> {
+            try {
+                choosePic();
+                Image picked = new Image(defaultDir+chosenFileName,300,200,false,false);
+                imageHolder.setImage(picked);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         //endregion
 
         Button confirmForm = new Button("Bekræft");
@@ -237,13 +255,14 @@ public class PlotPage extends Header implements UserSubscriber
                     allGood-=1;
                     descriptionField.setStyle(" -fx-background-color: red");
                 }
-                if (allGood == 7)
+                System.out.println(allGood);
+                if (allGood == 5)
                 {
                     Plot plotNew = new Plot
                             (activeUser.getUserId(), // userid
                                     textFieldList.get(0).getText(),//location
                                     descriptionField.getText(),// description
-                                    "PLACEHOLDER", //imagepth
+                                    chosenFileName, //imagepth
                                     sizePicker.getValue(),//size
                                     Integer.parseInt(textFieldList.get(1).getText()), //zip
                                     checkBoxes.get(0).isSelected(), //toilet
@@ -265,6 +284,7 @@ public class PlotPage extends Header implements UserSubscriber
                     backGround.setVisible(false);
                     backGround.setDisable(true);
                 }
+                else {allGood =0;}
 
 
 
@@ -284,9 +304,10 @@ public class PlotPage extends Header implements UserSubscriber
                 popUp.setPrefSize(800 ,600);
                 popUp.getChildren().addAll(textFieldList);
                 popUp.getChildren().addAll(labelList);
-                popUp.getChildren().addAll(descriptionField,imagePlaceholder,confirmForm);
+                popUp.getChildren().addAll(descriptionField,imageHolder,confirmForm);
                 popUp.getChildren().addAll(checkBoxes);
                 popUp.getChildren().add(sizePicker);
+                popUp.getChildren().add(fileChooser);
                 Scene dialogScene = new Scene(popUp, 800, 600);
 
                 dialog.setScene(dialogScene);
@@ -523,25 +544,15 @@ public class PlotPage extends Header implements UserSubscriber
         dialogBox.setScene(dialogboxscene);
         dialogBox.show();
 
-
-
-
-
-
-
-
-
-
-
     }
 
     public void preparePlotGrid()
     {
         for (Plot plot: plotArrayList)
         {
-            /*
-            Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
-            //Image thumbnailImage = new Image(plot.getImageRealPath());
+
+            //Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
+            Image thumbnailImage = new Image(plot.getImageRealPath());
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
             //plotview.add(plotThumbnail,columnCount,rowCount);
             plotThumbnail.setOnMouseClicked(event -> {
@@ -550,7 +561,7 @@ public class PlotPage extends Header implements UserSubscriber
             });
             tilePane.getChildren().add(plotThumbnail);
 
-             */
+
         }
         System.out.println("");
     }
@@ -574,6 +585,7 @@ public class PlotPage extends Header implements UserSubscriber
             String fileNameDB = getFileName(chosenImage);
             File newImageDestination = new File(defaultDir+fileNameDB);
             Files.copy(chosenImage.toPath(),newImageDestination.toPath(),NOFOLLOW_LINKS);
+            chosenFileName = fileNameDB;
 
             try {
                 OutputStream mewm = new FileOutputStream(chosenImage);
