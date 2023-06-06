@@ -177,8 +177,9 @@ public class Login implements UserPublisher
                     password.setTooltip(tooltip);
                 }else
                 {
-                    userPublisher.notifySubscribers(user);
+
                     PlotList.getSingleton().setList();
+                    userPublisher.notifySubscribers(user);
                     HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
