@@ -38,7 +38,7 @@ public class Bookings extends Header implements UserSubscriber
     Button udLejerButton = new Button("Udlejer");
     Label infoLabel = new Label();
     private int currentUserID;
-    private TableView<Combine> tableView = new TableView<>();
+    public TableView<Combine> tableView = new TableView<>();
     List<Combine> combineDataList = new ArrayList<>();
     List<Combine> combineDataListUd = new ArrayList<Combine>();
 
@@ -50,7 +50,6 @@ public class Bookings extends Header implements UserSubscriber
         currentUserID = 0;
         setScene();
         infoLabel.setText("Youre resevations");
-
     }
     public void setScene()
     {
@@ -118,7 +117,6 @@ public class Bookings extends Header implements UserSubscriber
     }
 
     public void createTable(List arrayList) {
-
         tableView.setEditable(true);
         DateTimeFormatter converter;
          converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

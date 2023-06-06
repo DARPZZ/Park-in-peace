@@ -31,7 +31,7 @@ public class Login implements UserPublisher
     }
     User user = new User();
     private String loginName = "";
-    TextField name = new TextField();
+     TextField name = new TextField();
     TextField PhoneNumber = new TextField();
     TextField password = new TextField();
     TextField adress = new TextField();
@@ -72,7 +72,7 @@ public class Login implements UserPublisher
                     insertInformation();
                     toggleButton.setText("Login");
                     anchorPane.getChildren().clear();
-                    toggleLabel.setText("Press here to create a new user:");
+                    toggleLabel.setText("Tryk her for at lave en ny bruger:");
                     loginScene(anchorPane, loginButton);
                     loginButton.setText("login");
                     anchorPane.getChildren().addAll(loginButton, toggleButton, toggleLabel);
@@ -274,4 +274,5 @@ public class Login implements UserPublisher
             str.setText("Password strenght:" + "GOOD");
         }
     }
+
 }
