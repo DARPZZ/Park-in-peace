@@ -1,14 +1,21 @@
 package Model.Implements;
 
 import Model.DaoObject.Plot;
+import Model.DatabaseWorker.PlotList;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DaoPlot extends Connection implements DaoInterface<Plot>
 {
-    private int toiletID=1;
-    private int waterID=2;
-    private int electricID=3;
+    private int toiletID=2;
+    private int waterID=3;
+    private int electricID=4;
+
+    boolean toiletBool = false;
+    boolean waterBool= false;
+    boolean elBool= false;
+    ArrayList<String>plotsizes =new ArrayList<>();
 
     public DaoPlot()
     {
@@ -18,7 +25,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         } catch (SQLException e) {
             System.err.println("Database connection fail" + e.getMessage());
         }
-
+        plotsizes = getAllSizeTypes();
     }
     @Override
     public void Create(Plot tblPlot)
@@ -38,16 +45,17 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             plotid = resultSet.getInt(1);
             System.out.println("rawdone");
 
+
             CallableStatement firstPassInsert = con.prepareCall("{CALL insertSeasonServiceSize(?,?,?,?,?,?,?,?,?)}");
-            if(tblPlot.getToilet())
+            if(tblPlot.isToilet())
             {firstPassInsert.setInt(1,toiletID);}
             else
             {firstPassInsert.setInt(1,0);}
-            if(tblPlot.getElectric())
+            if(tblPlot.isElectric())
             {firstPassInsert.setInt(2,electricID);}
             else
             {firstPassInsert.setInt(2,0);}
-            if (tblPlot.getWater())
+            if (tblPlot.isWater())
             {firstPassInsert.setInt(3,waterID);}
             else
             {firstPassInsert.setInt(3,0);}
@@ -61,7 +69,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             resultSet.next();
 
             tblPlot.setPlotID(plotid);
-
+            PlotList.getSingleton().addToList(tblPlot);
             System.out.println("Done done");
 
 
@@ -77,7 +85,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     {
         createConnection();
         switch (fieldname) {
-            case "fldLowSeasonPrice","fldMidSeasonPrice","HighSeasonPrice":
+            case "fldLowSeasonPrice","fldMidSeasonPrice","fldHighSeasonPrice":
             {
                 try
                 {
@@ -94,19 +102,19 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             case "fldToilet":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),1);
+                updateServices(toiletID, tblPlot.getPlotID(),2);
 
             }
             case "fldWater":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),2);
+                updateServices(toiletID, tblPlot.getPlotID(),3);
 
             }
             case "fldElectric":
             {
                 int trueValue = Integer.parseInt(value);
-                updateServices(toiletID, tblPlot.getPlotID(),3);
+                updateServices(toiletID, tblPlot.getPlotID(),4);
 
             }
             case "fldLocation","fldDescription","fldImage","fldZipCode":
@@ -156,6 +164,55 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             }
                 break;}
         }
+    }
+
+    public void UpdateFull(Plot plot)
+    {
+        int sizeI=0;
+        for (String s:plotsizes)
+        {
+            if (plot.getPlotSize().equals(s)) {
+                sizeI++;
+                break;
+            }
+
+            sizeI++;
+        }
+        createConnection();
+        System.out.println(sizeI);
+        System.out.println(plot.getZipCode());
+        try {
+            CallableStatement fullUpdate = con.prepareCall("{CALL updatePlotFuLL(?,?,?,?,?,?,?,?,?,?,?,?)}");
+            if (plot.isToilet() == true)
+                fullUpdate.setInt(1,toiletID);
+            else
+                fullUpdate.setInt(1,1);
+            if (plot.isWater() == true)
+                fullUpdate.setInt(2,waterID);
+            else
+                fullUpdate.setInt(2,1);
+            if (plot.isElectric() == true)
+                fullUpdate.setInt(3,electricID);
+            else
+                fullUpdate.setInt(3,1);
+
+            fullUpdate.setFloat(4,plot.getLowPrice());
+            fullUpdate.setFloat(5,plot.getMidPrice());
+            fullUpdate.setFloat(6,plot.getHighPrice());
+            fullUpdate.setInt(7,sizeI);
+            fullUpdate.setInt(8,plot.getPlotID());
+            fullUpdate.setInt(9,plot.getZipCode());
+            fullUpdate.setString(10,plot.getLocation());
+            fullUpdate.setString(11,plot.getDescription());
+            fullUpdate.setString(12,plot.getImagePath());
+            fullUpdate.executeUpdate();
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+
     }
 
     @Override
@@ -221,62 +278,46 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public ArrayList<Plot> GetAll()
     {
+
+        System.out.println("mem"+System.currentTimeMillis() );
         createConnection();
         ArrayList<Integer> plotIDs =new ArrayList<>();
         ArrayList<Plot> plotList = new ArrayList<Plot>();
-        boolean[] services = new boolean[3];
-        float[] prices = new float[3];
-        //System.out.println("mem");
+
         try
              {
                  CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
-                 ResultSet rs2 = stmt.executeQuery();
-                 while (rs2.next())
+                 ResultSet resultSetPlots = stmt.executeQuery();
+                 //resultSetPlots.next();
+                 while(resultSetPlots.next())
                  {
-                    plotIDs.add(rs2.getInt(2)) ;
+                     toiletBool = false;
+                     waterBool = false;
+                     elBool = false;
+                     convertIDtoBool(resultSetPlots.getInt(1));
+                     resultSetPlots.next();
+                     convertIDtoBool(resultSetPlots.getInt(1));
+                     resultSetPlots.next();
+                     convertIDtoBool(resultSetPlots.getInt(1));
 
-
-                  for (Integer j:plotIDs)
-                 {
-                     createConnection();
-                     CallableStatement servicesCS = con.prepareCall("{call getPlotServices(?)}");
-                     servicesCS.setInt(1,j);
-                     ResultSet servicesRS = servicesCS.executeQuery();
-                     for (int i = 0; i <3 ; i++)
-                     {
-                         if (servicesRS.next())
-                             services[i] = true;
-                        // System.out.println("mems");
-                     }
-                     CallableStatement price = con.prepareCall("{call getPlotPrices(?)}");
-                     price.setInt(1,j);
-                     ResultSet priceRS = price.executeQuery();
-
-                     for (int i = 0; i <3 ; i++)
-                     {
-                         if (priceRS.next())
-                             prices[i] = priceRS.getFloat(i+1);
-                     }
-                     //System.out.println("e");
-                     //  ResultSet rs = stmt.executeQuery();
-                     //  rs.next();
                      plotList.add(new Plot(
-                             rs2.getInt("fldUserID"),
-                             rs2.getInt("fldPlotID"),
-                             rs2.getString("fldLocation"),
-                             rs2.getString("fldDescription"),
-                             rs2.getString("fldImage"),
-                             rs2.getString("fldPlotSize"),
-                             rs2.getInt("fldZipcode"),
-                             services[0],services[1],services[2],
-                             prices[0],prices[1],prices[2]));
-                 }
+                             resultSetPlots.getInt("fldUserID"),
+                             resultSetPlots.getInt("fldPlotID"),
+                             resultSetPlots.getString("fldLocation"),
+                             resultSetPlots.getString("fldDescription"),
+                             resultSetPlots.getString("fldImage"),
+                             resultSetPlots.getString("fldPlotSize"),
+                             resultSetPlots.getInt("fldZipcode"),
+                             toiletBool,waterBool,elBool,
+                             resultSetPlots.getFloat("fldLowSeasonPrice"),
+                             resultSetPlots.getFloat("fldMediumSeasonPrice"),
+                             resultSetPlots.getFloat("fldHighSeasonPrice")));
 
                  }
-        } catch (SQLException e) {
+             }
+         catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
-
         return plotList;
 
     }
@@ -313,5 +354,44 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
         else {
             System.out.println("VALUE WRONG:"+ServiceID+"Should be 1 for true, 0 for false");
         }
+    }
+    private void convertIDtoBool(int id)
+    {
+        switch (id) {
+
+            case 2: {
+                toiletBool = true;
+                break;
+            }
+            case 3: {
+                waterBool = true;
+                break;
+            }
+            case 4: {
+                elBool = true;
+                break;
+            }
+
+        }
+
+    }
+    public ArrayList<String> getAllSizeTypes()
+    {
+        createConnection();
+        ArrayList<String> sizeTypes = new ArrayList<>();
+        try
+        {
+            CallableStatement sizeTypesCall = con.prepareCall("{CALL getAllSizeTypes}");
+            ResultSet sizeTypesReturn = sizeTypesCall.executeQuery();
+            while (sizeTypesReturn.next())
+            {
+                sizeTypes.add(sizeTypesReturn.getString(1));
+            }
+            return sizeTypes;
+        }catch (Exception e ){
+            System.out.println(e);
+        }
+        System.out.println("Result set issue");
+        return null;
     }
 }

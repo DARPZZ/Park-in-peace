@@ -161,9 +161,9 @@ public class Advertisement extends Header implements UserSubscriber
             plotSizeDataLabel.setText(advertisement.getPlotSize());
             descriptionDataTextField.getChildren().clear();
             descriptionDataTextField.getChildren().add(new Text(advertisement.getDescription()));
-            toiletsCheckBox.selectedProperty().bind(advertisement.getToiletProperty());
-            waterCheckBox.selectedProperty().bind(advertisement.getWaterProperty());
-            electricityCheckBox.selectedProperty().bind(advertisement.getElectricProperty());
+            toiletsCheckBox.selectedProperty().bind(advertisement.toiletProperty());
+            waterCheckBox.selectedProperty().bind(advertisement.waterProperty());
+            electricityCheckBox.selectedProperty().bind(advertisement.electricProperty());
         }
     }
 

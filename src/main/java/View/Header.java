@@ -1,7 +1,9 @@
 package View;
 
+import Model.DaoObject.User;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
+import com.example.park.UserSubscriber;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +13,7 @@ import javafx.scene.shape.Line;
 
 public abstract class Header
 {
+     User currentUser;
     public final Scene scene;
     public final AnchorPane anchorPane;
 
@@ -62,6 +65,19 @@ public abstract class Header
         AnchorPane.setLeftAnchor(myPlotButton, AnchorPane.getLeftAnchor(bookingsButton) + GAP);
         myPlotButton.setLayoutY(Y_LAYOUT);
         myPlotButton.setPrefSize(WIDTH, HEIGHT);
+
+        bookingsButton.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.Bookings);
+        });
+        myPlotButton.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.PlotPage);
+
+        });
+        profileButton.setOnAction(event -> {
+            HelloApplication.changeScene(SceneName.ProfilePage);
+            HelloApplication.profilePage.broadcast();
+            HelloApplication.profilePage.setupPopUpBackground();
+        });
     }
 
     private void createProfileButton()
@@ -78,7 +94,7 @@ public abstract class Header
         userLabel.setLayoutY(profileButton.getLayoutY());
         userLabel.setPrefSize(WIDTH, HEIGHT);
         userLabel.setAlignment(Pos.BASELINE_RIGHT);
-        userLabel.setText("Ingen bruger");
+        //userLabel.setText("Ingen bruger");
 
         return userLabel;
     }
@@ -110,6 +126,5 @@ public abstract class Header
     {
         return bookingsButton;
     }
-
     //endregion
 }

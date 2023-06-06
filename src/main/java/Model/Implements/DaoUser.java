@@ -36,12 +36,10 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
             resultSet.next();
             userid =resultSet.getInt(1);
 
-            for (Integer i: user.getBlackList()) // could be better with samlet string storedprocedure
-            {
                 CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
-                blackListInsert.setInt(1,i);
+                blackListInsert.setInt(1,0);
                 blackListInsert.setInt(2,userid);
-            }
+
             user.setUserId(userid);
 
  */
@@ -205,14 +203,22 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public User checkLogin (String username, String password)
     {
         createConnection();
+        System.out.println("checklogin start"+ System.currentTimeMillis());
         try {
             CallableStatement checklogin = con.prepareCall("{CALL userLoginCheck(?,?)}");
             checklogin.setString(1, password);
             checklogin.setString(2, username);
             ResultSet resultSet = checklogin.executeQuery();
             resultSet.next();
+            int acNR =0;
+            try {
+                acNR = resultSet.getInt("fldAcountNumber");
+            }catch (Exception e){
+                System.out.println("AccountNR null proceed");
+            }
+
             User user = new User
-                    (resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(7),resultSet.getInt(8));
+                    (resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),acNR,resultSet.getString(7),resultSet.getInt(8));
             return user;
         }catch (Exception e){
             System.out.println(e);

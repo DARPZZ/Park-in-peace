@@ -1,6 +1,7 @@
 package View;
 
 import Model.DaoObject.Plot;
+import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
 import Service.CombinePublisher;
 import com.example.park.HelloApplication;
@@ -48,7 +49,7 @@ public class MainPage extends Header
     {
         setupFilterControlsLayout();
         setupScrollPaneLayout();
-        PlotList.getSingleton().setList();
+        //PlotList.getSingleton().setList();
         advertisementList = PlotList.getSingleton().getList();
         populateWithAds(advertisementList);
         setupPopUpBackground();
@@ -239,9 +240,9 @@ public class MainPage extends Header
                 (maxPrice.get() == 0 || maxPrice.get() > data.getMidPrice());
 
         Predicate<Plot> filterCondition = data ->
-                (!toiletFilter || data.getToiletProperty().get()) &&
-                (!electricityFilter || data.getElectricProperty().get()) &&
-                (!waterFilter || data.getWaterProperty().get());
+                (!toiletFilter || data.toiletProperty().get()) &&
+                (!electricityFilter || data.electricProperty().get()) &&
+                (!waterFilter || data.waterProperty().get());
 
         filteredList = advertisementList.stream()
                 .filter(filterCondition.and(filterMinMax))
@@ -362,6 +363,7 @@ public class MainPage extends Header
             }
         }
     }
+
 
     public enum FilterTypes
     {

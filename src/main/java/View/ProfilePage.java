@@ -1,17 +1,24 @@
 package View;
 
 import Model.DaoObject.User;
+import Model.DatabaseWorker.BlackList;
+import com.example.park.HelloApplication;
 import com.example.park.UserPublisher;
 import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.sql.*;
 import java.text.BreakIterator;
 import java.util.ArrayList;
@@ -22,6 +29,8 @@ public class ProfilePage extends Header implements UserSubscriber {
 
     private ArrayList<TextField> textFields = new ArrayList<>();
     private User loggedIn;
+    private Stage dialogBox;
+    private Rectangle popUpBackground = new Rectangle(1280,768);
 
     public void onUserReceived(User user){
 
@@ -81,13 +90,29 @@ public class ProfilePage extends Header implements UserSubscriber {
             }
 
             Button saveButton = new Button("Save");
+            saveButton.setOnMouseClicked(event -> {
+                    loggedIn.setName(nameField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldName",loggedIn.getName());
+                    loggedIn.setAddress(addressField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldAddress",loggedIn.getAddress());
+                    loggedIn.setPhoneNumber(phoneField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldPhoneNumber",loggedIn.getPhoneNumber());
+                    loggedIn.setEmail(emailField.getText());
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldEmail",loggedIn.getEmail());
+                    loggedIn.setAcounterNumber(Integer.parseInt(accountField.getText()));
+                BlackList.getSingleton().UpdateUser(loggedIn,"fldAcountNumber",String.valueOf(loggedIn.getAcounterNumber()));
+                showPopUp();
+            });
+
 
             gridPane.add(saveButton, 0, 7, NUM_COLS, 1);
 
             this.anchorPane.getChildren().addAll(gridPane,profilePic);
+
     }
 
-    private TextField createLabel(String labelText) {
+    private TextField createLabel(String labelText)
+    {
         TextField label = new TextField(labelText);
         label.setDisable(true);
         label.setStyle("-fx-opacity: 1;");
@@ -99,6 +124,62 @@ public class ProfilePage extends Header implements UserSubscriber {
         textFields.get(1).setText(loggedIn.getAddress());
         textFields.get(2).setText(loggedIn.getPhoneNumber());
         textFields.get(3).setText(loggedIn.getEmail());
-        textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));
+        if (loggedIn.getAcounterNumber() >=0)
+        {textFields.get(4).setText(String.valueOf(loggedIn.getAcounterNumber()));}
     }
+
+    public void setupPopUpBackground()
+    {
+        dialogBox = new Stage();
+        dialogBox.initOwner(HelloApplication.getStage());
+        dialogBox.initStyle(StageStyle.TRANSPARENT);
+
+        AnchorPane popup = new AnchorPane();
+        popup.setPrefSize(200 ,150);
+
+
+        popUpBackground.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
+        popUpBackground.setVisible(false);
+        popUpBackground.setDisable(true);
+        popUpBackground.setOnMouseClicked(event -> {
+                    dialogBox.close();
+                    popUpBackground.setVisible(false);
+                    popUpBackground.setDisable(true);
+                });
+
+        GridPane contentGridPane = new GridPane();
+        contentGridPane.setPrefSize(popup.getPrefWidth(), popup.getPrefHeight());
+        contentGridPane.setAlignment(Pos.CENTER);
+        //contentGridPane.setLayoutX(25);
+        //contentGridPane.setLayoutY(150);
+        contentGridPane.setHgap(10);
+        contentGridPane.setVgap(10);
+        Label confirmationLabel = new Label("Opdatering Fuldført");
+        Button ok = new Button("OK");
+        ok.setOnMouseClicked(event -> {hidePopUp();});
+        contentGridPane.add(confirmationLabel,0,0);
+        contentGridPane.add(ok,0,1);
+
+        popup.getChildren().add(contentGridPane);
+        this.anchorPane.getChildren().add(popUpBackground);
+        Scene dialogboxscene = new Scene(popup,200,150);
+        dialogBox.setScene(dialogboxscene);
+
+    }
+    private void showPopUp()
+    {
+        popUpBackground.setVisible(true);
+        popUpBackground.setDisable(false);
+        dialogBox.show();
+
+    }
+
+    private void hidePopUp()
+    {
+        popUpBackground.setVisible(false);
+        popUpBackground.setDisable(true);
+        dialogBox.close();
+    }
+
+
 }

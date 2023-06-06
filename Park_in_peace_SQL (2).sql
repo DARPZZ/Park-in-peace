@@ -139,6 +139,7 @@ ALTER TABLE tblParkingService
 CONSTRAINT fk_PSplo foreign key (fldServiceID) references tblService(fldServiceID)
 
 --preload service types
+INSERT INTO tblService (fldServiceType) VALUES ('NAN')
 INSERT INTO tblService (fldServiceType) VALUES ('Toilet')
 INSERT INTO tblService (fldServiceType) VALUES ('Water')
 INSERT INTO tblService (fldServiceType) VALUES ('Electric')
@@ -153,3 +154,65 @@ INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Sønderborg',6400)
 INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Gråsten',6300)
 INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Aabenraa',6200)
 INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Haderslev',6100)
+
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Tobias Christensen', 74410239, 1,'B.S Ingmannsvej 2',10001000,'tob@mail.com',6400)
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Jesper Jepsen', 74459239, 'secretWord','Grundvigs Alle 37',10000320,'Jepsen@mail.com',6400)
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Nikolaj', 74890213, 'fettlovin','Perlegade 22',52301000,'fettman@mail.com',6400)
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Zhen Abudabi', 74950303, '12344231','Rådhusgade 23',12040000,'Zhen@mail.com',6300)
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Jakob Perrson', 21034089, 'Djblabblab','Lille Rådhusgade 19',10020943,'Perrson@mail.com',6400)
+    INSERT INTO tblUser(fldName,fldPhoneNumber,fldPassword,fldAddress,fldAcountNumber,fldEmail,fldZipCode) VALUES ('Rasmus Hansen', 22304085, 'ralleralleman2003','Kolding vej 20',54391000,'ralleMail@mail.com',6100)
+
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (1,0)
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (2,0)
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (3,0)
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (4,0)
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (5,0)
+    INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (6,0)
+
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 2', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 3', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 4', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 5', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade 2', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',2,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade  4', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',2,6400)
+
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (1, 30,50,100)
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (2, 30,50,100)
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (3, 30,50,120)
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (4, 30,50,120)
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (5, 60,100,200)
+    INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (6, 60,100,200)
+
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(1,2)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(1,1)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(1,4)
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(2,2)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(2,3)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(2,4)
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(3,4)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(3,3)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(3,1)
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(4,3)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(4,4)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(4,1)
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(5,1)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(5,1)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(5,1)
+
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(6,2)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(6,3)
+    INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(6,1)
+
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-01'AS Date), CAST ('2023-06-06' AS DATE), 3,1)
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-20'AS Date), CAST ('2023-06-21' AS DATE), 4,2)
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-08'AS Date), CAST ('2023-06-10' AS DATE), 5,3)
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-07-10'AS Date), CAST ('2023-07-11' AS DATE), 3,4)
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-13'AS Date), CAST ('2023-06-14' AS DATE), 5,5)
+    INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-18'AS Date), CAST ('2023-06-19' AS DATE), 6,6)
+
+

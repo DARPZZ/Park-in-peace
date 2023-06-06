@@ -2,8 +2,7 @@ package Model.DaoObject;
 
 import javafx.beans.property.*;
 
-public class Plot
-{
+public class Plot {
     private IntegerProperty userID;
     private IntegerProperty plotID;
     private StringProperty location;
@@ -16,11 +15,11 @@ public class Plot
     private FloatProperty midPrice;
     private FloatProperty highPrice;
 
-    private BooleanProperty toiletProperty;
-    private BooleanProperty waterProperty;
-    private BooleanProperty electricProperty;
+    private BooleanProperty toilet;
+    private BooleanProperty water;
+    private BooleanProperty electric;
 
-    public Plot(int userID ,int plotID, String location, String description,String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low,float mid, float high) {
+    public Plot(int userID, int plotID, String location, String description, String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low, float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
         this.plotID = new SimpleIntegerProperty(plotID);
         this.location = new SimpleStringProperty(location);
@@ -31,24 +30,25 @@ public class Plot
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
         this.highPrice = new SimpleFloatProperty(high);
-        this.toiletProperty = new SimpleBooleanProperty();
-        this.waterProperty = new SimpleBooleanProperty();
-        this.electricProperty = new SimpleBooleanProperty();
+        this.toilet = new SimpleBooleanProperty(toilet);
+        this.water = new SimpleBooleanProperty(water);
+        this.electric = new SimpleBooleanProperty(electric);
     }
-    public Plot(int userID,String location, String description,String img, String plotSize, int zipCode,  boolean toilet, boolean water, boolean electric, float low,float mid, float high)
-    {
+
+    public Plot(int userID, String location, String description, String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low, float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
-        this.location =new SimpleStringProperty( location);
-        this.description =new SimpleStringProperty( description);
+        this.plotID = new SimpleIntegerProperty(0);
+        this.location = new SimpleStringProperty(location);
+        this.description = new SimpleStringProperty(description);
         this.imagePath = img;
-        this.plotSize =new SimpleStringProperty( plotSize);
-        this.zipCode =new SimpleIntegerProperty( zipCode);
+        this.plotSize = new SimpleStringProperty(plotSize);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
-        this.highPrice =new SimpleFloatProperty(high);
-        this.toiletProperty = new SimpleBooleanProperty();
-        this.waterProperty = new SimpleBooleanProperty();
-        this.electricProperty = new SimpleBooleanProperty();
+        this.highPrice = new SimpleFloatProperty(high);
+        this.toilet = new SimpleBooleanProperty(toilet);
+        this.water = new SimpleBooleanProperty(water);
+        this.electric = new SimpleBooleanProperty(toilet);
     }
 
     public int getUserID() {
@@ -167,42 +167,39 @@ public class Plot
         this.highPrice.set(highPrice);
     }
 
-    public boolean getToilet() {
-        return toiletProperty.get();
+    public boolean isToilet() {
+        return toilet.get();
     }
 
-    public void setToiletProperty(boolean toiletProperty) {
-        this.toiletProperty.set(toiletProperty);
+    public BooleanProperty toiletProperty() {
+        return toilet;
     }
 
-    public boolean getWater() {
-        return waterProperty.get();
+    public void setToilet(boolean toilet) {
+        this.toilet.set(toilet);
     }
 
-    public void setWaterProperty(boolean waterProperty) {
-        this.waterProperty.set(waterProperty);
+    public boolean isWater() {
+        return water.get();
     }
 
-    public boolean getElectric() {
-        return electricProperty.get();
+    public BooleanProperty waterProperty() {
+        return water;
     }
 
-    public void setElectricProperty(boolean electricProperty) {
-        this.electricProperty.set(electricProperty);
+    public void setWater(boolean water) {
+        this.water.set(water);
     }
 
-    public BooleanProperty getToiletProperty()
-    {
-        return this.toiletProperty;
+    public boolean isElectric() {
+        return electric.get();
     }
 
-    public BooleanProperty getWaterProperty()
-    {
-        return this.waterProperty;
+    public BooleanProperty electricProperty() {
+        return electric;
     }
 
-    public BooleanProperty getElectricProperty()
-    {
-        return this.electricProperty;
+    public void setElectric(boolean electric) {
+        this.electric.set(electric);
     }
 }

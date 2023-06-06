@@ -6,7 +6,6 @@ import Model.Implements.*;
 import View.*;
 //import View.BookingsUd;
 import View.Bookings;
-import View.BookingsUd;
 import View.Advertisement;
 import View.MainPage;
 import View.PlotPage;
@@ -14,10 +13,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,6 +23,7 @@ import java.util.HashMap;
 public class HelloApplication extends Application
 {
     Login login = new Login();
+    public static PlotPage plotPage = new PlotPage();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Bookings bookings = new Bookings();
     Label toggleLabel = new Label("Press here to create user:");
@@ -45,24 +43,25 @@ public class HelloApplication extends Application
         login.subscribe(bookings); //tager
         login.subscribe(profilePage);
         login.setUserPublisher(login); // Giveren
-        login.subscribe(bookingsUd);
         login.subscribe(advertisement);
 
+        login.subscribe(plotPage);
+        //login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
         SCENE_MAP.put(SceneName.Advertisement, advertisement.scene);
         SCENE_MAP.put(SceneName.Main, new MainPage().scene);
         SCENE_MAP.put(SceneName.Bookings, bookings.scene);
-        SCENE_MAP.put(SceneName.PlotPage, new PlotPage().scene);
+        SCENE_MAP.put(SceneName.PlotPage, plotPage.scene);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.scene);
-        SCENE_MAP.put(SceneName.BookingsUd, bookingsUd.scene);
         AnchorPane anchorPane = new AnchorPane();
         //Scene scene = SCENE_MAP.get(SceneName.Main);
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        
+
         String css = this.getClass().getResource("/Style.css").toExternalForm();
         scene.getStylesheets().add(css);
-
         stage.setTitle("Park in Peace");
         stage.setScene(scene);
         createScene(anchorPane,scene);
