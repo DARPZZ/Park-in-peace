@@ -118,7 +118,7 @@ public class Bookings extends Header implements UserSubscriber
             LocalDate localDate = LocalDate.parse(endDate, formatter);
             resevations.setReservationID(resid);
             resevations.setEndDate(localDate);
-            updateEndDate(resevations);
+            resController.updateEndDate(resevations);
         });
 
         startDateColumn.setOnEditCommit(table -> {
@@ -127,7 +127,7 @@ public class Bookings extends Header implements UserSubscriber
             LocalDate localDate = LocalDate.parse(startDate, formatter);
             resevations.setReservationID(resid);
             resevations.setStartDate(localDate);
-            updateStartDate(resevations);
+            resController.updateStartDate(resevations);
         });
 
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
@@ -178,14 +178,6 @@ public class Bookings extends Header implements UserSubscriber
         getData();
     }
     //endregion
-    public void updateEndDate(Resevations resevations)
-    {
-        new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
-    }
-    public void updateStartDate(Resevations resevations)
-    {
-        new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
-    }
     public void deleteResevations()
     {
         int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();

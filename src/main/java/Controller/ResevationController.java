@@ -5,6 +5,7 @@ import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
+import Model.Implements.DaoResevations;
 import View.Bookings;
 import javafx.scene.control.TableView;
 
@@ -58,6 +59,15 @@ public class ResevationController
                 }
             }
         }
+        public void updateEndDate(Resevations resevations)
+        {
+            new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+        }
+        public void updateStartDate(Resevations resevations)
+        {
+            new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
+        }
+
         public void clearTabel(TableView tableView)
         {
             tableView.getColumns().clear();
