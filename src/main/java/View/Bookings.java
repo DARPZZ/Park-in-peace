@@ -1,5 +1,6 @@
 package View;
 
+import Controller.ResevationController;
 import Model.DaoObject.*;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
@@ -14,33 +15,27 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.StringConverter;
-import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Bookings extends Header implements UserSubscriber
 {
+    ResevationController resController = new ResevationController();
     Button removeResevationButton = new Button("Remove resevations");
     Button lejerButton = new Button("Lejer");
     Button udLejerButton = new Button("Udlejer");
     Label infoLabel = new Label();
-    private int currentUserID;
+   int currentUserID = 0;
     public TableView<Combine> tableView = new TableView<>();
-    List<Combine> combineDataList = new ArrayList<>();
-    List<Combine> combineDataListUd = new ArrayList<Combine>();
+
+
 
     Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
@@ -69,50 +64,9 @@ public class Bookings extends Header implements UserSubscriber
         anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
     public void getData() {
-
         updateTabels();
-        tableView.getColumns().clear();
-        reservationList.clear();
-        ReservationList.getSingleton().setList();
-        combineDataList.clear();
-        combineDataListUd.clear();
-        List<Integer> plotOwnerDataList = new ArrayList<>();
-        List<Integer> reservedPlotIds = new ArrayList<>();
-        for (Resevations res : reservationList) {
-            int userID = res.getUserID();
-            int reservationID = res.getReservationID();
-            LocalDate localStartDate = res.getStartDate();
-            LocalDate localEndDate = res.getEndDate();
-            Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            LocalDate localStartDate2 = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate localEndDate2 = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-            String location ="";
-            int zipCode =0;
-            int plotOwner = 0;
-
-            for (Plot plot : plotList) {
-                if (res.getPlotID() == plot.getPlotID()) {
-                    plotOwner = plot.getUserID();
-                    location = plot.getLocation();
-                    zipCode = plot.getZipCode();
-                }
-            }
-            if (currentUserID == userID) {
-                reservedPlotIds.add(res.getPlotID());
-                Combine combine = new Combine(userID, reservationID, location, zipCode, localStartDate2, localEndDate2);
-
-                combineDataList.add(combine);
-            }
-            if (plotOwner == currentUserID) {
-
-                Combine combine = new Combine(userID, reservationID, location, zipCode, localStartDate2, localEndDate2);
-
-                combineDataListUd.add(combine);
-            }
-        }
-        createTable(combineDataList);
+        resController.getResevationData(currentUserID,tableView);
+        createTable(resController.getCombineDataList());
 
     }
 
@@ -195,7 +149,8 @@ public class Bookings extends Header implements UserSubscriber
             tableView.setEditable(true);
             getData();
             tableView.getColumns().clear();
-            createTable(combineDataList);
+            createTable(resController.getCombineDataList());
+
         });
 
 
@@ -205,19 +160,18 @@ public class Bookings extends Header implements UserSubscriber
             removeResevationButton.setDisable(false);
             infoLabel.setText("Dine Resevations");
             tableView.setEditable(true);
-            getData();
-            tableView.getColumns().clear();
-            createTable(combineDataList);
+          tableView.getColumns().clear();
+         createTable(resController.getCombineDataList());
+
         });
         udLejerButton.setOnAction(event ->
         {
             infoLabel.setText("Dine Pladser");
             tableView.setEditable(false);
-            getData();
             tableView.getColumns().clear();
             removeResevationButton.setVisible(false);
             removeResevationButton.setDisable(true);
-            createTable(combineDataListUd);
+            createTable(resController.getCombineDataListUd());
         });
     }
     //region Subcriber
@@ -244,5 +198,4 @@ public class Bookings extends Header implements UserSubscriber
         new DaoResevations().Delete(resevations,resid);
 
     }
-
 }
