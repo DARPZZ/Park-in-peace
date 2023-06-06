@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 public class Login implements UserPublisher
 {
+    Tooltip tooltip = new Tooltip();
     double strengthPercentage = 0;
     Label str = new Label("Password strenght");
     private List<UserSubscriber> subscribers = new ArrayList<>();
@@ -98,7 +99,7 @@ public class Login implements UserPublisher
 
     public boolean validateUser()
     {
-        Tooltip tooltip = new Tooltip();
+
         tooltip.setText("Invalid");
         boolean Error = false;
         tooltip.setShowDelay(Duration.ZERO);
@@ -160,6 +161,8 @@ public class Login implements UserPublisher
             @Override
             public void handle(ActionEvent event)
             {
+                tooltip.setShowDelay(Duration.ZERO);
+                tooltip.setText("Invalid");
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
@@ -167,8 +170,11 @@ public class Login implements UserPublisher
                 //region update getuser method - userLoginCheck storedprocedure er lavet
                 if (user == null || !user.getName().equals(username) || !user.getPassword().equals(kodeord))
                 {
-
+                    name.getStyleClass().add("warning-badge");
+                    password.getStyleClass().add("warning-badge");
                     System.out.println("wrong pass word ");
+                    name.setTooltip(tooltip);
+                    password.setTooltip(tooltip);
                 }else
                 {
                     HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
