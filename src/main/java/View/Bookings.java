@@ -67,7 +67,6 @@ public class Bookings extends Header implements UserSubscriber
         updateTabels();
         resController.getResevationData(currentUserID,tableView);
         createTable(resController.getCombineDataList());
-
     }
 
     public void createTable(List arrayList) {
@@ -147,10 +146,9 @@ public class Bookings extends Header implements UserSubscriber
             removeResevationButton.setDisable(false);
             infoLabel.setText("Youre resevations");
             tableView.setEditable(true);
-            getData();
+            resController.getResevationData(currentUserID,tableView);
             tableView.getColumns().clear();
             createTable(resController.getCombineDataList());
-
         });
 
 
@@ -160,9 +158,8 @@ public class Bookings extends Header implements UserSubscriber
             removeResevationButton.setDisable(false);
             infoLabel.setText("Dine Resevations");
             tableView.setEditable(true);
-          tableView.getColumns().clear();
+            tableView.getColumns().clear();
          createTable(resController.getCombineDataList());
-
         });
         udLejerButton.setOnAction(event ->
         {
@@ -178,7 +175,6 @@ public class Bookings extends Header implements UserSubscriber
     @Override
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
-
         getData();
     }
     //endregion
@@ -196,6 +192,5 @@ public class Bookings extends Header implements UserSubscriber
         Resevations resevations = new Resevations();
         tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
         new DaoResevations().Delete(resevations,resid);
-
     }
 }
