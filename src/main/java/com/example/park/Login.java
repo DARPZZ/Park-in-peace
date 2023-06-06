@@ -177,16 +177,18 @@ public class Login implements UserPublisher
                     password.setTooltip(tooltip);
                 }else
                 {
+                    userPublisher.notifySubscribers(user);
+                    PlotList.getSingleton().setList();
                     HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
-                    PlotList.getSingleton().setList();
+
                     ReservationList.getSingleton().setList();
                     BlackList.getSingleton().setBlackList(user);
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
 
-                    userPublisher.notifySubscribers(user);
+
                 }
             }
         });
