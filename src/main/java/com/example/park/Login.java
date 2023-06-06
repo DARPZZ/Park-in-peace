@@ -164,45 +164,24 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
-                PlotList.getSingleton().setList();
-                ReservationList.getSingleton().setList();
-                BlackList.getSingleton().setBlackList(user);
                 //region update getuser method - userLoginCheck storedprocedure er lavet
-                userPublisher.notifySubscribers(user);
+                if (user == null || !user.getName().equals(username) || !user.getPassword().equals(kodeord))
+                {
 
-                HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
-                HelloApplication.plotPage.createPopUpCreatePlot();//
-                HelloApplication.plotPage.preparePlotGrid();//
-
-                HelloApplication.changeScene(SceneName.Main);
-
-
-                System.out.println("Login successful!");
-
-                /*
-                List<User> userList = daoUser.GetAll();
-
-                boolean validCredentials = false;
-                for (User userIterate : userList) {
-                    if (userIterate.getName().equals(username) && userIterate.getPassword().equals(kodeord)) {
-                        userPublisher.notifySubscribers(userIterate);
-                        user = userIterate;
-                        validCredentials = true;
-                        break;
-                    }
-                }
-                //region end
-                if (validCredentials) {
+                    System.out.println("wrong pass word ");
+                }else
+                {
+                    HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    HelloApplication.plotPage.createPopUpCreatePlot();//
+                    HelloApplication.plotPage.preparePlotGrid();//
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
-                } else {
-                    System.out.println("Login Failed");
-                }
-                ReservationList.getSingleton().setList();
-                PlotList.getSingleton().setList();
-                BlackList.getSingleton().setBlackList(user);
 
-                 */
+                    PlotList.getSingleton().setList();
+                    ReservationList.getSingleton().setList();
+                    BlackList.getSingleton().setBlackList(user);
+                    userPublisher.notifySubscribers(user);
+                }
             }
         });
         anchorPane.getChildren().addAll(name,password);
