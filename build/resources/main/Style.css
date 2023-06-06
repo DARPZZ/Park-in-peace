@@ -29,6 +29,10 @@
 
 .button:hover {
     -fx-background-color: #131313;
+    -fx-border-color: #0066cc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 50;
+    -fx-padding: 8px 16px;
 }
 
 .label {
