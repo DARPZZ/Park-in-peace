@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 public class Login implements UserPublisher
 {
+    Tooltip tooltip = new Tooltip();
     double strengthPercentage = 0;
     Label str = new Label("Password strenght");
     private List<UserSubscriber> subscribers = new ArrayList<>();
@@ -96,7 +99,7 @@ public class Login implements UserPublisher
 
     public boolean validateUser()
     {
-        Tooltip tooltip = new Tooltip();
+
         tooltip.setText("Invalid");
         boolean Error = false;
         tooltip.setShowDelay(Duration.ZERO);
@@ -158,49 +161,35 @@ public class Login implements UserPublisher
             @Override
             public void handle(ActionEvent event)
             {
+                tooltip.setShowDelay(Duration.ZERO);
+                tooltip.setText("Invalid");
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
-                PlotList.getSingleton().setList();
-                ReservationList.getSingleton().setList();
-                BlackList.getSingleton().setBlackList(user);
                 //region update getuser method - userLoginCheck storedprocedure er lavet
-                userPublisher.notifySubscribers(user);
+                if (user == null || !user.getName().equals(username) || !user.getPassword().equals(kodeord))
+                {
+                    name.getStyleClass().add("warning-badge");
+                    password.getStyleClass().add("warning-badge");
+                    System.out.println("wrong pass word ");
+                    name.setTooltip(tooltip);
+                    password.setTooltip(tooltip);
+                }else
+                {
+                    userPublisher.notifySubscribers(user);
+                    PlotList.getSingleton().setList();
+                    HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    HelloApplication.plotPage.createPopUpCreatePlot();//
+                    HelloApplication.plotPage.preparePlotGrid();//
 
-                HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
-                HelloApplication.plotPage.createPopUpCreatePlot();//
-                HelloApplication.plotPage.preparePlotGrid();//
-
-                HelloApplication.changeScene(SceneName.Main);
-
-
-                System.out.println("Login successful!");
-
-                /*
-                List<User> userList = daoUser.GetAll();
-
-                boolean validCredentials = false;
-                for (User userIterate : userList) {
-                    if (userIterate.getName().equals(username) && userIterate.getPassword().equals(kodeord)) {
-                        userPublisher.notifySubscribers(userIterate);
-                        user = userIterate;
-                        validCredentials = true;
-                        break;
-                    }
-                }
-                //region end
-                if (validCredentials) {
+                    ReservationList.getSingleton().setList();
+                    BlackList.getSingleton().setBlackList(user);
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
-                } else {
-                    System.out.println("Login Failed");
-                }
-                ReservationList.getSingleton().setList();
-                PlotList.getSingleton().setList();
-                BlackList.getSingleton().setBlackList(user);
 
-                 */
+
+                }
             }
         });
         anchorPane.getChildren().addAll(name,password);
@@ -275,12 +264,15 @@ public class Login implements UserPublisher
     {
         if (strengthPercentage<0.25)
         {
+         passwordStrengthBar.setStyle("-fx-accent: red;");
              str.setText("Password strenght: " + "BAD");
         }else if (strengthPercentage<=0.5)
         {
+            passwordStrengthBar.setStyle("-fx-accent: yellow;");
             str.setText("Password strenght:" + "OKAY");
         }else if (strengthPercentage<0.7)
         {
+            passwordStrengthBar.setStyle("-fx-accent: green;");
             str.setText("Password strenght:" + "GOOD");
         }
     }

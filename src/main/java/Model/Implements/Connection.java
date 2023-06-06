@@ -13,6 +13,7 @@ abstract public class Connection
     public static java.sql.Connection con;
     public CallableStatement callableStatement;
     private boolean conClosed;
+
     void createConnection() {
         try {
             con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + Port + ";databaseName=" + databaseName, userName, password);

@@ -2,6 +2,8 @@ package Model.DaoObject;
 
 import javafx.beans.property.*;
 
+import java.io.File;
+
 public class Plot {
     private IntegerProperty userID;
     private IntegerProperty plotID;
@@ -18,6 +20,8 @@ public class Plot {
     private BooleanProperty toilet;
     private BooleanProperty water;
     private BooleanProperty electric;
+    File defaultDir = new File("Billeder").getAbsoluteFile();
+    private String pathstart = defaultDir.toString();
 
     public Plot(int userID, int plotID, String location, String description, String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low, float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
@@ -102,6 +106,10 @@ public class Plot {
     public String getImagePath() {
         return imagePath;
     }
+    public String getImageRealPath()
+        {
+            return this.pathstart+this.imagePath;
+        }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;

@@ -345,7 +345,7 @@ public class MainPage extends Header
             {
                 try
                 {
-                    Thumbnail thumbnail = new Thumbnail(new Image(ad.getImagePath()),
+                    Thumbnail thumbnail = new Thumbnail(new Image(ad.getImageRealPath()),
                             ad.getLocation() + ", " + ad.getZipCode(),
                             String.format("%.0f kr", ad.getMidPrice()));
                     thumbnail.setOnMouseReleased(event ->

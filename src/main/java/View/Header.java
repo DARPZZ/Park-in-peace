@@ -33,6 +33,8 @@ public abstract class Header
         anchorPane = new AnchorPane();
         anchorPane.setOnMousePressed(event -> anchorPane.requestFocus());
         scene = new Scene(anchorPane, 1280, 720);
+        String css = this.getClass().getResource("/Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
 
         setupLayout();
     }

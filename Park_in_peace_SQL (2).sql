@@ -73,9 +73,9 @@ CREATE TABLE tblPlotSize
     )
 CREATE TABLE tblPlot
 (
-    fldPlotID int IDENTITY(1,1) PRIMARY KEY,
-    fldUserID int,
-    fldLocation varchar(MAX),
+fldPlotID int IDENTITY(1,1) PRIMARY KEY,
+fldUserID int,
+fldLocation varchar(MAX),
 fldDescription varchar(MAX),
 fldImage varchar(MAX),
 fldPlotSizeID int,
@@ -124,19 +124,19 @@ ALTER TABLE tblResevations
 CONSTRAINT fk_PLres foreign key (fldPlotID) references tblPlot (fldPlotID)
 
 ALTER TABLE tblPlot
-    add constraint fk_plot
-        foreign key (fldZipcode) references tblZipcodeCity (fldZipcode),
-CONSTRAINT fk_PLsiz foreign key (fldPlotSizeID) references tblPlotSize  (fldPlotSizeID) ,
-CONSTRAINT fk_PLuse foreign key (fldUserID) references tblUser (fldUserID)
+ADD CONSTRAINT fk_plot
+FOREIGN KEY (fldZipcode) REFERENCES tblZipcodeCity (fldZipcode),
+CONSTRAINT fk_PLsiz FOREIGN KEY (fldPlotSizeID) REFERENCES tblPlotSize  (fldPlotSizeID) ,
+CONSTRAINT fk_PLuse FOREIGN KEY (fldUserID) REFERENCES tblUser (fldUserID)
 
 ALTER TABLE tblSeason
     add constraint fk_PLsea
         foreign key (fldPlotID) references tblPlot(fldPlotID) ON DELETE CASCADE
 
 ALTER TABLE tblParkingService
-    add constraint fk_Pser
-        foreign key(fldPlotID) references tblPlot (fldPlotID) ON DELETE CASCADE,
-CONSTRAINT fk_PSplo foreign key (fldServiceID) references tblService(fldServiceID)
+ADD CONSTRAINT fk_Pser
+FOREIGN KEY(fldPlotID) REFERENCES tblPlot (fldPlotID) ON DELETE CASCADE,
+CONSTRAINT fk_PSplo FOREIGN KEY (fldServiceID) REFERENCES tblService(fldServiceID)
 
 --preload service types
 INSERT INTO tblService (fldServiceType) VALUES ('NAN')
@@ -169,12 +169,12 @@ INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Haderslev',6100)
     INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (5,0)
     INSERT INTO tblBlackList(fldUserID, fldBlackList) VALUES (6,0)
 
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 2', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 3', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 4', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 5', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',1,6400)
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade 2', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',2,6400)
-    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade  4', 'DESCRIPTION PLACEHOLDER','IMAGEPATHPLACEHOLDER',2,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 2', 'DESCRIPTION PLACEHOLDER','\pplads1.jpg',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 3', 'DESCRIPTION PLACEHOLDER','\pplads2.jpg',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 4', 'DESCRIPTION PLACEHOLDER','\pplads3.jpg',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (1,'Grundtvigs Alle 5', 'DESCRIPTION PLACEHOLDER','\pplads4.jpg',1,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade 2', 'DESCRIPTION PLACEHOLDER','\pplads5.jpg',2,6400)
+    INSERT INTO tblPlot(fldUserID, fldLocation, fldDescription,fldImage,fldPlotSizeID,fldZipCode) VALUES (2,'Perlegade  4', 'DESCRIPTION PLACEHOLDER','\pplads6.jpg',2,6400)
 
     INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (1, 30,50,100)
     INSERT INTO tblSeason (fldPlotID,fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice) VALUES (2, 30,50,100)

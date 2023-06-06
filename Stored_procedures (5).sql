@@ -39,29 +39,25 @@ execute (@SQL)
 end
 
 */
-/*
-GO
-go
-Create PROCEDURE [dbo].[insertUser] (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword VARCHAR(max), @fldAddress varchar(MAX), @fldAcountNumber int,
-    @fldEmail varchar(max), @fldZipcode int)
-as
-begin
-DECLARE @sql varchar(MAX)
-SET @sql = 'insert into [dbo].[tblUser]
-           ([fldName]
-           ,[fldPhoneNumber]
-           ,[fldPassword]
-           ,[fldAddress]
-           ,[fldAcountNumber]
-           ,[fldEmail]
-           ,[fldZipcode])
-           values(''' + @fldName + ''' ,''' + @fldPhoneNumber + ''' , ''' + @fldPassword + ''' , ''' + @fldAddress +''', ' + CAST( @fldAcountNumber as varchar) +
-                ', ''' + @fldEmail + ''' , ' + CAST(@fldZipcode as varchar) +')'
-                    print (@sql)
-                    execute (@sql)
-end
 
-*/
+GO
+CREATE PROCEDURE [dbo].[insertUser] (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword varchar(max), @fldAddress varchar(MAX), @fldAcountNumber int,
+    @fldEmail varchar(max), @fldZipcode int)
+AS
+BEGIN
+DECLARE @sql varchar(MAX)
+DECLARE @userID int
+SET @sql = 'insert into [dbo].[tblUser] ([fldName],[fldPhoneNumber],[fldPassword],[fldAddress]
+           ,[fldAcountNumber],[fldEmail],[fldZipcode])
+           values(''' + @fldName + ''' ,''' + @fldPhoneNumber + ''' , ''' + @fldPassword + ''' , ''' + @fldAddress +''', ' + CAST( @fldAcountNumber as varchar) +
+                ', ''' + @fldEmail + ''' , ' + CAST(@fldZipcode AS varchar) +')'
+                    print (@sql)
+                    EXECUTE (@sql)
+					SET @userID = SCOPE_IDENTITY()
+INSERT INTO tblBlackList(fldBlackList, fldUserID) VALUES (0,@userID)
+END
+
+
 
 
 /*
@@ -379,15 +375,15 @@ SET @elCheck = 1 IF exists(SELECT fldServiceID from tblParkingService WHERE fldP
 UPDATE tblPlot SET fldLocation = @fldLocation,fldDescription = @fldDescription,fldImage = @fldImage,fldPlotSizeID = @fldPlotSizeID,fldZipcode= @fldZip WHERE fldPlotID = @fldPlotID
 UPDATE tblSeason SET fldLowSeasonPrice = @fldLowSeasonPrice, fldMediumSeasonPrice = @fldMediumSeasonPrice, fldHighSeasonPrice = @fldHighSeasonPrice WHERE fldPlotID = @fldPlotID
 
-    IF @toiletCheck = 1
+IF @toiletCheck = 1
 Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =2
-    else Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
-    IF @waterCheck = 1
+else Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+IF @waterCheck = 1
 UPDATE tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =3
-    else Update tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
-    IF @elCheck = 1
+else Update tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+IF @elCheck = 1
 UPDATE tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =4
-    else Update tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+else Update tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
 end
 
 GO
@@ -443,10 +439,10 @@ DECLARE @plotsizeID int
 IF @fldToiletID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldToiletID)
 ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
 
-IF @fldWaterID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)
+IF @fldWaterID = 3 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldWaterID)
 ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
 
-IF @fldElectricID = 2 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)
+IF @fldElectricID = 4 INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,@fldElectricID)
 ELSE INSERT INTO tblParkingService (fldPlotID,fldServiceID) VALUES(@fldPlotID,1)
 
 INSERT INTO tblSeason (fldLowSeasonPrice,fldMediumSeasonPrice,fldHighSeasonPrice, fldPlotID) VALUES (@fldLowSeasonPrice,@fldMediumSeasonPrice,@fldHighSeasonPrice,@fldPlotID);
@@ -500,7 +496,7 @@ CREATE PROCEDURE getBlackListedBy (@fldUserID int)
 begin
 SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
 end
-
+/*
 GO
 CREATE PROCEDURE getAllPlots -- old
     as
@@ -509,6 +505,8 @@ SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fld
 LEFT JOIN
     tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
 end
+
+ */
 
 GO
 CREATE PROCEDURE getAllPlots
