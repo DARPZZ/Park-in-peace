@@ -101,14 +101,9 @@ public class Bookings extends Header implements UserSubscriber
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
 
 
-        removeResevationButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                deleteResevations();
-            }
-        });
+        removeResevationButton.setOnAction(event -> resController.deleteResevationsFromDb(tableView));
+
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         endDateColumn.setOnEditCommit(table ->
@@ -158,6 +153,7 @@ public class Bookings extends Header implements UserSubscriber
             removeResevationButton.setDisable(false);
             infoLabel.setText("Dine Resevations");
             tableView.setEditable(true);
+            resController.getResevationData(currentUserID,tableView);
             tableView.getColumns().clear();
          createTable(resController.getCombineDataList());
         });
@@ -168,6 +164,8 @@ public class Bookings extends Header implements UserSubscriber
             tableView.getColumns().clear();
             removeResevationButton.setVisible(false);
             removeResevationButton.setDisable(true);
+            resController.getResevationData(currentUserID,tableView);
+            tableView.getColumns().clear();
             createTable(resController.getCombineDataListUd());
         });
     }
@@ -178,11 +176,4 @@ public class Bookings extends Header implements UserSubscriber
         getData();
     }
     //endregion
-    public void deleteResevations()
-    {
-        int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
-        Resevations resevations = new Resevations();
-        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
-        new DaoResevations().Delete(resevations,resid);
-    }
 }

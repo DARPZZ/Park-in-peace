@@ -76,7 +76,15 @@ public class ResevationController
             combineDataList.clear();
             combineDataListUd.clear();
         }
-        //region get and set
+    public void deleteResevationsFromDb(TableView<Combine> tableView)
+    {
+        int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
+        Resevations resevations = new Resevations();
+        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+        new DaoResevations().Delete(resevations,resid);
+    }
+
+    //region get and set
 
     public List<Combine> getCombineDataListUd()
     {
