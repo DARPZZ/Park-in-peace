@@ -28,11 +28,11 @@ public final class PlotList
     }
     public void setList()
     {
-
         for (Plot p:plotWorker.GetAll())
         {
             plotList.add(p);
         }
+        System.out.println("");
     }
     public void addToList(Plot plot)
     {plotList.add(plot);}
@@ -42,10 +42,14 @@ public final class PlotList
         plotList.add(tblPlot);
     }
 
-    public void UpdatePlot(Plot tblPlot, String fieldname, String value)
+    public void UpdatePlot(Plot tblPlot)
     {
-        plotWorker.Update(tblPlot, fieldname, value);
+        plotWorker.UpdateFull(tblPlot);
     }
     public void Delete(Plot tblPlot, int ID)
     {plotWorker.Delete(tblPlot, ID);}
+    public ArrayList<String> getAllSizeTypes()
+    {
+        return plotWorker.getAllSizeTypes();
+    }
 }

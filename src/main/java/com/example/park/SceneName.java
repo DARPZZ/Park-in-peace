@@ -8,4 +8,5 @@ public enum SceneName
     Bookings,
     BookingsUd,
     PlotPage,
+    Advertisement,
 }

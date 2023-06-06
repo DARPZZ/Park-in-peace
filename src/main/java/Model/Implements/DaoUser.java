@@ -19,29 +19,19 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public void Create(User user)
     {
         createConnection();
-        try (Connection conn = con)
-        {
-            int userid=0;
-            CallableStatement stmt = conn.prepareCall("{call insertUser(?, ?,?,?,?,?)}");
+        try (
+             CallableStatement stmt = con.prepareCall("{call insertUser(?, ?,?,?,?,?,?)}")) {
             stmt.setString(1,user.getName());
             stmt.setString(2, user.getPhoneNumber());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getAddress());
-            stmt.setString(5, user.getEmail());
-            stmt.setInt(6, user.getZipCode());
+            stmt.setInt(5, user.getAcounterNumber());
+            stmt.setString(6, user.getEmail());
+            stmt.setInt(7, user.getZipCode());
 
 
-            ResultSet resultSet = stmt.executeQuery();
-            resultSet.next();
-            userid =resultSet.getInt(1);
+            stmt.execute();
 
-            for (Integer i: user.getBlackList()) // could be better with samlet string storedprocedure
-            {
-                CallableStatement blackListInsert = con.prepareCall("{CALL insertBlacklist(?,?)}");
-                blackListInsert.setInt(1,i);
-                blackListInsert.setInt(2,userid);
-            }
-            user.setUserId(userid);
 
 
         } catch (SQLException e) {
@@ -202,13 +192,22 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public User checkLogin (String username, String password)
     {
         createConnection();
+        System.out.println("checklogin start"+ System.currentTimeMillis());
         try {
             CallableStatement checklogin = con.prepareCall("{CALL userLoginCheck(?,?)}");
             checklogin.setString(1, password);
             checklogin.setString(2, username);
             ResultSet resultSet = checklogin.executeQuery();
             resultSet.next();
-            User user = Get(resultSet.getInt("fldUserID"));
+            int acNR =0;
+            try {
+                acNR = resultSet.getInt("fldAcountNumber");
+            }catch (Exception e){
+                System.out.println("AccountNR null proceed");
+            }
+
+            User user = new User
+                    (resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),acNR,resultSet.getString(7),resultSet.getInt(8));
             return user;
         }catch (Exception e){
             System.out.println(e);

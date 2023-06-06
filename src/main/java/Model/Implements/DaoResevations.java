@@ -105,8 +105,8 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     {
         createConnection();
         List<Resevations> resevationsList = new ArrayList<>();
-        try (Connection conn = con;
-             CallableStatement stmt = conn.prepareCall("{call getAllResevations()}")) {
+        try (
+             CallableStatement stmt = con.prepareCall("{call getAllResevations()}")) {
 
             // Execute the stored procedure
             ResultSet rs = stmt.executeQuery();

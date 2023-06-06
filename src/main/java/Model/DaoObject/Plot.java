@@ -1,10 +1,10 @@
 package Model.DaoObject;
 
 import javafx.beans.property.*;
-import javafx.scene.control.TextField;
 
-public class Plot
-{
+import java.io.File;
+
+public class Plot {
     private IntegerProperty userID;
     private IntegerProperty plotID;
     private StringProperty location;
@@ -17,11 +17,13 @@ public class Plot
     private FloatProperty midPrice;
     private FloatProperty highPrice;
 
-    private boolean toilet;
-    private boolean water;
-    private boolean electric;
+    private BooleanProperty toilet;
+    private BooleanProperty water;
+    private BooleanProperty electric;
+    File defaultDir = new File("Billeder").getAbsoluteFile();
+    private String pathstart = defaultDir.toString();
 
-    public Plot(int userID ,int plotID, String location, String description,String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low,float mid, float high) {
+    public Plot(int userID, int plotID, String location, String description, String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low, float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
         this.plotID = new SimpleIntegerProperty(plotID);
         this.location = new SimpleStringProperty(location);
@@ -32,24 +34,25 @@ public class Plot
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
         this.highPrice = new SimpleFloatProperty(high);
-        this.toilet = toilet;
-        this.water = water;
-        this.electric = electric;
+        this.toilet = new SimpleBooleanProperty(toilet);
+        this.water = new SimpleBooleanProperty(water);
+        this.electric = new SimpleBooleanProperty(electric);
     }
-    public Plot(int userID,String location, String description,String img, String plotSize, int zipCode,  boolean toilet, boolean water, boolean electric, float low,float mid, float high)
-    {
+
+    public Plot(int userID, String location, String description, String img, String plotSize, int zipCode, boolean toilet, boolean water, boolean electric, float low, float mid, float high) {
         this.userID = new SimpleIntegerProperty(userID);
-        this.location =new SimpleStringProperty( location);
-        this.description =new SimpleStringProperty( description);
+        this.plotID = new SimpleIntegerProperty(0);
+        this.location = new SimpleStringProperty(location);
+        this.description = new SimpleStringProperty(description);
         this.imagePath = img;
-        this.plotSize =new SimpleStringProperty( plotSize);
-        this.zipCode =new SimpleIntegerProperty( zipCode);
+        this.plotSize = new SimpleStringProperty(plotSize);
+        this.zipCode = new SimpleIntegerProperty(zipCode);
         this.lowPrice = new SimpleFloatProperty(low);
         this.midPrice = new SimpleFloatProperty(mid);
-        this.highPrice =new SimpleFloatProperty(high);
-        this.toilet = toilet;
-        this.water  = water;
-        this.electric = electric;
+        this.highPrice = new SimpleFloatProperty(high);
+        this.toilet = new SimpleBooleanProperty(toilet);
+        this.water = new SimpleBooleanProperty(water);
+        this.electric = new SimpleBooleanProperty(toilet);
     }
 
     public int getUserID() {
@@ -103,6 +106,10 @@ public class Plot
     public String getImagePath() {
         return imagePath;
     }
+    public String getImageRealPath()
+        {
+            return this.pathstart+this.imagePath;
+        }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
@@ -169,26 +176,38 @@ public class Plot
     }
 
     public boolean isToilet() {
+        return toilet.get();
+    }
+
+    public BooleanProperty toiletProperty() {
         return toilet;
     }
 
     public void setToilet(boolean toilet) {
-        this.toilet = toilet;
+        this.toilet.set(toilet);
     }
 
     public boolean isWater() {
+        return water.get();
+    }
+
+    public BooleanProperty waterProperty() {
         return water;
     }
 
     public void setWater(boolean water) {
-        this.water = water;
+        this.water.set(water);
     }
 
     public boolean isElectric() {
+        return electric.get();
+    }
+
+    public BooleanProperty electricProperty() {
         return electric;
     }
 
     public void setElectric(boolean electric) {
-        this.electric = electric;
+        this.electric.set(electric);
     }
 }
