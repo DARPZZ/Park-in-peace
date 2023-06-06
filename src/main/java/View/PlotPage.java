@@ -582,8 +582,8 @@ public class PlotPage extends Header implements UserSubscriber
         for (Plot plot: plotArrayList)
         {
 
-            //Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
-            Image thumbnailImage = new Image(plot.getImageRealPath());
+            Image thumbnailImage = new Image("C:\\Users\\Rasmus T. Hermansen\\Devops\\Park-in-peace\\Billeder\\pplads1.jpg");
+           //Image thumbnailImage = new Image(plot.getImageRealPath());
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
             //plotview.add(plotThumbnail,columnCount,rowCount);
             plotThumbnail.setOnMouseClicked(event -> {
