@@ -5,10 +5,8 @@ import Model.DaoObject.*;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
 import com.example.park.UserSubscriber;
-import Model.Implements.DaoResevations;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,16 +15,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
-
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Bookings extends Header implements UserSubscriber
 {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     ResevationController resController = new ResevationController();
     Button removeResevationButton = new Button("Remove resevations");
     Button lejerButton = new Button("Lejer");
@@ -34,9 +29,6 @@ public class Bookings extends Header implements UserSubscriber
     Label infoLabel = new Label();
    int currentUserID = 0;
     public TableView<Combine> tableView = new TableView<>();
-
-
-
     Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
     List<Resevations> reservationList = ReservationList.getSingleton().getList();
@@ -103,28 +95,8 @@ public class Bookings extends Header implements UserSubscriber
 
         removeResevationButton.setOnAction(event -> resController.deleteResevationsFromDb(tableView));
 
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        endDateColumn.setOnEditCommit(table ->
-        {
-            int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
-            String endDate = String.valueOf(table.getNewValue());
-            LocalDate localDate = LocalDate.parse(endDate, formatter);
-            resevations.setReservationID(resid);
-            resevations.setEndDate(localDate);
-            resController.updateEndDate(resevations);
-        });
-
-        startDateColumn.setOnEditCommit(table -> {
-            int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
-            String startDate = String.valueOf(table.getNewValue());
-            LocalDate localDate = LocalDate.parse(startDate, formatter);
-            resevations.setReservationID(resid);
-            resevations.setStartDate(localDate);
-            resController.updateStartDate(resevations);
-        });
-
+        endDateColumn.setOnEditCommit(event -> onEndDateEditCommit(event));
+        startDateColumn.setOnEditCommit(event -> onStartDateEditCommit(event));
         tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
 
@@ -134,7 +106,6 @@ public class Bookings extends Header implements UserSubscriber
 
     public void updateTabels()
     {
-
         getBookingsButton().setOnAction(event ->
         {
             removeResevationButton.setVisible(true);
@@ -142,10 +113,8 @@ public class Bookings extends Header implements UserSubscriber
             infoLabel.setText("Youre resevations");
             tableView.setEditable(true);
             resController.getResevationData(currentUserID,tableView);
-            tableView.getColumns().clear();
             createTable(resController.getCombineDataList());
         });
-
 
         lejerButton.setOnAction(event ->
         {
@@ -154,18 +123,15 @@ public class Bookings extends Header implements UserSubscriber
             infoLabel.setText("Dine Resevations");
             tableView.setEditable(true);
             resController.getResevationData(currentUserID,tableView);
-            tableView.getColumns().clear();
-         createTable(resController.getCombineDataList());
+            createTable(resController.getCombineDataList());
         });
         udLejerButton.setOnAction(event ->
         {
             infoLabel.setText("Dine Pladser");
             tableView.setEditable(false);
-            tableView.getColumns().clear();
             removeResevationButton.setVisible(false);
             removeResevationButton.setDisable(true);
             resController.getResevationData(currentUserID,tableView);
-            tableView.getColumns().clear();
             createTable(resController.getCombineDataListUd());
         });
     }
@@ -174,6 +140,24 @@ public class Bookings extends Header implements UserSubscriber
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
         getData();
+    }
+
+    public void onEndDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
+        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+        String endDate = String.valueOf(table.getNewValue());
+        LocalDate localDate = LocalDate.parse(endDate, formatter);
+        resevations.setReservationID(resid);
+        resevations.setEndDate(localDate);
+        resController.updateEndDate(resevations);
+    }
+
+    public void onStartDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
+        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+        String startDate = String.valueOf(table.getNewValue());
+        LocalDate localDate = LocalDate.parse(startDate, formatter);
+        resevations.setReservationID(resid);
+        resevations.setStartDate(localDate);
+        resController.updateStartDate(resevations);
     }
     //endregion
 }
