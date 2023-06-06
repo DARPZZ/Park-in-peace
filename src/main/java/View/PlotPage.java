@@ -613,7 +613,7 @@ public class PlotPage extends Header implements UserSubscriber
             FileChooser Filepicker = new FileChooser();
             Filepicker.setInitialDirectory(defaultDir);
             Path chosenImage = Filepicker.showOpenDialog(HelloApplication.getStage()).toPath();
-            String fileNameDB = chosenImage.getName(0).toString();
+            String fileNameDB = "\\"+chosenImage.getName(chosenImage.getNameCount()-1).toString();
             Path newImageDestination = Paths.get(defaultDir + fileNameDB);
 
 
