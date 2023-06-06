@@ -6,9 +6,6 @@ import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
 import com.example.park.UserSubscriber;
-import javafx.beans.binding.FloatBinding;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,9 +26,9 @@ import javafx.stage.StageStyle;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.regex.PatternSyntaxException;
-import java.util.zip.DeflaterInputStream;
+
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
@@ -613,19 +610,15 @@ public class PlotPage extends Header implements UserSubscriber
 
         private void choosePic() throws IOException {
 
-            FileChooser mem = new FileChooser();
-            mem.setInitialDirectory(defaultDir);
-            File chosenImage = mem.showOpenDialog(HelloApplication.getStage());
-            String fileNameDB = getFileName(chosenImage);
-            File newImageDestination = new File(defaultDir+fileNameDB);
-            Files.copy(chosenImage.toPath(),newImageDestination.toPath(),NOFOLLOW_LINKS);
-            chosenFileName = fileNameDB;
+            FileChooser Filepicker = new FileChooser();
+            Filepicker.setInitialDirectory(defaultDir);
+            Path chosenImage = Filepicker.showOpenDialog(HelloApplication.getStage()).toPath();
+            String fileNameDB = "\\"+chosenImage.getName(chosenImage.getNameCount()-1).toString();
+            Path newImageDestination = Paths.get(defaultDir + fileNameDB);
 
-            try {
-                OutputStream mewm = new FileOutputStream(chosenImage);
-            }catch (Exception e ){
-                System.out.println(e+"file save");
-            }
+
+            Files.copy(chosenImage,newImageDestination,NOFOLLOW_LINKS);
+            chosenFileName = fileNameDB;
 
         }
         private String getFileName(File file)
