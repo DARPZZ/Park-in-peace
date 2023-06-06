@@ -180,12 +180,12 @@ public class Login implements UserPublisher
                     HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
-                    HelloApplication.changeScene(SceneName.Main);
-                    System.out.println("Login successful!");
-
                     PlotList.getSingleton().setList();
                     ReservationList.getSingleton().setList();
                     BlackList.getSingleton().setBlackList(user);
+                    HelloApplication.changeScene(SceneName.Main);
+                    System.out.println("Login successful!");
+
                     userPublisher.notifySubscribers(user);
                 }
             }
