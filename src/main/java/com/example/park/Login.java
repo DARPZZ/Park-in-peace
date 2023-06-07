@@ -18,7 +18,7 @@ public class Login implements UserPublisher
 {
     Tooltip tooltip = new Tooltip();
     double strengthPercentage = 0;
-    Label str = new Label("Password strenght");
+    Label str = new Label("Adgangskodestyrke");
     private List<UserSubscriber> subscribers = new ArrayList<>();
     public String getLoginName()
     {
@@ -42,22 +42,22 @@ public class Login implements UserPublisher
     private ProgressIndicator indicator;
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
-        name.setPromptText("Enter name");
+        name.setPromptText("Indtast name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
-        PhoneNumber.setPromptText("Enter phone number");
+        PhoneNumber.setPromptText("Indtast mobil nummer");
         PhoneNumber.setLayoutX(LAYOUT_x);
         PhoneNumber.setLayoutY(150);
-        password.setPromptText("Enter password");
+        password.setPromptText("Indtast adgangskode");
         password.setLayoutX(LAYOUT_x);
         password.setLayoutY(200);
-        adress.setPromptText("Enter address");
+        adress.setPromptText("Indtast adresse");
         adress.setLayoutX(LAYOUT_x);
         adress.setLayoutY(250);
-        email.setPromptText("Enter email");
+        email.setPromptText("Indtast email");
         email.setLayoutX(LAYOUT_x);
         email.setLayoutY(300);
-        zipCode.setPromptText("Enter zip code");
+        zipCode.setPromptText("Indtast postnummer");
         zipCode.setLayoutX(LAYOUT_x);
         zipCode.setLayoutY(350);
 
@@ -162,7 +162,7 @@ public class Login implements UserPublisher
             public void handle(ActionEvent event)
             {
                 tooltip.setShowDelay(Duration.ZERO);
-                tooltip.setText("Invalid");
+                tooltip.setText("Ugyldig");
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);

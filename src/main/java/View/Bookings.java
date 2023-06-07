@@ -40,7 +40,7 @@ public class Bookings extends Header implements UserSubscriber
     {
         currentUserID = 0;
         setScene();
-        infoLabel.setText("Youre resevations");
+        infoLabel.setText("Dine reservationer");
     }
 
     /**
@@ -131,7 +131,7 @@ public class Bookings extends Header implements UserSubscriber
         {
             removeResevationButton.setVisible(true);
             removeResevationButton.setDisable(false);
-            infoLabel.setText("Youre resevations");
+            infoLabel.setText("Dine reservationer");
             tableView.setEditable(true);
             resController.getResevationData(currentUserID,tableView);
             createTable(resController.getCombineDataList());
@@ -141,7 +141,7 @@ public class Bookings extends Header implements UserSubscriber
         {
             removeResevationButton.setVisible(true);
             removeResevationButton.setDisable(false);
-            infoLabel.setText("Dine Resevations");
+            infoLabel.setText("Dine reservationer");
             tableView.setEditable(true);
             resController.getResevationData(currentUserID,tableView);
             createTable(resController.getCombineDataList());
