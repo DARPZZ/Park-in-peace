@@ -32,12 +32,20 @@ public class Bookings extends Header implements UserSubscriber
     Resevations resevations = new Resevations();
     List<Plot> plotList = PlotList.getSingleton().getList();
     List<Resevations> reservationList = ReservationList.getSingleton().getList();
+
+    /**
+     * Constructor of the bookings class
+     */
     public Bookings()
     {
         currentUserID = 0;
         setScene();
         infoLabel.setText("Youre resevations");
     }
+
+    /**
+     * Adding the diffrent nodes to the scene
+     */
     public void setScene()
     {
         tableView.setLayoutX(50);
@@ -55,11 +63,21 @@ public class Bookings extends Header implements UserSubscriber
         removeResevationButton.setLayoutY(660);
         anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
+
+    /**
+     * Get information from resevation controller
+     */
     public void getData() {
         updateTabels();
         resController.getResevationData(currentUserID,tableView);
         createTable(resController.getCombineDataList());
     }
+
+    /**
+     * creates a tabel view with Adress,zipcode, startdate, end date and resevation ID
+     * It also handels updates to tabel view f.eks. if a user decide to remove a resevation
+     * @param arrayList Depends on if you're a landlord or tenant. Two diffrent arrays
+     */
 
     public void createTable(List arrayList) {
         tableView.setEditable(true);
@@ -104,6 +122,9 @@ public class Bookings extends Header implements UserSubscriber
         tableView.setItems(data);
     }
 
+    /**
+     * Sets on action for the button to update for the latest information
+     */
     public void updateTabels()
     {
         getBookingsButton().setOnAction(event ->
@@ -136,12 +157,21 @@ public class Bookings extends Header implements UserSubscriber
         });
     }
     //region Subcriber
+
+    /**
+     * Gets the current user ID
+     * @param user the user is the user that is login via publish/subscribe pattern
+     */
     @Override
     public void onUserReceived(User user) {
         currentUserID = user.getUserId();
         getData();
     }
 
+    /**
+     * Will uupdate the end date in the tabelview, and thereafter send that information to the database
+     * @param table  The CellEditEvent containing the updated end date in the TableView.
+     */
     public void onEndDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
         int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
         String endDate = String.valueOf(table.getNewValue());
@@ -150,7 +180,10 @@ public class Bookings extends Header implements UserSubscriber
         resevations.setEndDate(localDate);
         resController.updateEndDate(resevations);
     }
-
+    /**
+     * Will uupdate the end date in the tabelview, and thereafter send that information to the database
+     * @param table  The CellEditEvent containing the updated end date in the TableView.
+     */
     public void onStartDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
         int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
         String startDate = String.valueOf(table.getNewValue());
