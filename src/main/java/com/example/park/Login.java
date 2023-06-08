@@ -1,4 +1,5 @@
 package com.example.park;
+import Controller.PlotController;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
@@ -178,9 +179,12 @@ public class Login implements UserPublisher
                 }else
                 {
 
-                    PlotList.getSingleton().setList();
+                    PlotController pc = new PlotController();
+                    subscribe(pc);
                     userPublisher.notifySubscribers(user);
-                    HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    PlotList.getSingleton().setList();
+                    pc.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    HelloApplication.plotPage.initPlotController(pc);
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
 
