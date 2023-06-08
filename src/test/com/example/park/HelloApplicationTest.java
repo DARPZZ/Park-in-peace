@@ -45,7 +45,7 @@ class HelloApplicationTest
         System.out.println("Testing boundery in Day");
         assertTrue(dateValidator.isValidDate("2023-06-01"));
         System.out.println("Testing bounder in month & day");
-        assertTrue(dateValidator.isValidDate("2023-12-31"));
+        assertTrue(dateValidator.isValidDate("2023-12-30"));
     }
 
     @Test

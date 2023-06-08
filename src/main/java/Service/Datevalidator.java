@@ -15,12 +15,9 @@ public class Datevalidator
 
         public static boolean isValidDate(String date)
         {
-            Calendar calendar = new GregorianCalendar(2024, Calendar.FEBRUARY, 1);
-            //System.out.println(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
             if (date == null || date.isEmpty()) {
                 return false;
             }
-
             try {
                 LocalDate.parse(date, formatter);
                 return true;
