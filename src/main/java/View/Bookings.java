@@ -17,6 +17,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class Bookings extends Header implements UserSubscriber
@@ -38,6 +39,7 @@ public class Bookings extends Header implements UserSubscriber
      */
     public Bookings()
     {
+
         currentUserID = 0;
         setScene();
         infoLabel.setText("Dine reservationer");
@@ -193,4 +195,16 @@ public class Bookings extends Header implements UserSubscriber
         resController.updateStartDate(resevations);
     }
     //endregion
+    public boolean isValidDate(String date) {
+        if (date == null || date.isEmpty()) {
+            return false;
+        }
+
+        try {
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
 }
