@@ -3,7 +3,7 @@
 -- noinspection SqlDialectInspectionForFile
 
 use dbParkInPeace
-/*
+
 GO
 CREATE PROCEDURE getAllUser
 as
@@ -60,24 +60,23 @@ END
 
 
 
-/*
+
 GO
 CREATE PROCEDURE getAllResevations
 as
 begin
 select * from tblResevations
 end
-*/
-/*
+
 Go
 create PROCEDURE getResevastion (@fldreservationID int)
 as
 begin
 select * from tblResevations where fldreservationID = @fldreservationID
 end
-*/
 
-/*
+
+
 
 GO
 CREATE PROCEDURE delteResevations (@fldreservationID int)
@@ -95,22 +94,6 @@ DECLARE @sql varchar(MAX)
 SET @sql ='UPDATE tblResevations set ' + @fieldname +' = ''' + @value + ''' where fldreservationID = ' + CAST( @fldreservationID as varchar)
 print @sql
 execute (@SQL)
-end
-
-GO
-CREATE PROCEDURE insertBlacklist (@fldBlacklist int, @fldUserID int)
-as
-begin
-insert into tblBlackList (fldBlackList, fldUserID) Values(@fldBlacklist,@fldUserID)
-end
-
-
-GO
-
-CREATE PROCEDURE getAllBlackList
-as
-begin
-select fldBlackList from tblBlackList
 end
 
 
@@ -134,126 +117,6 @@ end
 
 
 GO
-CREATE PROCEDURE getAllZipcode
-as
-begin
-select * from tblZipcodeCity
-end
-
-GO
-CREATE PROCEDURE getZipcode (@fldZipcode int)
-as
-begin
-select * from tblZipcodeCity where fldZipcode = @fldZipcode
-end
-
-GO
-CREATE PROCEDURE deletezipCode (@fldZipcode int)
-as
-begin
-delete from tblZipcodeCity where fldZipcode = @fldZipcode
-end
-
-
-
-
-
-GO
-CREATE PROCEDURE getAllServices
-as
-begin
-select * from tblService
-end
-
-GO
-CREATE PROCEDURE getService (@fldServiceID int)
-as
-begin
-select * from tblService where fldServiceID = @fldServiceID
-end
-
-GO
-CREATE PROCEDURE delteService (@fldServiceID int)
-as
-begin
-delete from tblService where fldServiceID = @fldServiceID
-end
-
-
-
-GO
-CREATE PROCEDURE getAllSeasonPlot
-as
-begin
-select * from tblSeasonPlot
-end
-
-GO
-CREATE PROCEDURE getSeasonPlot (@fldSeasonPlotID int)
-as
-begin
-select * from tblSeasonPlot where fldSeasonPlotID = @fldSeasonPlotID
-end
-
-GO
-CREATE PROCEDURE deleteSeasonPlot (@fldSeasonPlotID int)
-as
-begin
-delete from tblSeasonPlot where fldSeasonPlotID = @fldSeasonPlotID
-end
-
-
-
-
-GO
-CREATE PROCEDURE getAllPlotSize
-as
-begin
-select * from tblPlotSize
-end
-
-GO
-CREATE PROCEDURE getPlotSize (@fldPlotSizeID int)
-as
-begin
-select * from tblPlotSize where fldPlotSizeID = @fldPlotSizeID
-end
-
-GO
-CREATE PROCEDURE deleteplotSize (@fldPlotSizeID int)
-as
-begin
-delete from tblPlotSize where fldPlotSizeID = @fldPlotSizeID
-end
-
-
-
-GO
-CREATE PROCEDURE getAlltblParkingService
-as
-begin
-select * from tblParkingService
-end
-
-GO
-CREATE PROCEDURE getParkingService (@fldParkingServiceID int)
-as
-begin
-select * from tblParkingService where fldParkingServiceID = @fldParkingServiceID
-end
-
-GO
-CREATE PROCEDURE deleteParkingService (@fldParkingServiceID int)
-as
-begin
-delete from tblParkingService where fldParkingServiceID = @fldParkingServiceID
-end
-*/
-
-/*
-
-
-GO
 CREATE PROCEDURE getPlot (@fldPlotID int)
 as
 begin
@@ -268,57 +131,7 @@ as
 begin
 delete from tblPlot where fldPlotID = @fldPlotID
 end
-*/
-/*
-go
-Create PROCEDURE combine
-AS
-BEGIN
-  SELECT
-    tblplot.fldPlotID,
-    tblPlot.fldLocation,
-    tblPlot.fldDescription,
-    tblPlot.fldImage,
-    tblService.fldElectric,
-    tblService.fldToilet,
-    tblService.fldWater,
-	tblResevations.fldreservationID,
-    tblResevations.fldStartDate,
-    tblResevations.fldEndDate,
-    tblResevations.flduserID,
-    tblPlotSize.fldPlotSize,
-    tblSeason.fldHighSeasonPrice,
-    tblSeason.fldMediumSeasonPrice,
-    tblSeason.fldLowSeasonPrice,
-    tblSeason.fldSeasonName,
-    tblZipcodeCity.fldZipcode
-  FROM
-    tblPlot
-    LEFT JOIN tblParkingService ON tblPlot.fldPlotID = tblParkingService.fldPlotID
-    LEFT JOIN tblService ON tblParkingService.fldServiceID = tblService.fldServiceID
-    LEFT JOIN tblResevations ON tblResevations.fldPlotID = tblPlot.fldPlotID
-    LEFT JOIN tblPlotSize ON tblPlotSize.fldPlotSizeID = tblPlot.fldPlotSizeID
-    LEFT JOIN tblSeasonPlot ON tblSeasonPlot.fldPlotID = tblPlot.fldPlotID
-    LEFT JOIN tblSeason ON tblSeason.fldSeasonID = tblSeasonPlot.fldSeasonID
-    LEFT JOIN tblZipcodeCity ON tblZipcodeCity.fldZipcode = tblPlot.fldZipcode
-	
-END
-*/
-GO
-create PROCEDURE getOwner
-as
-begin
-select 
-tblResevations.fldStartDate, tblResevations.fldEndDate,
-tblPlot.fldLocation, tblPlot.fldPlotID, tblPlot.fldUserID,
-tblZipcodeCity.fldZipcode
 
-from tblPlot
-inner join tblResevations
-on tblPlot.fldPlotID = tblResevations.fldPlotID
-inner join tblZipcodeCity
-on tblZipcodeCity.fldZipcode = tblPlot.fldZipcode
-end
 
 GO
 CREATE PROCEDURE getPlotSizeIDFromPlotID (@fldPlotID int)
@@ -496,17 +309,7 @@ CREATE PROCEDURE getBlackListedBy (@fldUserID int)
 begin
 SELECT fldUserID FROM tblBlackList WHERE fldBlackList = @fldUserID
 end
-/*
-GO
-CREATE PROCEDURE getAllPlots -- old
-    as
-begin
-SELECT fldUserID,fldPlotID,fldLocation,fldDescription, fldImage, fldPlotSize,fldZipcode from tblPlot
-LEFT JOIN
-    tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID
-end
 
- */
 
 GO
 CREATE PROCEDURE getAllPlots

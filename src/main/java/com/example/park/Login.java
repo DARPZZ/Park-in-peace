@@ -1,5 +1,4 @@
 package com.example.park;
-import Controller.LoginController;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
@@ -174,9 +173,14 @@ public class Login implements UserPublisher
                     failLogin();
                 }else
                 {
+
+                    PlotController pc = new PlotController();
+                    subscribe(pc);
                     PlotList.getSingleton().setList();
                     userPublisher.notifySubscribers(user);
-                    HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    PlotList.getSingleton().setList();
+                    pc.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    HelloApplication.plotPage.initPlotController(pc);
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
 
@@ -184,18 +188,12 @@ public class Login implements UserPublisher
                     BlackList.getSingleton().setBlackList(user);
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
+
+
                 }
             }
         });
         anchorPane.getChildren().addAll(name,password);
-    }
-    public void failLogin()
-    {
-        name.getStyleClass().add("warning-badge");
-        password.getStyleClass().add("warning-badge");
-
-        name.setTooltip(tooltip);
-        password.setTooltip(tooltip);
     }
     private UserPublisher userPublisher;
 
@@ -235,8 +233,28 @@ public class Login implements UserPublisher
 
     }
     public void updatePasswordStrength(String password) {
-      loginController.updatePasswordStrength(password,passwordStrengthBar,indicator);
+        int passwordStrength = caclStrenght(password);
+         strengthPercentage = (double) passwordStrength / 100.0;
+        passwordStrengthBar.setProgress(strengthPercentage);
+        indicator.setProgress(strengthPercentage);
         setStr();
+    }
+
+    private int caclStrenght(String password) {
+        int strength = 0;
+        int length = password.length();
+        boolean hasNumbers = password.matches(".*\\d+.*");
+        boolean hasSpecialChars = !password.matches("[A-Za-z0-9 ]*");
+
+        strength += length * 4;
+        if (hasNumbers) {
+            strength += 10;
+        }
+        if (hasSpecialChars) {
+            strength += 10;
+        }
+
+        return Math.min(strength, 100);
     }
 
     public void setUserPublisher(UserPublisher userPublisher) {
@@ -245,18 +263,19 @@ public class Login implements UserPublisher
 
     public void setStr()
     {
-        if (loginController.getStrengthPercentage()<0.25)
+        if (strengthPercentage<0.25)
         {
          passwordStrengthBar.setStyle("-fx-accent: red;");
              str.setText("Password strenght: " + "BAD");
-        }else if (loginController.getStrengthPercentage()<=0.5)
+        }else if (strengthPercentage<=0.5)
         {
             passwordStrengthBar.setStyle("-fx-accent: yellow;");
             str.setText("Password strenght:" + "OKAY");
-        }else if (loginController.getStrengthPercentage()<0.75)
+        }else if (strengthPercentage<0.7)
         {
             passwordStrengthBar.setStyle("-fx-accent: green;");
             str.setText("Password strenght:" + "GOOD");
         }
     }
+
 }
