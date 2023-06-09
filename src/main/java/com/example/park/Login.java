@@ -90,12 +90,9 @@ public class Login implements UserPublisher
 
     public void insertInformation()
     {
-        //Model.Implements.DaoUser daoUser = new DaoUser();
-
             if (validateUser()) {
                  user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), email.getText(), Integer.parseInt(zipCode.getText()));
                 BlackList.getSingleton().CreateUser(user);
-                //userPublisher.notifySubscribers(user);
             }
     }
 
@@ -147,17 +144,14 @@ public class Login implements UserPublisher
         }else {
 
             return true;
-
         }
     }
     public void loginScene(AnchorPane anchorPane, Button logIn)
     {
-
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
         password.setLayoutX(LAYOUT_x);
         password.setLayoutY(150);
-
         logIn.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -169,7 +163,6 @@ public class Login implements UserPublisher
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
-                //region update getuser method - userLoginCheck storedprocedure er lavet
                 if (user == null || !user.getName().equals(username) || !user.getPassword().equals(kodeord))
                 {
                     failLogin();
@@ -180,15 +173,14 @@ public class Login implements UserPublisher
                     PlotList.getSingleton().setList();
                     userPublisher.notifySubscribers(user);
                     PlotList.getSingleton().setList();
-                    pc.initPlotPage();// stuff jeg helst vill kører i contructoren
+                    pc.initPlotPage();
                     HelloApplication.plotPage.initPlotController(pc);
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
-
                     ReservationList.getSingleton().setList();
                     BlackList.getSingleton().setBlackList(user);
                     HelloApplication.changeScene(SceneName.Main);
-                    System.out.println("Login successful!");
+
                 }
             }
         });
@@ -230,7 +222,6 @@ public class Login implements UserPublisher
         passwordStrengthBar.setPrefWidth(150);
         str.setLayoutX(passwordStrengthBar.getLayoutX());
         str.setLayoutY(passwordStrengthBar.getLayoutY()-25);
-
         indicator = new ProgressIndicator(0);
         indicator.setLayoutX(LAYOUT_x + 220);
         indicator.setLayoutY(400);
