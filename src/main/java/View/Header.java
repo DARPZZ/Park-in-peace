@@ -1,9 +1,7 @@
 package View;
 
-import Model.DaoObject.User;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
-import com.example.park.UserSubscriber;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +11,6 @@ import javafx.scene.shape.Line;
 
 public abstract class Header
 {
-     User currentUser;
     public final Scene scene;
     public final AnchorPane anchorPane;
 
@@ -106,6 +103,11 @@ public abstract class Header
         homeButton.setOnAction(event -> HelloApplication.changeScene(SceneName.Main));
         bookingsButton.setOnAction(event -> HelloApplication.changeScene(SceneName.Bookings));
         myPlotButton.setOnAction(event -> HelloApplication.changeScene(SceneName.PlotPage));
+        profileButton.setOnAction(event ->
+        {
+            HelloApplication.changeScene(SceneName.ProfilePage);
+            HelloApplication.profilePage.broadcast();
+        });
     }
 
     private void addLine()
@@ -118,7 +120,6 @@ public abstract class Header
         anchorPane.getChildren().add(line);
     }
 
-    //region getter/setter
     public double getYMargin()
     {
         return Y_LAYOUT + HEIGHT;
@@ -128,5 +129,4 @@ public abstract class Header
     {
         return bookingsButton;
     }
-    //endregion
 }

@@ -1,6 +1,5 @@
 package Service;
 
-import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
 import com.example.park.SceneName;
 import javafx.util.Pair;
@@ -8,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class CombinePublisher implements Publisher<Plot>
+public class PlotPublisher implements Publisher<Plot>
 {
-    private static CombinePublisher combinePublisher;
+    private static PlotPublisher plotPublisher;
     private final List<Pair<SceneName, Consumer<Plot>>> listSubscriber = new ArrayList<>();
 
-    private CombinePublisher(){};
+    private PlotPublisher(){};
 
     @Override
     public void publish(SceneName sceneName, Plot composite)
@@ -45,12 +44,12 @@ public class CombinePublisher implements Publisher<Plot>
         listSubscriber.removeIf(subscriber -> subscriber.getKey() == sceneName);
     }
 
-    public static CombinePublisher getInstance()
+    public static PlotPublisher getInstance()
     {
-        if (combinePublisher == null)
+        if (plotPublisher == null)
         {
-            combinePublisher = new CombinePublisher();
+            plotPublisher = new PlotPublisher();
         }
-        return combinePublisher;
+        return plotPublisher;
     }
 }
