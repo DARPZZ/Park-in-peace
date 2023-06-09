@@ -170,9 +170,7 @@ public class Login implements UserPublisher
                 {
                     PlotController pc = new PlotController();
                     subscribe(pc);
-                    PlotList.getSingleton().setList();
                     userPublisher.notifySubscribers(user);
-                    PlotList.getSingleton().setList();
                     pc.initPlotPage();
                     HelloApplication.plotPage.initPlotController(pc);
                     HelloApplication.plotPage.createPopUpCreatePlot();//
