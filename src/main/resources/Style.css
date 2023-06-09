@@ -6,16 +6,6 @@
 .table-view .column-header-background {
     -fx-background-color: #e0e0e0;
 }
-/*
-.table-view .table-row-cell {
-    -fx-background-color: #ffffff;
-}
-
-.table-view .table-row-cell:selected {
-    -fx-background-color: #c0c0c0;
-}
-
- */
 
 .button {
     -fx-background-color: #788378;
@@ -73,16 +63,7 @@
 .button.secondary {
     -fx-background-color: #cccccc;
 }
-/*
-.table-view .table-row-cell:odd {
-    -fx-background-color: #f2f2f2;
-}
 
-.table-view .table-row-cell:hover {
-    -fx-background-color: #e0e0e0;
-}
-
- */
 
 .text-field {
     -fx-background-color: #f8f8f8;
@@ -111,14 +92,6 @@
     -fx-font-size: 12px;
 }
 
-/* Virker ikke lige pt
-@keyframes pulseAnimation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
- */
 
 .login-button-animation {
     animation-name: pulseAnimation;
