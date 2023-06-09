@@ -1,9 +1,8 @@
 package View;
 
 import Model.DaoObject.Plot;
-import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
-import Service.CombinePublisher;
+import Service.PlotPublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;
 import javafx.beans.binding.Bindings;
@@ -49,7 +48,6 @@ public class MainPage extends Header
     {
         setupFilterControlsLayout();
         setupScrollPaneLayout();
-        //PlotList.getSingleton().setList();
         advertisementList = PlotList.getSingleton().getList();
         populateWithAds(advertisementList);
         setupPopUpBackground();
@@ -338,7 +336,7 @@ public class MainPage extends Header
     private void populateWithAds(List<Plot> list)
     {
         tilePane.getChildren().clear();
-        CombinePublisher publish = CombinePublisher.getInstance();
+        PlotPublisher publish = PlotPublisher.getInstance();
         for (Plot ad : list)
         {
             if(ad != null)
@@ -363,7 +361,6 @@ public class MainPage extends Header
             }
         }
     }
-
 
     public enum FilterTypes
     {

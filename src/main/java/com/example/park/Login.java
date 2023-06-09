@@ -178,7 +178,6 @@ public class Login implements UserPublisher
                 }else
                 {
                     userPublisher.notifySubscribers(user);
-                    PlotList.getSingleton().setList();
                     HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
                     HelloApplication.plotPage.createPopUpCreatePlot();//
                     HelloApplication.plotPage.preparePlotGrid();//
@@ -187,8 +186,6 @@ public class Login implements UserPublisher
                     BlackList.getSingleton().setBlackList(user);
                     HelloApplication.changeScene(SceneName.Main);
                     System.out.println("Login successful!");
-
-
                 }
             }
         });
