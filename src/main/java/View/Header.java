@@ -64,19 +64,6 @@ public abstract class Header
         AnchorPane.setLeftAnchor(myPlotButton, AnchorPane.getLeftAnchor(bookingsButton) + GAP);
         myPlotButton.setLayoutY(Y_LAYOUT);
         myPlotButton.setPrefSize(WIDTH, HEIGHT);
-
-        bookingsButton.setOnAction(event -> {
-            HelloApplication.changeScene(SceneName.Bookings);
-        });
-        myPlotButton.setOnAction(event -> {
-            HelloApplication.changeScene(SceneName.PlotPage);
-
-        });
-        profileButton.setOnAction(event -> {
-            HelloApplication.changeScene(SceneName.ProfilePage);
-            HelloApplication.profilePage.broadcast();
-            HelloApplication.profilePage.setupPopUpBackground();
-        });
     }
 
     private void createProfileButton()
@@ -107,6 +94,7 @@ public abstract class Header
         {
             HelloApplication.changeScene(SceneName.ProfilePage);
             HelloApplication.profilePage.broadcast();
+            HelloApplication.profilePage.setupPopUpBackground();
         });
     }
 
