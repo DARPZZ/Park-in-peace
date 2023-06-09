@@ -98,7 +98,6 @@ public class Login implements UserPublisher
 
     public boolean validateUser()
     {
-
         tooltip.setText("Invalid");
         boolean Error = false;
         tooltip.setShowDelay(Duration.ZERO);
@@ -121,13 +120,11 @@ public class Login implements UserPublisher
         }
         if (Objects.equals(adress.getText(), "")) {
             adress.setTooltip(tooltip);
-
             adress.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(email.getText(), "")) {
             email.setTooltip(tooltip);
-
             email.getStyleClass().add("warning-badge");
             Error = true;
         }
@@ -135,7 +132,6 @@ public class Login implements UserPublisher
         if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
             zipCode.getStyleClass().add("warning-badge");
-
             Error = true;
         }
         if (Error)
@@ -168,21 +164,24 @@ public class Login implements UserPublisher
                     failLogin();
                 }else
                 {
-                    PlotController pc = new PlotController();
-                    subscribe(pc);
-                    userPublisher.notifySubscribers(user);
-                    pc.initPlotPage();
-                    HelloApplication.plotPage.initPlotController(pc);
-                    HelloApplication.plotPage.createPopUpCreatePlot();//
-                    HelloApplication.plotPage.preparePlotGrid();//
-                    ReservationList.getSingleton().setList();
-                    BlackList.getSingleton().setBlackList(user);
-                    HelloApplication.changeScene(SceneName.Main);
-
+                    startRest();
                 }
             }
         });
         anchorPane.getChildren().addAll(name,password);
+    }
+    public void startRest()
+    {
+        PlotController pc = new PlotController();
+        subscribe(pc);
+        userPublisher.notifySubscribers(user);
+        pc.initPlotPage();
+        HelloApplication.plotPage.initPlotController(pc);
+        HelloApplication.plotPage.createPopUpCreatePlot();//
+        HelloApplication.plotPage.preparePlotGrid();//
+        ReservationList.getSingleton().setList();
+        BlackList.getSingleton().setBlackList(user);
+        HelloApplication.changeScene(SceneName.Main);
     }
     public void failLogin()
     {
