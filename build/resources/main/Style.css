@@ -12,12 +12,11 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 50;
-   
 }
 
 .button:hover {
     -fx-background-color: #131313;
-    -fx-border-color: #0066cc;
+    -fx-border-color: #077cef;
     -fx-border-width: 2px;
     -fx-border-radius: 50;
     -fx-padding: 8px 16px;
