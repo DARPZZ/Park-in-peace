@@ -1,11 +1,10 @@
 package View;
 
-import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
 import Model.DaoObject.User;
 import Model.Implements.DaoResevations;
-import Service.CombinePublisher;
+import Service.PlotPublisher;
 import com.example.park.SceneName;
 import com.example.park.UserSubscriber;
 import javafx.scene.control.*;
@@ -40,7 +39,7 @@ public class Advertisement extends Header implements UserSubscriber
 
     public Advertisement()
     {
-        CombinePublisher subscribe = CombinePublisher.getInstance();
+        PlotPublisher subscribe = PlotPublisher.getInstance();
         subscribe.subscribe(SceneName.Main, this::handleAdvertisementUpdate);
         setupLayout();
     }

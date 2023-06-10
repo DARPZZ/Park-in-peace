@@ -1,4 +1,6 @@
 package com.example.park;
+import Controller.LoginController;
+import Controller.PlotController;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import Model.DatabaseWorker.PlotList;
@@ -17,8 +19,8 @@ import java.util.Objects;
 public class Login implements UserPublisher
 {
     Tooltip tooltip = new Tooltip();
-    double strengthPercentage = 0;
-    Label str = new Label("Password strenght");
+    LoginController loginController = new LoginController();
+    Label str = new Label("Adgangskodestyrke");
     private List<UserSubscriber> subscribers = new ArrayList<>();
     public String getLoginName()
     {
@@ -42,22 +44,22 @@ public class Login implements UserPublisher
     private ProgressIndicator indicator;
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
-        name.setPromptText("Enter name");
+        name.setPromptText("Indtast name");
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
-        PhoneNumber.setPromptText("Enter phone number");
+        PhoneNumber.setPromptText("Indtast mobil nummer");
         PhoneNumber.setLayoutX(LAYOUT_x);
         PhoneNumber.setLayoutY(150);
-        password.setPromptText("Enter password");
+        password.setPromptText("Indtast adgangskode");
         password.setLayoutX(LAYOUT_x);
         password.setLayoutY(200);
-        adress.setPromptText("Enter address");
+        adress.setPromptText("Indtast adresse");
         adress.setLayoutX(LAYOUT_x);
         adress.setLayoutY(250);
-        email.setPromptText("Enter email");
+        email.setPromptText("Indtast email");
         email.setLayoutX(LAYOUT_x);
         email.setLayoutY(300);
-        zipCode.setPromptText("Enter zip code");
+        zipCode.setPromptText("Indtast postnummer");
         zipCode.setLayoutX(LAYOUT_x);
         zipCode.setLayoutY(350);
 
@@ -88,18 +90,14 @@ public class Login implements UserPublisher
 
     public void insertInformation()
     {
-        //Model.Implements.DaoUser daoUser = new DaoUser();
-
             if (validateUser()) {
                  user = new User(name.getText(), PhoneNumber.getText(), password.getText(), adress.getText(), email.getText(), Integer.parseInt(zipCode.getText()));
                 BlackList.getSingleton().CreateUser(user);
-                //userPublisher.notifySubscribers(user);
             }
     }
 
     public boolean validateUser()
     {
-
         tooltip.setText("Invalid");
         boolean Error = false;
         tooltip.setShowDelay(Duration.ZERO);
@@ -122,13 +120,11 @@ public class Login implements UserPublisher
         }
         if (Objects.equals(adress.getText(), "")) {
             adress.setTooltip(tooltip);
-
             adress.getStyleClass().add("warning-badge");
             Error = true;
         }
         if (Objects.equals(email.getText(), "")) {
             email.setTooltip(tooltip);
-
             email.getStyleClass().add("warning-badge");
             Error = true;
         }
@@ -136,7 +132,6 @@ public class Login implements UserPublisher
         if (Objects.equals(zipCode.getText(), "")|| !isNumeric) {
             zipCode.setTooltip(tooltip);
             zipCode.getStyleClass().add("warning-badge");
-
             Error = true;
         }
         if (Error)
@@ -145,57 +140,57 @@ public class Login implements UserPublisher
         }else {
 
             return true;
-
         }
     }
     public void loginScene(AnchorPane anchorPane, Button logIn)
     {
-
         name.setLayoutX(LAYOUT_x);
         name.setLayoutY(100);
         password.setLayoutX(LAYOUT_x);
         password.setLayoutY(150);
-
         logIn.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
                 tooltip.setShowDelay(Duration.ZERO);
-                tooltip.setText("Invalid");
+                tooltip.setText("Ugyldig");
                 String kodeord = password.getText();
                 String username = name.getText();
                 setLoginName(username);
                 user = BlackList.getSingleton().checkLogin(username,kodeord);
-                //region update getuser method - userLoginCheck storedprocedure er lavet
                 if (user == null || !user.getName().equals(username) || !user.getPassword().equals(kodeord))
                 {
-                    name.getStyleClass().add("warning-badge");
-                    password.getStyleClass().add("warning-badge");
-                    System.out.println("wrong pass word ");
-                    name.setTooltip(tooltip);
-                    password.setTooltip(tooltip);
+                    failLogin();
                 }else
                 {
-                    userPublisher.notifySubscribers(user);
-                    PlotList.getSingleton().setList();
-                    HelloApplication.plotPage.initPlotPage();// stuff jeg helst vill kører i contructoren
-                    HelloApplication.plotPage.createPopUpCreatePlot();//
-                    HelloApplication.plotPage.preparePlotGrid();//
-
-                    ReservationList.getSingleton().setList();
-                    BlackList.getSingleton().setBlackList(user);
-                    HelloApplication.changeScene(SceneName.Main);
-                    System.out.println("Login successful!");
-
-
+                    startRest();
                 }
             }
         });
         anchorPane.getChildren().addAll(name,password);
     }
+    public void startRest()
+    {
+        PlotController pc = new PlotController();
+        subscribe(pc);
+        userPublisher.notifySubscribers(user);
+        pc.initPlotPage();
+        HelloApplication.plotPage.initPlotController(pc);
+        HelloApplication.plotPage.createPopUpCreatePlot();//
+        HelloApplication.plotPage.preparePlotGrid();//
+        ReservationList.getSingleton().setList();
+        BlackList.getSingleton().setBlackList(user);
+        HelloApplication.changeScene(SceneName.Main);
+    }
+    public void failLogin()
+    {
+        name.getStyleClass().add("warning-badge");
+        password.getStyleClass().add("warning-badge");
+        name.setTooltip(tooltip);
+        password.setTooltip(tooltip);
+    }
     private UserPublisher userPublisher;
-
     @Override
     public void subscribe(UserSubscriber subscriber)
     {
@@ -224,7 +219,6 @@ public class Login implements UserPublisher
         passwordStrengthBar.setPrefWidth(150);
         str.setLayoutX(passwordStrengthBar.getLayoutX());
         str.setLayoutY(passwordStrengthBar.getLayoutY()-25);
-
         indicator = new ProgressIndicator(0);
         indicator.setLayoutX(LAYOUT_x + 220);
         indicator.setLayoutY(400);
@@ -232,29 +226,10 @@ public class Login implements UserPublisher
 
     }
     public void updatePasswordStrength(String password) {
-        int passwordStrength = caclStrenght(password);
-         strengthPercentage = (double) passwordStrength / 100.0;
-        passwordStrengthBar.setProgress(strengthPercentage);
-        indicator.setProgress(strengthPercentage);
+       loginController.updatePasswordStrength(password,passwordStrengthBar,indicator);
         setStr();
     }
 
-    private int caclStrenght(String password) {
-        int strength = 0;
-        int length = password.length();
-        boolean hasNumbers = password.matches(".*\\d+.*");
-        boolean hasSpecialChars = !password.matches("[A-Za-z0-9 ]*");
-
-        strength += length * 4;
-        if (hasNumbers) {
-            strength += 10;
-        }
-        if (hasSpecialChars) {
-            strength += 10;
-        }
-
-        return Math.min(strength, 100);
-    }
 
     public void setUserPublisher(UserPublisher userPublisher) {
         this.userPublisher = userPublisher;
@@ -262,15 +237,15 @@ public class Login implements UserPublisher
 
     public void setStr()
     {
-        if (strengthPercentage<0.25)
+        if (loginController.getStrengthPercentage()<0.25)
         {
          passwordStrengthBar.setStyle("-fx-accent: red;");
              str.setText("Password strenght: " + "BAD");
-        }else if (strengthPercentage<=0.5)
+        }else if (loginController.getStrengthPercentage()<=0.5)
         {
             passwordStrengthBar.setStyle("-fx-accent: yellow;");
             str.setText("Password strenght:" + "OKAY");
-        }else if (strengthPercentage<0.7)
+        }else if (loginController.getStrengthPercentage()<0.7)
         {
             passwordStrengthBar.setStyle("-fx-accent: green;");
             str.setText("Password strenght:" + "GOOD");

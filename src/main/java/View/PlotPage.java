@@ -1,5 +1,6 @@
 package View;
 
+import Controller.PlotController;
 import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
@@ -42,9 +43,10 @@ public class PlotPage extends Header implements UserSubscriber
     private GridPane plotview = new GridPane();
     private String[] servicesNames ={"🚽","\uD83D\uDCA7","⚡"};
     private String[] labelNames = {"Adresse","Post NR","Størrelse","Lav Pris","Middel Pris", "Høj Pris"};
-    private ArrayList<Plot> plotArrayList =new ArrayList<>();
-    private File defaultDir = new File("Billeder").getAbsoluteFile();
-    private String chosenFileName;
+    //private ArrayList<Plot> plotArrayList =new ArrayList<>();
+    //private File defaultDir = new File("Billeder").getAbsoluteFile();
+    //private String chosenFileName;
+    PlotController plotController;
 
 
 
@@ -203,8 +205,8 @@ public class PlotPage extends Header implements UserSubscriber
         imageHolder.setLayoutY(100);
         imageHolder.maxWidth(300);
         imageHolder.maxHeight(200);
-        chosenFileName = "\\bgpic.png";
-        Image defaultImage = new Image(defaultDir+"\\bgpic.png",300,200,false,false);
+        plotController.setChosenFileName("\\bgpic.png");
+        Image defaultImage = new Image(plotController.getDefaultDir()+"\\bgpic.png",300,200,false,false);
 
         imageHolder.setImage(defaultImage);
 
@@ -214,7 +216,7 @@ public class PlotPage extends Header implements UserSubscriber
         fileChooser.setOnMouseClicked(event -> {
             try {
                 choosePic();
-                Image picked = new Image(defaultDir+chosenFileName,300,200,false,false);
+                Image picked = new Image(plotController.getDefaultDir()+plotController.getChosenFileName(),300,200,false,false);
                 imageHolder.setImage(picked);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -255,11 +257,10 @@ public class PlotPage extends Header implements UserSubscriber
                 System.out.println(allGood);
                 if (allGood == 5)
                 {
-                    Plot plotNew = new Plot
-                            (activeUser.getUserId(), // userid
-                                    textFieldList.get(0).getText(),//location
+                    plotController.createNewPlot
+                            (textFieldList.get(0).getText(),//location
                                     descriptionField.getText(),// description
-                                    chosenFileName, //imagepth
+                                    plotController.getChosenFileName(), //imagepth
                                     sizePicker.getValue(),//size
                                     Integer.parseInt(textFieldList.get(1).getText()), //zip
                                     checkBoxes.get(0).isSelected(), //toilet
@@ -268,9 +269,9 @@ public class PlotPage extends Header implements UserSubscriber
                                     Float.parseFloat(textFieldList.get(2).getText()), //priceLow
                                     Float.parseFloat(textFieldList.get(3).getText()),// priceMed
                                     Float.parseFloat(textFieldList.get(4).getText())); //priceHigh
-                    PlotList.getSingleton().CreatePlot(plotNew);
+
+
                     // makes a new plot, list of: "Adresse","Post NR","Størrelse","beskrivelse","Lav Pris","Middel Pris", "Høj Pris"
-                    plotArrayList.add(plotNew);
                     tilePane.getChildren().clear();
                     preparePlotGrid();
                     for (TextField t:textFieldList)
@@ -282,11 +283,6 @@ public class PlotPage extends Header implements UserSubscriber
                     backGround.setDisable(true);
                 }
                 else {allGood =0;}
-
-
-
-
-
             }
         });
 
@@ -474,8 +470,8 @@ public class PlotPage extends Header implements UserSubscriber
         imageHolder.setLayoutY(100);
         imageHolder.maxWidth(300);
         imageHolder.maxHeight(200);
-        chosenFileName = "\\bgpic.png";
-        Image defaultImage = new Image(defaultDir+"\\bgpic.png",300,200,false,false);
+        plotController.setChosenFileName("\\bgpic.png");
+        Image defaultImage = new Image(plotController.getDefaultDir()+"\\bgpic.png",300,200,false,false);
 
         imageHolder.setImage(defaultImage);
 
@@ -487,7 +483,7 @@ public class PlotPage extends Header implements UserSubscriber
         fileChooser.setOnMouseClicked(event -> {
             try {
                 choosePic();
-                Image picked = new Image(defaultDir+chosenFileName,300,200,false,false);
+                Image picked = new Image(plotController.getDefaultDir()+plotController.getChosenFileName(),300,200,false,false);
                 imageHolder.setImage(picked);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -557,10 +553,10 @@ public class PlotPage extends Header implements UserSubscriber
             plot.setLowPrice(Float.parseFloat(lowPrice.getText()));
             plot.setMidPrice(Float.parseFloat(medPrice.getText()));
             plot.setHighPrice(Float.parseFloat(highPrice.getText()));
-            plot.setImagePath(chosenFileName);
+            plot.setImagePath(plotController.getChosenFileName());
             plot.setZipCode(Integer.valueOf(postNr.getText()));
             PlotList.getSingleton().UpdatePlot(plot);
-            chosenFileName ="";
+            plotController.setChosenFileName("");
         });
 
         popup.getChildren().add(comfirm);
@@ -579,7 +575,7 @@ public class PlotPage extends Header implements UserSubscriber
 
     public void preparePlotGrid()
     {
-        for (Plot plot: plotArrayList)
+        for (Plot plot: plotController.getPlotArrayList())
         {
 
             //Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
@@ -596,6 +592,7 @@ public class PlotPage extends Header implements UserSubscriber
         }
         System.out.println("");
     }
+    /*
     public void initPlotPage()
         {
           for (Plot p: PlotList.getSingleton().getList())
@@ -605,34 +602,32 @@ public class PlotPage extends Header implements UserSubscriber
                  plotArrayList.add(p);
              }
                 }
-            System.out.println("");
+
         }
+
+     */
 
         private void choosePic() throws IOException {
 
             FileChooser Filepicker = new FileChooser();
-            Filepicker.setInitialDirectory(defaultDir);
+            Filepicker.setInitialDirectory(plotController.getDefaultDir());
             Path chosenImage = Filepicker.showOpenDialog(HelloApplication.getStage()).toPath();
             String fileNameDB = "\\"+chosenImage.getName(chosenImage.getNameCount()-1).toString();
-            Path newImageDestination = Paths.get(defaultDir + fileNameDB);
-
-
+            Path newImageDestination = Paths.get(plotController.getDefaultDir() + fileNameDB);
             Files.copy(chosenImage,newImageDestination,NOFOLLOW_LINKS);
-            chosenFileName = fileNameDB;
+            plotController.setChosenFileName(fileNameDB);
 
         }
-        private String getFileName(File file)
-    {
-        StringBuilder stringWorker = new StringBuilder("\\");
-        stringWorker.append(file.getName());
-        return stringWorker.toString();
-    }
+
     @Override
     public void onUserReceived(User user)
     {
         System.out.println("");
      activeUser = user;
     }
-
+    public void initPlotController(PlotController pc)
+    {
+        plotController = pc;
+    }
 
 }

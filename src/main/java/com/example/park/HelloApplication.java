@@ -36,6 +36,7 @@ public class HelloApplication extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
+        PlotList.getSingleton().setList();
         Advertisement advertisement = new Advertisement();
 
 
@@ -44,8 +45,8 @@ public class HelloApplication extends Application
         login.subscribe(profilePage);
         login.setUserPublisher(login); // Giveren
         login.subscribe(advertisement);
-
         login.subscribe(plotPage);
+
         //login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;

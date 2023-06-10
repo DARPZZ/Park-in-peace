@@ -1,6 +1,4 @@
-.root{
-    -fx-background-color: #b7b7b7;
-}
+
 .table-view {
     -fx-background-color: #f5f5f5;
 }
@@ -8,31 +6,19 @@
 .table-view .column-header-background {
     -fx-background-color: #e0e0e0;
 }
-/*
-.table-view .table-row-cell {
-    -fx-background-color: #ffffff;
-}
-
-.table-view .table-row-cell:selected {
-    -fx-background-color: #c0c0c0;
-}
-
- */
 
 .button {
     -fx-background-color: #788378;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 50;
-    -fx-padding: 8px 16px;
 }
 
 .button:hover {
     -fx-background-color: #131313;
-    -fx-border-color: #0066cc;
+    -fx-border-color: #077cef;
     -fx-border-width: 2px;
     -fx-border-radius: 50;
-    -fx-padding: 8px 16px;
 }
 
 .label {
@@ -58,6 +44,7 @@
     -fx-translate-y: 2px;
     -fx-translate-x: 2px;
     -fx-background-color: #3c3c3c;
+    -fx-background-color: #3c3c3c;
     -fx-border-color: #3c3c3c;
 }
 
@@ -75,16 +62,7 @@
 .button.secondary {
     -fx-background-color: #cccccc;
 }
-/*
-.table-view .table-row-cell:odd {
-    -fx-background-color: #f2f2f2;
-}
 
-.table-view .table-row-cell:hover {
-    -fx-background-color: #e0e0e0;
-}
-
- */
 
 .text-field {
     -fx-background-color: #f8f8f8;
@@ -113,14 +91,6 @@
     -fx-font-size: 12px;
 }
 
-/* Virker ikke lige pt
-@keyframes pulseAnimation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
- */
 
 .login-button-animation {
     animation-name: pulseAnimation;

@@ -5,6 +5,7 @@ import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
+import Model.Implements.DaoResevations;
 import View.Bookings;
 import javafx.scene.control.TableView;
 
@@ -58,6 +59,15 @@ public class ResevationController
                 }
             }
         }
+        public void updateEndDate(Resevations resevations)
+        {
+            new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+        }
+        public void updateStartDate(Resevations resevations)
+        {
+            new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
+        }
+
         public void clearTabel(TableView tableView)
         {
             tableView.getColumns().clear();
@@ -66,7 +76,15 @@ public class ResevationController
             combineDataList.clear();
             combineDataListUd.clear();
         }
-        //region get and set
+    public void deleteResevationsFromDb(TableView<Combine> tableView)
+    {
+        int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
+        Resevations resevations = new Resevations();
+        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+        new DaoResevations().Delete(resevations,resid);
+    }
+
+    //region get and set
 
     public List<Combine> getCombineDataListUd()
     {
