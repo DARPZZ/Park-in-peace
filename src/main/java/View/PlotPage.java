@@ -6,7 +6,7 @@ import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
-import com.example.park.UserSubscriber;
+import Service.UserSubscriber;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

@@ -9,4 +9,6 @@ module com.example.park {
 
     opens com.example.park to javafx.fxml;
     exports com.example.park;
+    exports Service;
+    opens Service to javafx.fxml;
 }

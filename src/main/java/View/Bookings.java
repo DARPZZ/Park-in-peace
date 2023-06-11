@@ -4,7 +4,8 @@ import Controller.ResevationController;
 import Model.DaoObject.*;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
-import com.example.park.UserSubscriber;
+
+import Service.UserSubscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
