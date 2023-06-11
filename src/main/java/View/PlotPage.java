@@ -33,10 +33,10 @@ import java.util.ArrayList;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
-public class PlotPage extends Header implements UserSubscriber
+public class PlotPage extends Header
 {
     TilePane tilePane;
-    private User activeUser;
+    //private User activeUser;
     private ArrayList<TextField> textFieldList = new ArrayList<>();
     private ArrayList<Label> labelList = new ArrayList<>();
     private ArrayList<CheckBox> checkBoxes =new ArrayList<>();
@@ -313,7 +313,7 @@ public class PlotPage extends Header implements UserSubscriber
         anchorPane.getChildren().addAll(createPlot,backGround);
     }
 
-    public void createPopUpPlotInfo(Plot plot)
+    private void createPopUpPlotInfo(Plot plot)
     {
         Stage dialogBox = new Stage();
         dialogBox.initOwner(HelloApplication.getStage());
@@ -592,20 +592,6 @@ public class PlotPage extends Header implements UserSubscriber
         }
         System.out.println("");
     }
-    /*
-    public void initPlotPage()
-        {
-          for (Plot p: PlotList.getSingleton().getList())
-            {
-           if (p.getUserID() == activeUser.getUserId())
-            {
-                 plotArrayList.add(p);
-             }
-                }
-
-        }
-
-     */
 
         private void choosePic() throws IOException {
 
@@ -619,12 +605,6 @@ public class PlotPage extends Header implements UserSubscriber
 
         }
 
-    @Override
-    public void onUserReceived(User user)
-    {
-        System.out.println("");
-     activeUser = user;
-    }
     public void initPlotController(PlotController pc)
     {
         plotController = pc;

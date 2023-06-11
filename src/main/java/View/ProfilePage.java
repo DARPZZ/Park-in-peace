@@ -3,7 +3,6 @@ package View;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
 import com.example.park.HelloApplication;
-import com.example.park.UserPublisher;
 import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,19 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.sql.*;
-import java.text.BreakIterator;
-import java.util.ArrayList;
 
-import static Model.Implements.Connection.*;
+import java.util.ArrayList;
 
 public class ProfilePage extends Header implements UserSubscriber {
 
