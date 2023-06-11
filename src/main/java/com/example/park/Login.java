@@ -42,6 +42,14 @@ public class Login implements UserPublisher
     private final int LAYOUT_x = 600;
     private ProgressBar passwordStrengthBar;
     private ProgressIndicator indicator;
+
+    /**
+     * Createsa new user
+     * @param anchorPane
+     * @param loginButton
+     * @param toggleButton
+     * @param toggleLabel
+     */
     public void createUser(AnchorPane anchorPane, Button loginButton, ToggleButton toggleButton, Label toggleLabel)
     {
         name.setPromptText("Indtast name");
@@ -62,8 +70,6 @@ public class Login implements UserPublisher
         zipCode.setPromptText("Indtast postnummer");
         zipCode.setLayoutX(LAYOUT_x);
         zipCode.setLayoutY(350);
-
-
         loginButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -81,13 +87,16 @@ public class Login implements UserPublisher
                 }
             }
         });
-      passwordStrenghts();
+         passwordStrenghts();
         password.textProperty().addListener((observable, oldValue, newValue) -> updatePasswordStrength(newValue));
 
 
         anchorPane.getChildren().addAll(name, PhoneNumber, password, adress, email, zipCode,passwordStrengthBar,str);
     }
 
+    /**
+     * If  ValiedateUser goes right we create a new user, else we do not create a new user
+     */
     public void insertInformation()
     {
             if (validateUser()) {
@@ -96,6 +105,10 @@ public class Login implements UserPublisher
             }
     }
 
+    /**
+     * Validates the user input for creating a new user
+     * @return Returns either true or false. depending on if the information is correct or not
+     */
     public boolean validateUser()
     {
         tooltip.setText("Invalid");
@@ -142,6 +155,12 @@ public class Login implements UserPublisher
             return true;
         }
     }
+
+    /**
+     *   If the user enters the correct password and username they will get login
+     * @param anchorPane the anchorpane for the scene
+     * @param logIn button for login
+     */
     public void loginScene(AnchorPane anchorPane, Button logIn)
     {
         name.setLayoutX(LAYOUT_x);
@@ -170,6 +189,11 @@ public class Login implements UserPublisher
         });
         anchorPane.getChildren().addAll(name,password);
     }
+
+    /**
+     * It will notify all the subcribers that a new user has made a login
+     * Then we initialise the rest of the program
+     */
     public void startRest()
     {
         PlotController pc = new PlotController();
@@ -183,6 +207,10 @@ public class Login implements UserPublisher
         BlackList.getSingleton().setBlackList(user);
         HelloApplication.changeScene(SceneName.Main);
     }
+
+    /**
+     * Adds feedback if the username or password is wrong
+     */
     public void failLogin()
     {
         name.getStyleClass().add("warning-badge");
@@ -201,7 +229,6 @@ public class Login implements UserPublisher
     public void unsubscribe(UserSubscriber subscriber)
     {
         subscribers.remove(subscriber);
-
     }
 
     @Override
@@ -211,6 +238,10 @@ public class Login implements UserPublisher
             subscriber.onUserReceived(user);
         }
     }
+
+    /**
+     *  creates the password strenght bar
+     */
     public void passwordStrenghts()
     {
         passwordStrengthBar = new ProgressBar(0);
@@ -225,6 +256,11 @@ public class Login implements UserPublisher
         indicator.setPrefSize(30, 30);
 
     }
+
+    /**
+     * Updates the progressbar for the password
+     * @param password the password the user enters
+     */
     public void updatePasswordStrength(String password) {
        loginController.updatePasswordStrength(password,passwordStrengthBar,indicator);
         setStr();
@@ -235,6 +271,9 @@ public class Login implements UserPublisher
         this.userPublisher = userPublisher;
     }
 
+    /**
+     * Sets the text and colour depending on how strong the password is
+     */
     public void setStr()
     {
         if (loginController.getStrengthPercentage()<0.25)

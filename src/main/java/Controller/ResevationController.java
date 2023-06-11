@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ResevationController
 {
- private List<Combine> combineDataListUd = new ArrayList<Combine>();
+ private List<Combine> combineDataListUd = new ArrayList<>();
  private  List<Plot> plotList = PlotList.getSingleton().getList();
  private List<Resevations> reservationList = ReservationList.getSingleton().getList();
    private List<Integer> plotOwnerDataList = new ArrayList<>();
@@ -27,6 +27,13 @@ public class ResevationController
     String location ="";
     int zipCode =0;
     int plotOwner = 0;
+
+    /**
+     * Gets the current reservation the  current user has made
+     * Gets the current reservation that is on the current user´s plot
+     * @param currentUserID The user that is login to the system
+     * @param tableView Gets the tableview so I can clear it
+     */
 
         public void getResevationData(int currentUserID, TableView tableView)
         {
@@ -68,6 +75,10 @@ public class ResevationController
             new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
         }
 
+    /**
+     * Clears the tableview
+     * @param tableView gets the tableview to be able to clear the collums
+     */
         public void clearTabel(TableView tableView)
         {
             tableView.getColumns().clear();
@@ -76,6 +87,11 @@ public class ResevationController
             combineDataList.clear();
             combineDataListUd.clear();
         }
+
+    /**
+     * Deltes the reservation from the databse
+     * @param tableView
+     */
     public void deleteResevationsFromDb(TableView<Combine> tableView)
     {
         int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();

@@ -108,7 +108,6 @@ public class Bookings extends Header implements UserSubscriber
         startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
         startDateColumn.setPrefWidth(150);
 
-        //startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<Combine, LocalDate> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
@@ -197,16 +196,4 @@ public class Bookings extends Header implements UserSubscriber
         resController.updateStartDate(resevations);
     }
     //endregion
-    public boolean isValidDate(String date) {
-        if (date == null || date.isEmpty()) {
-            return false;
-        }
-
-        try {
-            LocalDate.parse(date, formatter);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
 }
