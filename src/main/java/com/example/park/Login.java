@@ -275,11 +275,11 @@ public class Login implements UserPublisher
      */
     public void setStr()
     {
-        if (loginController.getStrengthPercentage()<0.25)
+        if (loginController.getStrengthPercentage()<0.4)
         {
          passwordStrengthBar.setStyle("-fx-accent: red;");
              str.setText("Password strenght: " + "BAD");
-        }else if (loginController.getStrengthPercentage()<=0.5)
+        }else if (loginController.getStrengthPercentage()<=0.6)
         {
             passwordStrengthBar.setStyle("-fx-accent: yellow;");
             str.setText("Password strenght:" + "OKAY");
