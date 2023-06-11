@@ -16,7 +16,7 @@ public class LoginController
         int strength = 0;
         int length = password.length();
         boolean hasNumbers = password.matches(".*\\d+.*");
-        boolean hasSpecialChars = !password.matches("[A-Za-z0-9 ]*");
+        boolean hasSpecialChars = !password.matches("[A-Åa-å0-9 ]*");
 
         strength += length * 4;
         if (hasNumbers) {
