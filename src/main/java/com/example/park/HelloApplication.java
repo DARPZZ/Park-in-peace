@@ -40,14 +40,11 @@ public class HelloApplication extends Application
         Advertisement advertisement = new Advertisement();
 
 
-        login.setUserPublisher(login); // Giveren
-        login.subscribe(bookings); //tager
+        login.setUserPublisher(login);
+        login.subscribe(bookings);
         login.subscribe(profilePage);
-        login.setUserPublisher(login); // Giveren
+        login.setUserPublisher(login);
         login.subscribe(advertisement);
-        //login.subscribe(plotPage);
-
-        //login.subscribe(bookingsUd);
 
         primaryStageHolder = stage;
         primaryStageHolder.setMinWidth(400);
@@ -57,10 +54,7 @@ public class HelloApplication extends Application
         SCENE_MAP.put(SceneName.PlotPage, plotPage.scene);
         SCENE_MAP.put(SceneName.ProfilePage, profilePage.scene);
         AnchorPane anchorPane = new AnchorPane();
-        //Scene scene = SCENE_MAP.get(SceneName.Main);
         Scene scene = new Scene(anchorPane, WIDTH, HEIGHT);
-        
-
         String css = this.getClass().getResource("/Style.css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setTitle("Park in Peace");
@@ -111,9 +105,7 @@ public class HelloApplication extends Application
                 anchorPane.getChildren().clear();
                 toggleButton.setText("Opret Bruger");
                 toggleLabel.setText("Tryk her for login:");
-
                 login.createUser(anchorPane, loginButton, toggleButton, toggleLabel);
-
                 loginButton.setText("Opret bruger");
 
             }

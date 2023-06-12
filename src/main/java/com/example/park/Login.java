@@ -86,7 +86,7 @@ public class Login implements UserPublisher
                 }
             }
         });
-         passwordStrenghts();
+         passwordStrength();
         password.textProperty().addListener((observable, oldValue, newValue) -> updatePasswordStrength(newValue));
 
 
@@ -200,8 +200,8 @@ public class Login implements UserPublisher
         userPublisher.notifySubscribers(user);
         pc.initPlotPage();
         HelloApplication.plotPage.initPlotController(pc);
-        HelloApplication.plotPage.createPopUpCreatePlot();//
-        HelloApplication.plotPage.preparePlotGrid();//
+        HelloApplication.plotPage.createPopUpCreatePlot();
+        HelloApplication.plotPage.preparePlotGrid();
         ReservationList.getSingleton().setList();
         BlackList.getSingleton().setBlackList(user);
         HelloApplication.changeScene(SceneName.Main);
@@ -239,9 +239,9 @@ public class Login implements UserPublisher
     }
 
     /**
-     *  creates the password strenght bar
+     *  creates the password strength bar
      */
-    public void passwordStrenghts()
+    public void passwordStrength()
     {
         passwordStrengthBar = new ProgressBar(0);
         passwordStrengthBar.setLayoutX(LAYOUT_x);
