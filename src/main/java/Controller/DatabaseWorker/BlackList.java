@@ -1,6 +1,5 @@
-package Model.DatabaseWorker;
+package Controller.DatabaseWorker;
 
-import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.Implements.DaoUser;
 

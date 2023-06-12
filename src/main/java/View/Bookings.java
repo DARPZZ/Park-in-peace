@@ -2,13 +2,10 @@ package View;
 
 import Controller.ResevationController;
 import Model.DaoObject.*;
-import Model.DatabaseWorker.PlotList;
-import Model.DatabaseWorker.ReservationList;
 
 import Service.UserSubscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -18,7 +15,6 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class Bookings extends Header implements UserSubscriber

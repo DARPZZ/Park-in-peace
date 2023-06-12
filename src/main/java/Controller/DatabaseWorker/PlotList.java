@@ -1,4 +1,4 @@
-package Model.DatabaseWorker;
+package Controller.DatabaseWorker;
 
 import Model.DaoObject.Plot;
 import Model.Implements.DaoPlot;

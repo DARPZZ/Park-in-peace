@@ -2,7 +2,7 @@ package Controller;
 
 import Model.DaoObject.Plot;
 import Model.DaoObject.User;
-import Model.DatabaseWorker.PlotList;
+import Controller.DatabaseWorker.PlotList;
 import Service.UserSubscriber;
 
 import java.io.File;

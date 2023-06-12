@@ -1,6 +1,5 @@
-package Model.DatabaseWorker;
+package Controller.DatabaseWorker;
 
-import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
 import Model.Implements.DaoResevations;
 

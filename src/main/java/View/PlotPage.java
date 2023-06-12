@@ -2,11 +2,9 @@ package View;
 
 import Controller.PlotController;
 import Model.DaoObject.Plot;
-import Model.DaoObject.User;
-import Model.DatabaseWorker.PlotList;
+import Controller.DatabaseWorker.PlotList;
 import com.example.park.HelloApplication;
 
-import Service.UserSubscriber;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

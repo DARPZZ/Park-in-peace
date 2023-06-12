@@ -1,8 +1,6 @@
 package com.example.park;
 
-import Model.DaoObject.*;
-import Model.DatabaseWorker.PlotList;
-import Model.Implements.*;
+import Controller.DatabaseWorker.PlotList;
 import View.*;
 //import View.BookingsUd;
 import View.Bookings;

@@ -1,7 +1,7 @@
 package View;
 
 import Model.DaoObject.Plot;
-import Model.DatabaseWorker.PlotList;
+import Controller.DatabaseWorker.PlotList;
 import Service.PlotPublisher;
 import com.example.park.HelloApplication;
 import com.example.park.SceneName;

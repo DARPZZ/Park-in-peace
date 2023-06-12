@@ -1,7 +1,7 @@
 package View;
 
 import Model.DaoObject.User;
-import Model.DatabaseWorker.BlackList;
+import Controller.DatabaseWorker.BlackList;
 import Service.UserSubscriber;
 import com.example.park.HelloApplication;
 import javafx.geometry.Insets;

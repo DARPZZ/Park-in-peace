@@ -1,7 +1,7 @@
 package Model.Implements;
 
 import Model.DaoObject.Plot;
-import Model.DatabaseWorker.PlotList;
+import Controller.DatabaseWorker.PlotList;
 
 import java.sql.*;
 import java.util.ArrayList;

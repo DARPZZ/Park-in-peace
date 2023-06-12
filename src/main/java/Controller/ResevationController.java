@@ -3,13 +3,11 @@ package Controller;
 import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
 import Model.DaoObject.Resevations;
-import Model.DatabaseWorker.PlotList;
-import Model.DatabaseWorker.ReservationList;
+import Controller.DatabaseWorker.PlotList;
+import Controller.DatabaseWorker.ReservationList;
 import Model.Implements.DaoResevations;
-import View.Bookings;
 import javafx.scene.control.TableView;
 
-import java.nio.channels.Pipe;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
