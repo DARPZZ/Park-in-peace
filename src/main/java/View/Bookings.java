@@ -4,7 +4,8 @@ import Controller.ResevationController;
 import Model.DaoObject.*;
 import Model.DatabaseWorker.PlotList;
 import Model.DatabaseWorker.ReservationList;
-import com.example.park.UserSubscriber;
+
+import Service.UserSubscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -31,8 +32,6 @@ public class Bookings extends Header implements UserSubscriber
    int currentUserID = 0;
     public TableView<Combine> tableView = new TableView<>();
     Resevations resevations = new Resevations();
-    List<Plot> plotList = PlotList.getSingleton().getList();
-    List<Resevations> reservationList = ReservationList.getSingleton().getList();
 
     /**
      * Constructor of the bookings class
@@ -50,10 +49,11 @@ public class Bookings extends Header implements UserSubscriber
      */
     public void setScene()
     {
-        tableView.setLayoutX(50);
+
+        tableView.setLayoutX(anchorPane.getWidth()/4);
         tableView.setLayoutY(250);
-        tableView.setPrefWidth(400);
-        infoLabel.setLayoutX(190);
+        tableView.setPrefWidth(625);
+        infoLabel.setLayoutX(tableView.getLayoutX()*2-75);
         infoLabel.setLayoutY(225);
         lejerButton.setLayoutX(225);
         lejerButton.setPrefWidth(150);
@@ -61,7 +61,7 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setPrefWidth(lejerButton.getPrefWidth());
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
-        removeResevationButton.setLayoutX(160);
+        removeResevationButton.setLayoutX(tableView.getLayoutX()*2-75);
         removeResevationButton.setLayoutY(660);
         anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
     }
@@ -90,28 +90,30 @@ public class Bookings extends Header implements UserSubscriber
         resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
         resevationsIdColumn.setVisible(false);
 
+
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
         addressColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
         addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         addressColumn.setEditable(false);
+        addressColumn.setPrefWidth(150);
 
         TableColumn<Combine, Integer> zipcodeColumn = new TableColumn<>("Zip Code");
         zipcodeColumn.setCellValueFactory(cellData -> cellData.getValue().zipCodeProperty().asObject());
         zipcodeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         zipcodeColumn.setEditable(false);
+        zipcodeColumn.setPrefWidth(150);
 
 
         TableColumn<Combine, LocalDate> startDateColumn = new TableColumn<>("Start Date");
         startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
         startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
+        startDateColumn.setPrefWidth(150);
 
-
-        //startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(converter));
 
         TableColumn<Combine, LocalDate> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
-
+        endDateColumn.setPrefWidth(150);
 
         removeResevationButton.setOnAction(event -> resController.deleteResevationsFromDb(tableView));
 
@@ -195,16 +197,4 @@ public class Bookings extends Header implements UserSubscriber
         resController.updateStartDate(resevations);
     }
     //endregion
-    public boolean isValidDate(String date) {
-        if (date == null || date.isEmpty()) {
-            return false;
-        }
-
-        try {
-            LocalDate.parse(date, formatter);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
 }

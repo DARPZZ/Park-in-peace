@@ -3,7 +3,7 @@ package Controller;
 import Model.DaoObject.Plot;
 import Model.DaoObject.User;
 import Model.DatabaseWorker.PlotList;
-import com.example.park.UserSubscriber;
+import Service.UserSubscriber;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import Model.DaoObject.User;
 import Model.Implements.DaoResevations;
 import Service.PlotPublisher;
 import com.example.park.SceneName;
-import com.example.park.UserSubscriber;
+import Service.UserSubscriber;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
