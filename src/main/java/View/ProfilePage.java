@@ -2,8 +2,8 @@ package View;
 
 import Model.DaoObject.User;
 import Model.DatabaseWorker.BlackList;
+import Service.UserSubscriber;
 import com.example.park.HelloApplication;
-import com.example.park.UserSubscriber;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,11 +15,10 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-
 import java.util.ArrayList;
 
-public class ProfilePage extends Header implements UserSubscriber {
+public class ProfilePage extends Header implements UserSubscriber
+{
 
     private ArrayList<TextField> textFields = new ArrayList<>();
     private User loggedIn;

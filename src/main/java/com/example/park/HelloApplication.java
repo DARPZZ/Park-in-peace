@@ -26,7 +26,7 @@ public class HelloApplication extends Application
     public static PlotPage plotPage = new PlotPage();
     public static ProfilePage profilePage = new ProfilePage(); //Technicaly not nice, but profilePage is only refered to in a static context anyways
     Bookings bookings = new Bookings();
-    Label toggleLabel = new Label("Press here to create user:");
+    Label toggleLabel = new Label("Tryk her for at oprette bruger:");
     private final int HEIGHT = 768;
     private final int WIDTH = 1280;
     private static Stage primaryStageHolder = null;
@@ -97,7 +97,7 @@ public class HelloApplication extends Application
         toggleButton.setLayoutY(50);
         toggleButton.setLayoutX(600);
         toggleButton.setPrefWidth(150);
-        toggleButton.setText("Create User");
+        toggleButton.setText("Opret Bruger");
         loginButton.setLayoutX(600);
         loginButton.setLayoutY(600);
         loginButton.setPrefWidth(150);
@@ -109,19 +109,19 @@ public class HelloApplication extends Application
             if (toggleButton.isSelected())
             {
                 anchorPane.getChildren().clear();
-                toggleButton.setText("Create User");
-                toggleLabel.setText("Press here to login:");
+                toggleButton.setText("Opret Bruger");
+                toggleLabel.setText("Tryk her for login:");
 
                 login.createUser(anchorPane, loginButton, toggleButton, toggleLabel);
 
-                loginButton.setText("create a new user");
+                loginButton.setText("Opret bruger");
 
             }
             else
             {
                 toggleButton.setText("Login");
                 anchorPane.getChildren().clear();
-                toggleLabel.setText("Press here to create a new user:");
+                toggleLabel.setText("Tryk her for at oprette en bruger:");
                 login.loginScene(anchorPane, loginButton);
                 loginButton.setText("login");
             }
