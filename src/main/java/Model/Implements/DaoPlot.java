@@ -279,7 +279,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     public ArrayList<Plot> GetAll()
     {
 
-        System.out.println("mem"+System.currentTimeMillis() );
+
         createConnection();
         ArrayList<Integer> plotIDs =new ArrayList<>();
         ArrayList<Plot> plotList = new ArrayList<Plot>();

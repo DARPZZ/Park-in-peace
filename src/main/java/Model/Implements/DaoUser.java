@@ -192,7 +192,7 @@ public class DaoUser extends Model.Implements.Connection implements DaoInterface
     public User checkLogin (String username, String password)
     {
         createConnection();
-        System.out.println("checklogin start"+ System.currentTimeMillis());
+
         try {
             CallableStatement checklogin = con.prepareCall("{CALL userLoginCheck(?,?)}");
             checklogin.setString(1, password);

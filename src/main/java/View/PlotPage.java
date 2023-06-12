@@ -254,7 +254,7 @@ public class PlotPage extends Header
                     allGood-=1;
                     descriptionField.setStyle(" -fx-background-color: red");
                 }
-                System.out.println(allGood);
+
                 if (allGood == 5)
                 {
                     plotController.createNewPlot
@@ -577,20 +577,17 @@ public class PlotPage extends Header
     {
         for (Plot plot: plotController.getPlotArrayList())
         {
-
-            //Image thumbnailImage = new Image("C:\\Java\\Billeder\\MVC pattrn.PNG");
             Image thumbnailImage = new Image(plot.getImageRealPath());
             Thumbnail plotThumbnail = new Thumbnail(thumbnailImage,plot.getLocation());
-            //plotview.add(plotThumbnail,columnCount,rowCount);
             plotThumbnail.setOnMouseClicked(event -> {
-                System.out.println("meme");
+
                 createPopUpPlotInfo(plot);
             });
             tilePane.getChildren().add(plotThumbnail);
 
 
         }
-        System.out.println("");
+
     }
 
         private void choosePic() throws IOException {

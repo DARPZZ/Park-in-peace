@@ -32,7 +32,6 @@ public class PlotController implements UserSubscriber
     @Override
     public void onUserReceived(User user)
     {
-        System.out.println("mememeememem");
         activeUser = user;
     }
 

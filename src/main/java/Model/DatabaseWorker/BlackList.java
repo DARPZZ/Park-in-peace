@@ -26,7 +26,6 @@ public final class BlackList
 
     public void setBlackList(User user)
     {
-        System.out.println("attempt BL");
         for (Integer i: userWorker.getBlackListedBy(user))
         {
         blackList.add(i);
