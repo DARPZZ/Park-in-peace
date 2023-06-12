@@ -93,7 +93,7 @@ public class PlotPage extends Header
         dialog.initStyle(StageStyle.TRANSPARENT);
 
         Button createPlot = new Button("Opret");
-        createPlot.setLayoutY(getYMargin());
+        createPlot.setLayoutY(getYMargin()+20);
         createPlot.setLayoutX(60);
         //region background back button
         Rectangle backGround = new Rectangle(1280,768);
