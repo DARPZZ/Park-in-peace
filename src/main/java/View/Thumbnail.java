@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class Thumbnail extends VBox
 {
@@ -33,6 +34,14 @@ public class Thumbnail extends VBox
         this.setSpacing(5);
         imageView.setFitWidth(200);
         imageView.setFitHeight(150);
+
+        Rectangle roundCorners = new Rectangle();
+        roundCorners.setWidth(imageView.getFitWidth());
+        roundCorners.setHeight(imageView.getFitHeight());
+        roundCorners.setArcWidth(10);
+        roundCorners.setArcHeight(10);
+        imageView.setClip(roundCorners);
+
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14");
         this.getChildren().addAll(imageView, titleLabel);
 

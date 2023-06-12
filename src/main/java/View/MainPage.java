@@ -60,7 +60,7 @@ public class MainPage extends Header
         searchTextField.setPrefSize((GAP * 3) - 15, HEIGHT);
         searchTextField.setLayoutX(60);
         searchTextField.setLayoutY(this.getYMargin() + 30);
-        setupSearchFieldListener();
+        setupSearchFieldHandler();
 
         Button filterSettingsButton = new Button("▼");
         filterSettingsButton.setPrefSize(40, HEIGHT);
@@ -256,18 +256,12 @@ public class MainPage extends Header
         filterBtn.setText(String.format("%d plads%s", numMatches, numMatches != 1 ? "er" : ""));
     }
 
-    private void setupSearchFieldListener()
+    private void setupSearchFieldHandler()
     {
         searchTextField.setOnKeyReleased(event ->
         {
             if (event.getCode() == KeyCode.ENTER)
             {
-                if (event.getText().equals(""))
-                {
-                    resetFilter();
-                    populateWithAds(filteredList);
-                }
-                resetFilter();
                 Predicate<Plot> filterCondition = data ->
                         data.getLocation().toLowerCase().contains(searchTextField.getText().toLowerCase()) ||
                         String.valueOf(data.getZipCode()).toLowerCase().contains(searchTextField.getText());

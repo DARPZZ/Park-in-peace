@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -65,6 +66,13 @@ public class Advertisement extends Header implements UserSubscriber
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(imageHolder.getMaxHeight());
         imageView.setFitWidth(imageHolder.getMaxWidth());
+
+        Rectangle roundCorners = new Rectangle();
+        roundCorners.setWidth(imageView.getFitWidth());
+        roundCorners.setHeight(imageView.getFitHeight());
+        roundCorners.setArcWidth(10);
+        roundCorners.setArcHeight(10);
+        imageView.setClip(roundCorners);
     }
 
     private void createReserveDateGridPane()
@@ -114,6 +122,7 @@ public class Advertisement extends Header implements UserSubscriber
 
         createSeparator(descriptionGridPane,2);
         descriptionDataTextField = new TextFlow();
+        descriptionDataTextField.setMaxHeight(300);
         descriptionGridPane.add(descriptionDataTextField, 0, 3, 3, 1);
         createSeparator(descriptionGridPane, 4);
         Label plotSizeLabel = new Label("Størrelse: ");
@@ -121,22 +130,22 @@ public class Advertisement extends Header implements UserSubscriber
         plotSizeDataLabel = new Label();
         descriptionGridPane.add(plotSizeDataLabel, 1, 1);
 
-        wifiCheckBox = new CheckBox("\uD83C\uDF10");
+        wifiCheckBox = new CheckBox("Tradløst internet");
         wifiCheckBox.setDisable(true);
         wifiCheckBox.setStyle("-fx-opacity: 1");
         descriptionGridPane.add(wifiCheckBox, 0, 5);
 
-        electricityCheckBox = new CheckBox("⚡");
+        electricityCheckBox = new CheckBox("Strøm");
         electricityCheckBox.setDisable(true);
         electricityCheckBox.setStyle("-fx-opacity: 1");
         descriptionGridPane.add(electricityCheckBox, 2, 5);
 
-        waterCheckBox = new CheckBox("\uD83D\uDCA7");
+        waterCheckBox = new CheckBox("Vand");
         waterCheckBox.setDisable(true);
         waterCheckBox.setStyle("-fx-opacity: 1");
         descriptionGridPane.add(waterCheckBox, 0, 6);
 
-        toiletsCheckBox = new CheckBox("🚽");
+        toiletsCheckBox = new CheckBox("Toilet");
         toiletsCheckBox.setDisable(true);
         toiletsCheckBox.setStyle("-fx-opacity: 1");
         descriptionGridPane.add(toiletsCheckBox, 2, 6);
