@@ -1,9 +1,9 @@
 package View;
 
 import Model.DaoObject.Plot;
-import Model.DaoObject.Resevations;
+import Model.DaoObject.Reservations;
 import Model.DaoObject.User;
-import Model.Implements.DaoResevations;
+import Model.Implements.DaoReservations;
 import Service.PlotPublisher;
 import com.example.park.SceneName;
 import Service.UserSubscriber;
@@ -253,7 +253,7 @@ public class Advertisement extends Header implements UserSubscriber
     {
         try
         {
-            new DaoResevations().Create(new Resevations(startDatePicker, endDatePicker, user.getUserId(), advertisement.getPlotID()));
+            new DaoReservations().Create(new Reservations(startDatePicker, endDatePicker, user.getUserId(), advertisement.getPlotID()));
         }
         catch (Exception e)
         {

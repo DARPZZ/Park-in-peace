@@ -2,10 +2,10 @@ package Controller;
 
 import Model.DaoObject.Combine;
 import Model.DaoObject.Plot;
-import Model.DaoObject.Resevations;
+import Model.DaoObject.Reservations;
 import Controller.DatabaseWorker.PlotList;
 import Controller.DatabaseWorker.ReservationList;
-import Model.Implements.DaoResevations;
+import Model.Implements.DaoReservations;
 import javafx.scene.control.TableView;
 
 import java.time.LocalDate;
@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ResevationController
+public class ReservationsController
 {
  private List<Combine> combineDataListUd = new ArrayList<>();
  private  List<Plot> plotList = PlotList.getSingleton().getList();
- private List<Resevations> reservationList = ReservationList.getSingleton().getList();
+ private List<Reservations> reservationsList = ReservationList.getSingleton().getList();
    private List<Integer> plotOwnerDataList = new ArrayList<>();
    private List<Integer> reservedPlotIds = new ArrayList<>();
     private List<Combine> combineDataList = new ArrayList<>();
@@ -33,10 +33,10 @@ public class ResevationController
      * @param tableView Gets the tableview so I can clear it
      */
 
-        public void getResevationData(int currentUserID, TableView tableView)
+        public void getReservationsData(int currentUserID, TableView tableView)
         {
            clearTabel(tableView);
-            for (Resevations res : reservationList) {
+            for (Reservations res : reservationsList) {
                 int userID = res.getUserID();
                 int reservationID = res.getReservationID();
                 LocalDate localStartDate = res.getStartDate();
@@ -64,13 +64,13 @@ public class ResevationController
                 }
             }
         }
-        public void updateEndDate(Resevations resevations)
+        public void updateEndDate(Reservations reservations)
         {
-            new DaoResevations().Update(resevations,"fldEndDate",String.valueOf(resevations.getEndDate()));
+            new DaoReservations().Update(reservations,"fldEndDate",String.valueOf(reservations.getEndDate()));
         }
-        public void updateStartDate(Resevations resevations)
+        public void updateStartDate(Reservations reservations)
         {
-            new DaoResevations().Update(resevations, "fldStartDate",String.valueOf(resevations.getStartDate()));
+            new DaoReservations().Update(reservations, "fldStartDate",String.valueOf(reservations.getStartDate()));
         }
 
     /**
@@ -80,7 +80,7 @@ public class ResevationController
         public void clearTabel(TableView tableView)
         {
             tableView.getColumns().clear();
-            reservationList.clear();
+            reservationsList.clear();
             ReservationList.getSingleton().setList();
             combineDataList.clear();
             combineDataListUd.clear();
@@ -90,12 +90,12 @@ public class ResevationController
      * Deltes the reservation from the databse
      * @param tableView
      */
-    public void deleteResevationsFromDb(TableView<Combine> tableView)
+    public void deleteReservationsFromDb(TableView<Combine> tableView)
     {
-        int resid = tableView.getSelectionModel().getSelectedItem().getResevationsID();
-        Resevations resevations = new Resevations();
+        int resid = tableView.getSelectionModel().getSelectedItem().getReservationsID();
+        Reservations reservations = new Reservations();
         tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
-        new DaoResevations().Delete(resevations,resid);
+        new DaoReservations().Delete(reservations,resid);
     }
 
     //region get and set
@@ -120,14 +120,14 @@ public class ResevationController
         this.plotList = plotList;
     }
 
-    public List<Resevations> getReservationList()
+    public List<Reservations> getReservationsList()
     {
-        return reservationList;
+        return reservationsList;
     }
 
-    public void setReservationList(List<Resevations> reservationList)
+    public void setReservationsList(List<Reservations> reservationsList)
     {
-        this.reservationList = reservationList;
+        this.reservationsList = reservationsList;
     }
 
     public List<Combine> getCombineDataList()

@@ -1,6 +1,6 @@
 package View;
 
-import Controller.ResevationController;
+import Controller.ReservationsController;
 import Model.DaoObject.*;
 
 import Service.UserSubscriber;
@@ -20,14 +20,14 @@ import java.util.List;
 public class Bookings extends Header implements UserSubscriber
 {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    ResevationController resController = new ResevationController();
-    Button removeResevationButton = new Button("Remove resevations");
+    ReservationsController resController = new ReservationsController();
+    Button removeReservationsButton = new Button("Remove reservations");
     Button lejerButton = new Button("Lejer");
     Button udLejerButton = new Button("Udlejer");
     Label infoLabel = new Label();
    int currentUserID = 0;
     public TableView<Combine> tableView = new TableView<>();
-    Resevations resevations = new Resevations();
+    Reservations reservations = new Reservations();
 
     /**
      * Constructor of the bookings class
@@ -57,23 +57,23 @@ public class Bookings extends Header implements UserSubscriber
         udLejerButton.setPrefWidth(lejerButton.getPrefWidth());
         udLejerButton.setLayoutY(lejerButton.getLayoutY());
         udLejerButton.setLayoutX(lejerButton.getLayoutX()+165);
-        removeResevationButton.setLayoutX(tableView.getLayoutX()*2-75);
-        removeResevationButton.setLayoutY(660);
-        anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton,removeResevationButton);
+        removeReservationsButton.setLayoutX(tableView.getLayoutX()*2-75);
+        removeReservationsButton.setLayoutY(660);
+        anchorPane.getChildren().addAll(tableView,udLejerButton, infoLabel,lejerButton, removeReservationsButton);
     }
 
     /**
-     * Get information from resevation controller
+     * Get information from reservations controller
      */
     public void getData() {
         updateTabels();
-        resController.getResevationData(currentUserID,tableView);
+        resController.getReservationsData(currentUserID,tableView);
         createTable(resController.getCombineDataList());
     }
 
     /**
-     * creates a tabel view with Adress,zipcode, startdate, end date and resevation ID
-     * It also handels updates to tabel view f.eks. if a user decide to remove a resevation
+     * creates a tabel view with Adress,zipcode, startdate, end date and reservations ID
+     * It also handels updates to tabel view f.eks. if a user decide to remove a reservations
      * @param arrayList Depends on if you're a landlord or tenant. Two diffrent arrays
      */
 
@@ -82,9 +82,9 @@ public class Bookings extends Header implements UserSubscriber
         DateTimeFormatter converter;
          converter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        TableColumn<Combine, String> resevationsIdColumn = new TableColumn<>("Resevations ID");
-        resevationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().resevationsIDProperty().asString());
-        resevationsIdColumn.setVisible(false);
+        TableColumn<Combine, String> reservationsIdColumn = new TableColumn<>("Reservations ID");
+        reservationsIdColumn.setCellValueFactory(cellData -> cellData.getValue().reservationsIDProperty().asString());
+        reservationsIdColumn.setVisible(false);
 
 
         TableColumn<Combine, String> addressColumn = new TableColumn<>("Address");
@@ -111,11 +111,11 @@ public class Bookings extends Header implements UserSubscriber
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
         endDateColumn.setPrefWidth(150);
 
-        removeResevationButton.setOnAction(event -> resController.deleteResevationsFromDb(tableView));
+        removeReservationsButton.setOnAction(event -> resController.deleteReservationsFromDb(tableView));
 
         endDateColumn.setOnEditCommit(event -> onEndDateEditCommit(event));
         startDateColumn.setOnEditCommit(event -> onStartDateEditCommit(event));
-        tableView.getColumns().addAll(resevationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
+        tableView.getColumns().addAll(reservationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
 
 
         ObservableList<Combine> data = FXCollections.observableArrayList(arrayList);
@@ -129,30 +129,30 @@ public class Bookings extends Header implements UserSubscriber
     {
         getBookingsButton().setOnAction(event ->
         {
-            removeResevationButton.setVisible(true);
-            removeResevationButton.setDisable(false);
+            removeReservationsButton.setVisible(true);
+            removeReservationsButton.setDisable(false);
             infoLabel.setText("Dine reservationer");
             tableView.setEditable(true);
-            resController.getResevationData(currentUserID,tableView);
+            resController.getReservationsData(currentUserID,tableView);
             createTable(resController.getCombineDataList());
         });
 
         lejerButton.setOnAction(event ->
         {
-            removeResevationButton.setVisible(true);
-            removeResevationButton.setDisable(false);
+            removeReservationsButton.setVisible(true);
+            removeReservationsButton.setDisable(false);
             infoLabel.setText("Dine reservationer");
             tableView.setEditable(true);
-            resController.getResevationData(currentUserID,tableView);
+            resController.getReservationsData(currentUserID,tableView);
             createTable(resController.getCombineDataList());
         });
         udLejerButton.setOnAction(event ->
         {
             infoLabel.setText("Dine Pladser");
             tableView.setEditable(false);
-            removeResevationButton.setVisible(false);
-            removeResevationButton.setDisable(true);
-            resController.getResevationData(currentUserID,tableView);
+            removeReservationsButton.setVisible(false);
+            removeReservationsButton.setDisable(true);
+            resController.getReservationsData(currentUserID,tableView);
             createTable(resController.getCombineDataListUd());
         });
     }
@@ -173,24 +173,24 @@ public class Bookings extends Header implements UserSubscriber
      * @param table  The CellEditEvent containing the updated end date in the TableView.
      */
     public void onEndDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
-        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getReservationsID();
         String endDate = String.valueOf(table.getNewValue());
         LocalDate localDate = LocalDate.parse(endDate, formatter);
-        resevations.setReservationID(resid);
-        resevations.setEndDate(localDate);
-        resController.updateEndDate(resevations);
+        reservations.setReservationID(resid);
+        reservations.setEndDate(localDate);
+        resController.updateEndDate(reservations);
     }
     /**
      * Will uupdate the end date in the tabelview, and thereafter send that information to the database
      * @param table  The CellEditEvent containing the updated end date in the TableView.
      */
     public void onStartDateEditCommit(TableColumn.CellEditEvent<Combine, LocalDate> table) {
-        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getResevationsID();
+        int resid = table.getTableView().getItems().get(table.getTablePosition().getRow()).getReservationsID();
         String startDate = String.valueOf(table.getNewValue());
         LocalDate localDate = LocalDate.parse(startDate, formatter);
-        resevations.setReservationID(resid);
-        resevations.setStartDate(localDate);
-        resController.updateStartDate(resevations);
+        reservations.setReservationID(resid);
+        reservations.setStartDate(localDate);
+        resController.updateStartDate(reservations);
     }
     //endregion
 }

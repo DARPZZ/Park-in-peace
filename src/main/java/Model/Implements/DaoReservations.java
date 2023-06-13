@@ -1,14 +1,13 @@
 package Model.Implements;
 
-import Model.DaoObject.Resevations;
-import Model.DaoObject.User;
+import Model.DaoObject.Reservations;
 
 import java.sql.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoResevations extends Model.Implements.Connection implements DaoInterface<Resevations>
+public class DaoReservations extends Model.Implements.Connection implements DaoInterface<Reservations>
 {
     /*
     private static String userName = "sa";
@@ -19,7 +18,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     private CallableStatement callableStatement;
 
      */
-    public DaoResevations()
+    public DaoReservations()
     {
         createConnection();
         try {
@@ -32,18 +31,18 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
 
 
     @Override
-    public void Create(Resevations resevations)
+    public void Create(Reservations reservations)
     {
         createConnection();
         try {
              CallableStatement stmt = con.prepareCall("{call insertResevation(?,?,?,?)}");
-            stmt.setString(1, String.valueOf(resevations.getStartDate()));
-            stmt.setString(2, String.valueOf(resevations.getEndDate()));
-            stmt.setInt(3, resevations.getUserID());
-            stmt.setInt(4,resevations.getPlotID());
+            stmt.setString(1, String.valueOf(reservations.getStartDate()));
+            stmt.setString(2, String.valueOf(reservations.getEndDate()));
+            stmt.setInt(3, reservations.getUserID());
+            stmt.setInt(4, reservations.getPlotID());
             ResultSet resultSet = stmt.executeQuery();
             resultSet.next();
-            resevations.setReservationID(resultSet.getInt(1));
+            reservations.setReservationID(resultSet.getInt(1));
         } catch (SQLException e)
         {
             System.out.println(e);
@@ -51,12 +50,12 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     }
 
     @Override
-    public void Update(Resevations resevations, String fieldname, String value)
+    public void Update(Reservations reservations, String fieldname, String value)
     {
         createConnection();
         try{Connection conn = con;
             CallableStatement stmt = conn.prepareCall("{call updateResevations(?,?,?)}");
-            stmt.setInt(1,resevations.getReservationID());
+            stmt.setInt(1, reservations.getReservationID());
             stmt.setString(2, fieldname);
             stmt.setString(3, value);
             stmt.executeUpdate();
@@ -66,7 +65,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     }
 
     @Override
-    public void Delete(Resevations resevations, int ID)
+    public void Delete(Reservations reservations, int ID)
     {
         createConnection();
         try {Connection conn = con;
@@ -79,7 +78,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
     }
 
     @Override
-    public Resevations Get(int ID)
+    public Reservations Get(int ID)
     {
         createConnection();
             try {Connection conn = con;
@@ -87,12 +86,12 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
                 stmt.setInt(1, ID);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
-                    Resevations resevations = new Resevations(rs.getInt("fldreservationID"),
+                    Reservations reservations = new Reservations(rs.getInt("fldreservationID"),
                             rs.getDate("fldStartDate").toLocalDate(),
                             rs.getDate("fldEndDate").toLocalDate(),
                             rs.getInt("flduserID"),
                             rs.getInt("fldPlotID"));
-                    return resevations;
+                    return reservations;
                 }
             }catch (Exception e) {
 
@@ -101,10 +100,10 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
         }
 
     @Override
-    public List<Resevations> GetAll()
+    public List<Reservations> GetAll()
     {
         createConnection();
-        List<Resevations> resevationsList = new ArrayList<>();
+        List<Reservations> reservationsList = new ArrayList<>();
         try (
              CallableStatement stmt = con.prepareCall("{call getAllResevations()}")) {
 
@@ -113,7 +112,7 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
 
             // Process the result set
             while (rs.next()) {
-                resevationsList.add(new Resevations(
+                reservationsList.add(new Reservations(
                         rs.getInt("fldreservationID"),
                         rs.getDate("fldStartDate").toLocalDate(),
                         rs.getDate("fldEndDate").toLocalDate(),
@@ -123,6 +122,6 @@ public class DaoResevations extends Model.Implements.Connection implements DaoIn
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
-        return resevationsList;
+        return reservationsList;
     }
 }

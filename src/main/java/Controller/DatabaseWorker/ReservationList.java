@@ -1,15 +1,15 @@
 package Controller.DatabaseWorker;
 
-import Model.DaoObject.Resevations;
-import Model.Implements.DaoResevations;
+import Model.DaoObject.Reservations;
+import Model.Implements.DaoReservations;
 
 import java.util.ArrayList;
 
 public final class ReservationList
 {
     private static ReservationList INSTANCE;
-    private static ArrayList<Resevations> list = new ArrayList<>();
-    private DaoResevations resevationsWorker = new DaoResevations();
+    private static ArrayList<Reservations> list = new ArrayList<>();
+    private DaoReservations resevationsWorker = new DaoReservations();
 
     private ReservationList()
     {}
@@ -20,28 +20,28 @@ public final class ReservationList
         }
         return INSTANCE;
     }
-    public ArrayList<Resevations> getList()
+    public ArrayList<Reservations> getList()
     {return list;}
     public void setList()
     {
 
-        for (Resevations r: resevationsWorker.GetAll())
+        for (Reservations r: resevationsWorker.GetAll())
         {
          list.add(r);
 
         }
     }
-    public void addList(Resevations resevations)
+    public void addList(Reservations reservations)
     {
-        list.add(resevations);
+        list.add(reservations);
     }
 
-    public void CreateReservation(Resevations resevations)
-    {resevationsWorker.Create(resevations);
-    list.add(resevations);
+    public void CreateReservation(Reservations reservations)
+    {resevationsWorker.Create(reservations);
+    list.add(reservations);
     }
-    public void UpdateReservation(Resevations resevations, String fieldname, String value)
-    {resevationsWorker.Update(resevations, fieldname, value);}
-    public void DeleteReservation(Resevations resevations, int ID)
-    {resevationsWorker.Delete(resevations, ID);}
+    public void UpdateReservation(Reservations reservations, String fieldname, String value)
+    {resevationsWorker.Update(reservations, fieldname, value);}
+    public void DeleteReservation(Reservations reservations, int ID)
+    {resevationsWorker.Delete(reservations, ID);}
 }

@@ -7,13 +7,12 @@ import javafx.beans.property.*;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Locale;
 
 public class Combine
 {
     private IntegerProperty userID;
     private IntegerProperty plotID;
-    private IntegerProperty resevationsID;
+    private IntegerProperty reservationsID;
     private StringProperty location;
     private String description;
     private String plotSize;
@@ -35,21 +34,21 @@ public class Combine
     private float highSeasonPrice;
 
 
-    public Combine(int userID, int resevationsID, String location, int zipCode, LocalDate startDate, LocalDate endDate)
+    public Combine(int userID, int reservationsID, String location, int zipCode, LocalDate startDate, LocalDate endDate)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
-        this.resevationsID = new SimpleIntegerProperty(resevationsID) ;
+        this.reservationsID = new SimpleIntegerProperty(reservationsID) ;
         this.location = new SimpleStringProperty(location) ;
         this.zipCode = new SimpleIntegerProperty(zipCode) ;
         this.startDateProperty = new SimpleObjectProperty(startDate) ;
         this.endDateProperty = new SimpleObjectProperty(endDate)  ;
     }
 
-    public Combine(int userID,int plotID, int resevationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
+    public Combine(int userID, int plotID, int reservationsID, String location, String description, String plotSize, int zipCode, String image, boolean toilet, boolean el, boolean water, Date startDate, Date endDate, String seasonName, float lowSeasonPrice, float midSeasonPrice, float highSeasonPrice)
     {
         this.userID = new SimpleIntegerProperty(userID) ;
         this.plotID = new SimpleIntegerProperty(plotID) ;
-        this.resevationsID = new SimpleIntegerProperty(resevationsID) ;
+        this.reservationsID = new SimpleIntegerProperty(reservationsID) ;
         this.location = new SimpleStringProperty(location);
         this.description = description;
         this.plotSize = plotSize;
@@ -106,19 +105,19 @@ public class Combine
         this.plotID.set(plotID);
     }
 
-    public int getResevationsID()
+    public int getReservationsID()
     {
-        return resevationsID.get();
+        return reservationsID.get();
     }
 
-    public IntegerProperty resevationsIDProperty()
+    public IntegerProperty reservationsIDProperty()
     {
-        return resevationsID;
+        return reservationsID;
     }
 
-    public void setResevationsID(int resevationsID)
+    public void setReservationsID(int reservationsID)
     {
-        this.resevationsID.set(resevationsID);
+        this.reservationsID.set(reservationsID);
     }
 
     public String getLocation()
