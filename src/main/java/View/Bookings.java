@@ -25,7 +25,7 @@ public class Bookings extends Header implements UserSubscriber
     Button lejerButton = new Button("Lejer");
     Button udLejerButton = new Button("Udlejer");
     Label infoLabel = new Label();
-   int currentUserID = 0;
+    int currentUserID = 0;
     public TableView<Combine> tableView = new TableView<>();
     Reservations reservations = new Reservations();
 
@@ -34,7 +34,6 @@ public class Bookings extends Header implements UserSubscriber
      */
     public Bookings()
     {
-
         currentUserID = 0;
         setScene();
         infoLabel.setText("Dine reservationer");
@@ -45,7 +44,6 @@ public class Bookings extends Header implements UserSubscriber
      */
     public void setScene()
     {
-
         tableView.setLayoutX(anchorPane.getWidth()/4);
         tableView.setLayoutY(250);
         tableView.setPrefWidth(625);
@@ -105,7 +103,6 @@ public class Bookings extends Header implements UserSubscriber
         startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
         startDateColumn.setPrefWidth(150);
 
-
         TableColumn<Combine, LocalDate> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
@@ -116,7 +113,6 @@ public class Bookings extends Header implements UserSubscriber
         endDateColumn.setOnEditCommit(event -> onEndDateEditCommit(event));
         startDateColumn.setOnEditCommit(event -> onStartDateEditCommit(event));
         tableView.getColumns().addAll(reservationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
-
 
         ObservableList<Combine> data = FXCollections.observableArrayList(arrayList);
         tableView.setItems(data);

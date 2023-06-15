@@ -80,7 +80,6 @@ public abstract class Header
         userLabel.setLayoutY(profileButton.getLayoutY());
         userLabel.setPrefSize(WIDTH, HEIGHT);
         userLabel.setAlignment(Pos.BASELINE_RIGHT);
-        //userLabel.setText("Ingen bruger");
 
         return userLabel;
     }
