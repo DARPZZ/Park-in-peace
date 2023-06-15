@@ -18,6 +18,7 @@ import javafx.scene.text.TextFlow;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class Advertisement extends Header implements UserSubscriber
 {
@@ -118,7 +119,7 @@ public class Advertisement extends Header implements UserSubscriber
         Label addressLabel = new Label("Adresse: ");
         descriptionGridPane.add(addressLabel, 0, 0);
         addressDataLabel = new Label();
-        descriptionGridPane.add(addressDataLabel, 1, 0);
+        descriptionGridPane.add(addressDataLabel, 1, 0, 2, 1);
 
         createSeparator(descriptionGridPane,2);
         descriptionDataTextField = new TextFlow();
@@ -166,7 +167,7 @@ public class Advertisement extends Header implements UserSubscriber
             setLabelValues();
             String address = String.format("%s, %s", advertisement.getLocation(), advertisement.getZipCode());
             addressDataLabel.setText(address);
-            plotSizeDataLabel.setText(advertisement.getPlotSize());
+            plotSizeDataLabel.setText(Objects.requireNonNull(SizeEnum.fromString(advertisement.getPlotSize())).getTranslation());
             descriptionDataTextField.getChildren().clear();
             descriptionDataTextField.getChildren().add(new Text(advertisement.getDescription()));
             toiletsCheckBox.selectedProperty().bind(advertisement.toiletProperty());
@@ -222,6 +223,7 @@ public class Advertisement extends Header implements UserSubscriber
 
     private void setupStartDateAction(DatePicker startDatePicker, DatePicker endDatePicker)
     {
+        startDatePicker.setEditable(false);
         startDatePicker.setOnAction(event ->
         {
             if (endDatePicker.getValue() == null)
