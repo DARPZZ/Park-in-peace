@@ -227,4 +227,3 @@ INSERT INTO tblZipcodeCity(fldCity,fldZipcode) VALUES ('Haderslev',6100)
     INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-13'AS Date), CAST ('2023-06-14' AS DATE), 5,5)
     INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (CAST ('2023-06-18'AS Date), CAST ('2023-06-19' AS DATE), 6,6)
 
-

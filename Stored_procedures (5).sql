@@ -6,7 +6,7 @@ use dbParkInPeace
 
 GO
 CREATE PROCEDURE getAllUser
-as
+    as
 begin
 select * from tblUser
 end
@@ -14,7 +14,7 @@ end
 
 GO
 CREATE PROCEDURE getUser (@fldUserID int)
-as
+    as
 begin
 select * from tblUser where fldUserID = @fldUserID
 end
@@ -22,7 +22,7 @@ end
 
 GO
 CREATE PROCEDURE deleteUser (@fldUserID int)
-as
+    as
 begin
 delete from tblUser where fldUserID = @fldUserID
 end
@@ -30,7 +30,7 @@ end
 
 GO
 create PROCEDURE updateUser(@fldUserID int, @fieldname varchar(MAX), @value varchar(MAX))
-as
+    as
 begin
 DECLARE @sql varchar(MAX)
 SET @sql ='UPDATE  tblUser set ' + @fieldname +' = ''' + @value + ''' where fldUserID = ' + CAST( @fldUserID as varchar)
@@ -63,14 +63,14 @@ END
 
 GO
 CREATE PROCEDURE getAllResevations
-as
+    as
 begin
 select * from tblResevations
 end
 
 Go
 create PROCEDURE getResevastion (@fldreservationID int)
-as
+    as
 begin
 select * from tblResevations where fldreservationID = @fldreservationID
 end
@@ -80,7 +80,7 @@ end
 
 GO
 CREATE PROCEDURE delteResevations (@fldreservationID int)
-as
+    as
 begin
 delete from tblResevations where fldreservationID = @fldreservationID
 end
@@ -88,7 +88,7 @@ end
 
 GO
 create PROCEDURE updateResevations(@fldreservationID int, @fieldname varchar(MAX), @value varchar(MAX))
-as
+    as
 begin
 DECLARE @sql varchar(MAX)
 SET @sql ='UPDATE tblResevations set ' + @fieldname +' = ''' + @value + ''' where fldreservationID = ' + CAST( @fldreservationID as varchar)
@@ -99,7 +99,7 @@ end
 
 GO
 CREATE PROCEDURE getBlacklist (@fldBlackListID int)
-as
+    as
 begin
 select * from fldBlackList where fldBlackListID = @fldBlackListID
 end
@@ -107,7 +107,7 @@ end
 
 GO
 CREATE PROCEDURE insertResevation (@fldStartDate date,@fldEndDate date,@fldUserID int,@fldPlotID int )
-as
+    as
 begin
 SET NOCOUNT ON
 INSERT INTO tblResevations(fldStartDate,fldEndDate,fldUserID,fldPlotID) VALUES (@fldStartDate,@fldEndDate,@fldUserID,@fldPlotID);
@@ -118,16 +118,16 @@ end
 
 GO
 CREATE PROCEDURE getPlot (@fldPlotID int)
-as
+    as
 begin
 SELECT fldUserID,fldPlotID,fldLocation, fldImage, fldPlotSize,fldZipcode from tblPlot
-LEFT JOIN
-tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID WHERE fldPlotID =@fldPlotID
+                                                                                  LEFT JOIN
+                                                                              tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID WHERE fldPlotID =@fldPlotID
 end
 
 GO
 CREATE PROCEDURE deletePlot (@fldPlotID int)
-as
+    as
 begin
 delete from tblPlot where fldPlotID = @fldPlotID
 end
@@ -138,7 +138,7 @@ CREATE PROCEDURE getPlotSizeIDFromPlotID (@fldPlotID int)
     as
 begin
 SELECT fldPlotSize FROM  tblPlot JOIN
-tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID WHERE tblPlot.fldPlotID = @fldPlotID
+                         tblPlotSize ON tblPlot.fldPlotSizeID = tblPlotSize.fldPlotSizeID WHERE tblPlot.fldPlotID = @fldPlotID
 end
 
 GO
@@ -147,6 +147,7 @@ CREATE PROCEDURE updatePlotSize (@fldPlotSize varchar(MAX), @fldPlotSizeID int)
 begin
 UPDATE  tblPlotSize SET fldPlotSize = @fldPlotSize WHERE fldPlotSizeID =@fldPlotSizeID
 end
+GO
 CREATE PROCEDURE updatePlotStrings (@fieldname varchar(MAX), @value VARCHAR(MAX), @ID int)
     as
 begin
@@ -188,15 +189,15 @@ SET @elCheck = 1 IF exists(SELECT fldServiceID from tblParkingService WHERE fldP
 UPDATE tblPlot SET fldLocation = @fldLocation,fldDescription = @fldDescription,fldImage = @fldImage,fldPlotSizeID = @fldPlotSizeID,fldZipcode= @fldZip WHERE fldPlotID = @fldPlotID
 UPDATE tblSeason SET fldLowSeasonPrice = @fldLowSeasonPrice, fldMediumSeasonPrice = @fldMediumSeasonPrice, fldHighSeasonPrice = @fldHighSeasonPrice WHERE fldPlotID = @fldPlotID
 
-IF @toiletCheck = 1
+    IF @toiletCheck = 1
 Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =2
-else Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
-IF @waterCheck = 1
+    else Update tblParkingService SET fldServiceID = @fldToiletID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+    IF @waterCheck = 1
 UPDATE tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =3
-else Update tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
-IF @elCheck = 1
+    else Update tblParkingService SET fldServiceID = @fldWaterID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+    IF @elCheck = 1
 UPDATE tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =4
-else Update tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
+    else Update tblParkingService SET fldServiceID = @fldElectricID WHERE fldPlotID = @fldPlotID AND fldServiceID =1
 end
 
 GO
