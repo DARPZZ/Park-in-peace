@@ -103,7 +103,6 @@ public class Bookings extends Header implements UserSubscriber
         startDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
         startDateColumn.setPrefWidth(150);
 
-
         TableColumn<Combine, LocalDate> endDateColumn = new TableColumn<>("End Date");
         endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
         endDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter(converter, converter)));
@@ -114,7 +113,6 @@ public class Bookings extends Header implements UserSubscriber
         endDateColumn.setOnEditCommit(event -> onEndDateEditCommit(event));
         startDateColumn.setOnEditCommit(event -> onStartDateEditCommit(event));
         tableView.getColumns().addAll(reservationsIdColumn, addressColumn, zipcodeColumn, startDateColumn, endDateColumn);
-
 
         ObservableList<Combine> data = FXCollections.observableArrayList(arrayList);
         tableView.setItems(data);
