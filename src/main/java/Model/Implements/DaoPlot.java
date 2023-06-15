@@ -278,8 +278,6 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
     @Override
     public ArrayList<Plot> GetAll()
     {
-
-
         createConnection();
         ArrayList<Integer> plotIDs =new ArrayList<>();
         ArrayList<Plot> plotList = new ArrayList<Plot>();
@@ -288,7 +286,6 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
              {
                  CallableStatement stmt = con.prepareCall("{call getAllPlots()}");
                  ResultSet resultSetPlots = stmt.executeQuery();
-                 //resultSetPlots.next();
                  while(resultSetPlots.next())
                  {
                      toiletBool = false;
@@ -316,7 +313,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                  }
              }
          catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+            e.printStackTrace();
         }
         return plotList;
 
@@ -349,7 +346,6 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
             }catch (Exception e ){
                 System.out.println(e);
             }
-
         }
         else {
             System.out.println("VALUE WRONG:"+ServiceID+"Should be 1 for true, 0 for false");
@@ -371,9 +367,7 @@ public class DaoPlot extends Connection implements DaoInterface<Plot>
                 elBool = true;
                 break;
             }
-
         }
-
     }
     public ArrayList<String> getAllSizeTypes()
     {
