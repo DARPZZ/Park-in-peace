@@ -11,4 +11,6 @@ module com.example.park {
     exports com.example.park;
     exports Service;
     opens Service to javafx.fxml;
+    exports View;
+    opens View to javafx.fxml;
 }

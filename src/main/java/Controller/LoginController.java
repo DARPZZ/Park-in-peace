@@ -1,8 +1,6 @@
 package Controller;
-
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
-
 public class LoginController
 {
     private double strengthPercentage = 0;
@@ -25,7 +23,6 @@ public class LoginController
         if (hasSpecialChars) {
             strength += 10;
         }
-
         return Math.min(strength, 100);
     }
 

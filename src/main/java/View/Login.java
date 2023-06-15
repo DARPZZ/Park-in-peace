@@ -1,4 +1,4 @@
-package com.example.park;
+package View;
 import Controller.LoginController;
 import Controller.PlotController;
 import Model.DaoObject.User;
@@ -6,6 +6,8 @@ import Controller.DatabaseWorker.BlackList;
 import Controller.DatabaseWorker.ReservationList;
 import Service.UserPublisher;
 import Service.UserSubscriber;
+import com.example.park.HelloApplication;
+import com.example.park.SceneName;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -253,7 +255,6 @@ public class Login implements UserPublisher
         indicator.setLayoutX(LAYOUT_x + 220);
         indicator.setLayoutY(400);
         indicator.setPrefSize(30, 30);
-
     }
 
     /**

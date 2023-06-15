@@ -28,7 +28,6 @@ public class PlotController implements UserSubscriber
         return plotArrayList;
     }
 
-
     @Override
     public void onUserReceived(User user)
     {

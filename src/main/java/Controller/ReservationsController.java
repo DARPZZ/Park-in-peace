@@ -16,13 +16,13 @@ import java.util.List;
 
 public class ReservationsController
 {
- private List<Combine> combineDataListUd = new ArrayList<>();
- private  List<Plot> plotList = PlotList.getSingleton().getList();
- private List<Reservations> reservationsList = ReservationList.getSingleton().getList();
-   private List<Integer> plotOwnerDataList = new ArrayList<>();
-   private List<Integer> reservedPlotIds = new ArrayList<>();
-    private List<Combine> combineDataList = new ArrayList<>();
-    String location ="";
+     private List<Combine> combineDataListUd = new ArrayList<>();
+     private  List<Plot> plotList = PlotList.getSingleton().getList();
+     private List<Reservations> reservationsList = ReservationList.getSingleton().getList();
+     private List<Integer> plotOwnerDataList = new ArrayList<>();
+     private List<Integer> reservedPlotIds = new ArrayList<>();
+     private List<Combine> combineDataList = new ArrayList<>();
+     String location ="";
     int zipCode =0;
     int plotOwner = 0;
 

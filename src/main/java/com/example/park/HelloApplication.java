@@ -37,7 +37,6 @@ public class HelloApplication extends Application
         PlotList.getSingleton().setList();
         Advertisement advertisement = new Advertisement();
 
-
         login.setUserPublisher(login);
         login.subscribe(bookings);
         login.subscribe(profilePage);
@@ -105,7 +104,6 @@ public class HelloApplication extends Application
                 toggleLabel.setText("Tryk her for login:");
                 login.createUser(anchorPane, loginButton, toggleButton, toggleLabel);
                 loginButton.setText("Opret bruger");
-
             }
             else
             {
