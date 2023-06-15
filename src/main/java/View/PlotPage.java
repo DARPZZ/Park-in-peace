@@ -95,7 +95,8 @@ public class PlotPage extends Header
         createPlot.setLayoutX(60);
         //region background back button
         Rectangle backGround = new Rectangle(1280,768);
-        backGround.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
+        backGround.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // -fx-background-color: GREY;-fx-opacity: 0.8
+        backGround.setOpacity(0.5);
         backGround.setVisible(false);
         backGround.setDisable(true);
         backGround.setOnMouseClicked(event -> {
@@ -321,7 +322,9 @@ public class PlotPage extends Header
         popup.setPrefSize(800 ,600);
 
         Rectangle backGroundBox = new Rectangle(1280,768);
-        backGroundBox.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
+        //backGroundBox.setStyle("-fx-background-color: GREY;-fx-opacity: 0.8");
+        backGroundBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // -fx-background-color: GREY;-fx-opacity: 0.8
+        backGroundBox.setOpacity(0.5);
         backGroundBox.setVisible(false);
         backGroundBox.setDisable(true);
         backGroundBox.setOnMouseClicked(event -> {
@@ -468,10 +471,10 @@ public class PlotPage extends Header
         imageHolder.setLayoutY(100);
         imageHolder.maxWidth(300);
         imageHolder.maxHeight(200);
-        plotController.setChosenFileName("\\bgpic.png");
-        Image defaultImage = new Image(plotController.getDefaultDir()+"\\bgpic.png",300,200,false,false);
+        //plotController.setChosenFileName("\\bgpic.png");
+        //Image defaultImage = new Image(plotController.getDefaultDir()+"\\bgpic.png",300,200,false,false);
 
-        imageHolder.setImage(defaultImage);
+        imageHolder.setImage(new Image(plot.getImageRealPath(),300,200,false,false));
 
         Button fileChooser = new Button("\uD83D\uDD27");
         fileChooser.setLayoutX(700);
