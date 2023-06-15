@@ -38,7 +38,7 @@ print @sql
 execute (@SQL)
 end
 
-*/
+
 
 GO
 CREATE PROCEDURE [dbo].[insertUser] (@fldName varchar(MAX), @fldPhoneNumber varchar(MAX),@fldPassword varchar(max), @fldAddress varchar(MAX), @fldAcountNumber int,
@@ -322,7 +322,7 @@ SELECT
     tblPlot.fldLocation,
     tblPlot.fldDescription,
     tblPlot.fldImage,
-    tlbPlot.fldUserID,
+    tblPlot.fldUserID,
     tblZipcodeCity.fldZipcode,
     tblPlotSize.fldPlotSize,
     tblSeason.fldLowSeasonPrice,
